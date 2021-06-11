@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">SM Control</string>
+    <string name="txt_email">Ingrese su correo</string>
+    <string name="txt_pass">Ingrese su contraseña</string>
+    <string name="btn_ingresar">INGRESAR</string>
 </resources>
