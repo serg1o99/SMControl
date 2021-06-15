@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -32,9 +31,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onStart() {
         super.onStart();
-        // Check if user is signed in (non-null) and update UI accordingly.
+        //Check if user is signed in (non-null) and update UI accordingly.
         FirebaseUser currentUser = mAuth.getCurrentUser();
-        // updateUI(currentUser);
+        //updateUI(currentUser);
     }
 
     public void autentificarusuario(View view)   {
@@ -49,34 +48,27 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(),"Introduzca su contraseña",Toast.LENGTH_SHORT).show();
             txtpass.requestFocus();
         }else {
-            mAuth.signInWithEmailAndPassword(txtemail.getText().toString().trim(),txtpass.getText().toString())
-                    .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
-
-                            if (task.isSuccessful()) {
-                                // Sign in success, update UI with the signed-in user's information
-                                FirebaseUser user = mAuth.getCurrentUser();
-                                //updateUI(user);
-                                Intent it=new Intent(getApplicationContext(),MainActivity2_Menu.class);
-                                startActivity(it);
-                                finish();
-                            } else {
-                                Toast.makeText(getApplicationContext(), "Email y/o Contraseña incorrecto .",Toast.LENGTH_SHORT).show();
-
-                                // updateUI(null);
-                            }
-                            // ...
-                        }
-                    });
+            mAuth.signInWithEmailAndPassword(txtemail.getText().toString().trim(),txtpass.getText().toString()).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                @Override
+                public void onComplete(@NonNull Task<AuthResult> task) {
+                    if (task.isSuccessful()) {
+                        // Sign in success, update UI with the signed-in user's information
+                        FirebaseUser user = mAuth.getCurrentUser();
+                        //updateUI(user);
+                        Intent it=new Intent(getApplicationContext(), MenuActivity.class);
+                        startActivity(it);
+                        finish();
+                    } else {
+                        Toast.makeText(getApplicationContext(), "Email y/o Contraseña incorrecto .",Toast.LENGTH_SHORT).show();
+                        // updateUI(null);
+                    }
+                    // ...
                 }
-            }
+            });
+        }
+    }
 
-
-
-        @Override
-      public void onBackPressed(){}
-
-
+    @Override
+    public void onBackPressed(){}
 
 }

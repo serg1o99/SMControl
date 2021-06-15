@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -7,106 +7,152 @@
     android:layout_margin="0dp"
     tools:context=".MainActivity">
 
-    <EditText
-        android:id="@+id/et_email"
-        android:layout_width="360dp"
-        android:layout_height="60dp"
-        android:layout_below="@+id/imageView_ico"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginStart="24dp"
-        android:layout_marginLeft="24dp"
-        android:layout_marginTop="40dp"
-        android:layout_marginEnd="24dp"
-        android:layout_marginRight="24dp"
-        android:background="@drawable/input_email"
-        android:ems="10"
-        android:fontFamily="@font/reem_kufi"
-        android:gravity="center_horizontal|center_vertical"
-        android:hint="@string/txt_email"
-        android:importantForAutofill="no"
-        android:inputType="textEmailAddress"
-        android:textColor="@color/teal_200"
-        android:textSize="18sp" />
 
-    <EditText
-        android:id="@+id/et_pass"
-        android:layout_width="360dp"
-        android:layout_height="60dp"
-        android:layout_below="@+id/et_email"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_marginStart="24dp"
-        android:layout_marginLeft="24dp"
-        android:layout_marginTop="30dp"
-        android:layout_marginEnd="24dp"
-        android:layout_marginRight="24dp"
-        android:autofillHints=""
-        android:background="@drawable/input_pass2"
-        android:ems="10"
-        android:fontFamily="@font/reem_kufi"
-        android:gravity="center_horizontal|center_vertical"
-        android:hint="@string/txt_pass"
-        android:inputType="textPassword"
-        android:textColor="@color/teal_200"
-        android:textSize="18sp" />
-
-    <Button
-        android:id="@+id/btningresar"
-        android:layout_width="366dp"
-        android:layout_height="50dp"
-        android:layout_below="@+id/et_pass"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginStart="24dp"
-        android:layout_marginLeft="24dp"
-        android:layout_marginTop="30dp"
-        android:layout_marginEnd="24dp"
-        android:layout_marginRight="24dp"
-        android:background="@drawable/btn_logear"
-        android:fontFamily="@font/reem_kufi"
-        android:onClick="autentificarusuario"
-        android:text="@string/btn_ingresar"
-        android:textColor="@color/white"
-        android:textSize="22sp"
-        app:backgroundTint="@color/teal_200" />
-
-    <ImageView
-        android:id="@+id/imageView_ico"
-        android:layout_width="299dp"
-        android:layout_height="153dp"
-        android:layout_below="@+id/imageView_cabecera"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_marginStart="60dp"
-        android:layout_marginLeft="60dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="60dp"
-        android:layout_marginRight="60dp"
-        android:contentDescription="@string/app_name"
-        app:srcCompat="@drawable/icoprincipal_carga" />
-
-    <ImageView
-        android:id="@+id/imageView_cabecera"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="227dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginStart="0dp"
-        android:layout_marginTop="-2dp"
-        android:layout_marginEnd="0dp"
-        android:contentDescription="@string/app_name"
-        app:srcCompat="@drawable/cabecera_img" />
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        tools:ignore="MissingConstraints">
 
-</RelativeLayout>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="380dp">
+
+            <View
+                android:id="@+id/topView"
+                android:layout_width="match_parent"
+                android:layout_height="120dp"
+                android:background="@color/teal_1" />
+
+            <View
+                android:id="@+id/view2"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:background="@drawable/wave"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/topView" />
+
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/reem_kufi"
+                android:gravity="center"
+                android:text="@string/msg_bienvenido"
+                android:textColor="@color/white"
+                android:textSize="65sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.169" />
+
+            <ImageView
+                android:id="@+id/logo"
+                android:layout_width="301dp"
+                android:layout_height="226dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="56dp"
+                android:contentDescription="@string/app_name"
+                android:src="@drawable/montacarga"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/topView" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:layout_marginTop="20dp">
+
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:hint="@string/txt_email"
+                app:hintTextColor="@color/hint"
+                app:boxStrokeColor="@color/teal_1"
+                app:boxStrokeWidthFocused="2dp"
+                app:startIconDrawable="@drawable/person_outline"
+                app:startIconTint="@color/teal_1"
+                app:endIconMode="clear_text"
+                app:boxCornerRadiusBottomEnd="10dp"
+                app:boxCornerRadiusTopEnd="10dp"
+                app:boxCornerRadiusBottomStart="10dp"
+                app:boxCornerRadiusTopStart="10dp"
+                app:endIconTint="@color/teal_1">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_email"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:fontFamily="@font/reem_kufi"
+                    android:inputType="textEmailAddress"
+                    android:textColor="@color/black" />
+
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_marginTop="20dp"
+                android:layout_height="wrap_content"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:hint="@string/txt_pass"
+                app:hintTextColor="@color/hint"
+                app:boxStrokeColor="@color/teal_1"
+                app:boxStrokeWidthFocused="2dp"
+                app:startIconDrawable="@drawable/lock_outline"
+                app:startIconTint="@color/teal_1"
+                app:endIconMode="password_toggle"
+                app:boxCornerRadiusBottomEnd="10dp"
+                app:boxCornerRadiusTopEnd="10dp"
+                app:boxCornerRadiusBottomStart="10dp"
+                app:boxCornerRadiusTopStart="10dp"
+                app:endIconTint="@color/teal_1">
+
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_pass"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:fontFamily="@font/reem_kufi"
+                    android:inputType="textPassword"
+                    android:textColor="@color/black" />
+
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.button.MaterialButton
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="25dp"
+                android:height="55dp"
+                android:backgroundTint="@color/teal_1"
+                android:fontFamily="@font/reem_kufi"
+                android:onClick="autentificarusuario"
+                android:text="@string/btn_ingresar"
+                android:textSize="20sp"
+                app:backgroundTint="@color/teal_1"
+                app:cornerRadius="8dp" />
+
+
+
+
+        </LinearLayout>
+
+
+
+
+    </LinearLayout>
+
+
+</ScrollView>

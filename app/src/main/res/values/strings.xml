@@ -1,6 +1,13 @@
 <resources>
     <string name="app_name">SM Control</string>
+    <string name="msg_bienvenido">¡Bienvenido!</string>
     <string name="txt_email">Ingrese su correo</string>
     <string name="txt_pass">Ingrese su contraseña</string>
     <string name="btn_ingresar">INGRESAR</string>
+    <string name="menu">Menu</string>
+    <string name="trabajadores">Trabajadores</string>
+    <string name="productos">Productos</string>
+    <string name="reportes">Reportes</string>
+    <string name="Categorias">Categorias</string>
+    <string name="Proveedores">Proveedores</string>
 </resources>
