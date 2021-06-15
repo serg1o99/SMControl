@@ -1,20 +1,40 @@
 package com.example.smcontrol;
 
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
+import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
+
+import com.google.android.material.navigation.NavigationView;
+
 public class MenuActivity extends AppCompatActivity implements View.OnClickListener {
 
     public CardView cardTrabajador, cardProducto, cardCategoria, cardProveedor,  cardReporte;
+    DrawerLayout drawerLayout;
+    NavigationView navigationView;
+    Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
+
+
+        drawerLayout = findViewById(R.id.drawer_layout);
+        navigationView = findViewById(R.id.nav_view);
+        toolbar = findViewById(R.id.toolbar);
+
+        setSupportActionBar(toolbar);
+
+        ActionBarDrawerToggle toogle = new ActionBarDrawerToggle(this,drawerLayout,toolbar,R.string.navigation_drawer_open,R.string.navigation_drawer_close);
+        drawerLayout.addDrawerListener(toogle);
+        toogle.syncState();
 
         cardTrabajador = (CardView) findViewById(R.id.cardTrabajador);
         cardProducto = (CardView) findViewById(R.id.cardProducto);

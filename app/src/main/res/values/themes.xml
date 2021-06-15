@@ -6,6 +6,8 @@
         <item name="colorPrimaryDark">@color/hint</item>
         <item name="colorPrimaryVariant">@color/teal_1</item>
         <item name="colorOnPrimary">@color/white</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="fontFamily">@font/reem_kufi</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">#41A888</item>
         <item name="colorSecondaryVariant">@color/hint</item>

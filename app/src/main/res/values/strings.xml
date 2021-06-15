@@ -10,4 +10,10 @@
     <string name="reportes">Reportes</string>
     <string name="Categorias">Categorias</string>
     <string name="Proveedores">Proveedores</string>
+    <string name="Inicio">Inicio</string>
+    <string name="salir">Salir</string>
+
+    <string name="navigation_drawer_open">Navigation drawer open</string>
+    <string name="navigation_drawer_close">Navigation drawer close</string>
+
 </resources>
