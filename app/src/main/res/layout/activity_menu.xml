@@ -29,10 +29,12 @@
 
             <com.google.android.material.appbar.MaterialToolbar
                 android:id="@+id/toolbar"
+                app:title="@string/menu"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 android:background="?attr/colorPrimary"
                 app:titleTextColor="@color/white"
+                app:navigationIconTint="@color/white"
                 android:theme="@style/Theme.SMControl"
                 app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
 
