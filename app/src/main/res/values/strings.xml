@@ -16,4 +16,8 @@
     <string name="navigation_drawer_open">Navigation drawer open</string>
     <string name="navigation_drawer_close">Navigation drawer close</string>
 
+    <string-array name="roles">
+     <item>Administrador</item>
+     <item>Almacenero</item>
+    </string-array>
 </resources>

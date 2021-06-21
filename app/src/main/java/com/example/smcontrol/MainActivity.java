@@ -23,8 +23,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        txtemail=(EditText) findViewById(R.id.et_email);
-        txtpass=(EditText) findViewById(R.id.et_pass);
+        txtemail=(EditText) findViewById(R.id.txt_apellido);
+        txtpass=(EditText) findViewById(R.id.et_correo);
         mAuth = FirebaseAuth.getInstance();
     }
 
@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
         if(email.isEmpty() && pass.isEmpty())  {
             Toast.makeText(getApplicationContext(),"Algún campo está vacío",Toast.LENGTH_SHORT).show();
         }else if(email.isEmpty()) {
-            Toast.makeText(getApplicationContext(),"Introduzca su email",Toast.LENGTH_SHORT).show();
+            txtemail.setError("obligatorio");
             txtemail.requestFocus();
         }else if(pass.isEmpty())    {
             Toast.makeText(getApplicationContext(),"Introduzca su contraseña",Toast.LENGTH_SHORT).show();

@@ -90,7 +90,7 @@
                 app:endIconTint="@color/teal_1">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/et_email"
+                    android:id="@+id/txt_apellido"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:fontFamily="@font/reem_kufi"
@@ -120,7 +120,7 @@
 
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/et_pass"
+                    android:id="@+id/et_correo"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:fontFamily="@font/reem_kufi"
@@ -140,6 +140,7 @@
                 android:fontFamily="@font/reem_kufi"
                 android:onClick="autentificarusuario"
                 android:text="@string/btn_ingresar"
+                android:textColor="@color/white"
                 android:textSize="20sp"
                 app:backgroundTint="@color/teal_1"
                 app:cornerRadius="8dp" />
