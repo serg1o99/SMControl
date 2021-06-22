@@ -1,15 +1,11 @@
 package model;
-
 public class Trabajador {
     private String dni;
+    private String correo;
+    private  String rol;
     private String nombre;
     private String apellido;
-    private String correo;
     private String contraseña;
-    private String rol;
-
-    public Trabajador() {
-    }
 
     public String getNombre() {
         return nombre;
@@ -27,14 +23,6 @@ public class Trabajador {
         this.apellido = apellido;
     }
 
-    public String getCorreo() {
-        return correo;
-    }
-
-    public void setCorreo(String correo) {
-        this.correo = correo;
-    }
-
     public String getContraseña() {
         return contraseña;
     }
@@ -43,13 +31,10 @@ public class Trabajador {
         this.contraseña = contraseña;
     }
 
-    public String getRol() {
-        return rol;
+    public Trabajador() {
     }
 
-    public void setRol(String rol) {
-        this.rol = rol;
-    }
+
 
     public String getDni() {
         return dni;
@@ -57,5 +42,21 @@ public class Trabajador {
 
     public void setDni(String dni) {
         this.dni = dni;
+    }
+
+    public String getCorreo() {
+        return correo;
+    }
+
+    public void setCorreo(String correo) {
+        this.correo = correo;
+    }
+
+    public String getRol() {
+        return rol;
+    }
+
+    public void setRol(String rol) {
+        this.rol = rol;
     }
 }

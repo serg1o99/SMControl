@@ -1,16 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/gestion_trabajador"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/ic_launcher_background"
-    tools:context=".TrabajadorActivity">
+    android:layout_margin="0dp"
+    android:backgroundTint="#090909"
+    tools:context=".TrabajadorActivity"
+    android:fitsSystemWindows="true"
+    tools:openDrawer="start">
 
-    <Button
-        android:id="@+id/button"
+    <com.google.android.material.navigation.NavigationView
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="pasar"
-        android:text="Button" />
-</RelativeLayout>
+        android:layout_height="match_parent"
+        android:id="@+id/nav_view_"
+        app:headerLayout="@layout/header"
+        app:menu="@menu/main_menu"
+        android:layout_gravity="start"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            tools:ignore="MissingConstraints">
+
+            <com.google.android.material.appbar.MaterialToolbar
+                android:id="@+id/toolbarr"
+                android:layout_width="match_parent"
+                android:layout_height="82dp"
+                android:background="?attr/colorPrimary"
+                android:theme="@style/ThemeOverlay.AppCompat.Dark"
+                app:contentInsetStartWithNavigation="0dp"
+                app:navigationIconTint="@color/white"
+                app:popupTheme="@style/Theme.SMControl"
+                app:title="@string/lista_trabajadores"
+                app:titleTextAppearance="@style/Toolbar.TitleText"
+                app:titleTextColor="@color/white"></com.google.android.material.appbar.MaterialToolbar>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="655dp"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:background="@color/white" />
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</androidx.drawerlayout.widget.DrawerLayout>

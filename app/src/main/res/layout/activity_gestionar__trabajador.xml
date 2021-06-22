@@ -33,17 +33,16 @@
 
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/toolbarr"
-            app:title="@string/gestionar_trabajador"
             android:layout_width="match_parent"
-            app:titleTextAppearance="@style/Toolbar.TitleText"
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"
-            app:titleTextColor="@color/white"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark"
             app:contentInsetStartWithNavigation="0dp"
             app:navigationIconTint="@color/white"
-            android:theme="@style/ThemeOverlay.AppCompat.Dark"
-            app:popupTheme="@style/Theme.SMControl">
-        </com.google.android.material.appbar.MaterialToolbar>
+            app:popupTheme="@style/Theme.SMControl"
+            app:title="@string/gestionar_trabajador"
+            app:titleTextAppearance="@style/Toolbar.TitleText"
+            app:titleTextColor="@color/white"></com.google.android.material.appbar.MaterialToolbar>
 
         <LinearLayout
             android:layout_width="match_parent"

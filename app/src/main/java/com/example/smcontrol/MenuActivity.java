@@ -65,7 +65,7 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
                 startActivity(i);
                 break;
             case R.id.cardProducto:
-                i = new Intent(this, ProductoActivity.class);
+                i = new Intent(this, Gestionar_TrabajadorActivity.class);
                 startActivity(i);
                 break;
             case R.id.cardCategoria:

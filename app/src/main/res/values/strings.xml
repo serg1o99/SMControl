@@ -22,4 +22,5 @@
     </string-array>
 
     <string name="gestionar_trabajador">Gestionar Trabajador</string>
+    <string name="lista_trabajadores">Trabajadores</string>
 </resources>
