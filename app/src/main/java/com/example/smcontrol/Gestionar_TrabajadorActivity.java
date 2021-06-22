@@ -46,7 +46,7 @@ public class Gestionar_TrabajadorActivity extends AppCompatActivity implements N
         setContentView(R.layout.activity_gestionar__trabajador);
         //
         drawerLayout = findViewById(R.id.gestion_trabajador);
-        navigationView = findViewById(R.id.nav_view_);
+        navigationView = findViewById(R.id.nav_view_s);
         toolbar = findViewById(R.id.toolbarr);
 
         setSupportActionBar(toolbar);

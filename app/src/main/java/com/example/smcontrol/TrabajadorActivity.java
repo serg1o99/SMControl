@@ -29,6 +29,7 @@ import model.TrabajadorAdapter;
 
 
 public class TrabajadorActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+
     RecyclerView recyclerView;
     ArrayList<Trabajador> listaTrabajador;
     TrabajadorAdapter trabajadorAdapter;
@@ -45,9 +46,9 @@ public class TrabajadorActivity extends AppCompatActivity implements NavigationV
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_trabajador);
         //
-        drawerLayout = findViewById(R.id.gestion_trabajador);
-        navigationView = findViewById(R.id.nav_view_);
-        toolbar = findViewById(R.id.toolbarr);
+        drawerLayout = findViewById(R.id.trabajador);
+        navigationView = findViewById(R.id.nav_view__);
+        toolbar = findViewById(R.id.toolbar_);
 
         setSupportActionBar(toolbar);
         navigationView.bringToFront();
@@ -59,7 +60,7 @@ public class TrabajadorActivity extends AppCompatActivity implements NavigationV
         //
 
         recyclerView = findViewById(R.id.recyclerView);
-        database= FirebaseDatabase.getInstance().getReference("Trabajador");
+        database = FirebaseDatabase.getInstance().getReference("Trabajador");
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
@@ -72,18 +73,15 @@ public class TrabajadorActivity extends AppCompatActivity implements NavigationV
 
         database.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-            for (DataSnapshot dataSnapshot : snapshot.getChildren())    {
-            Trabajador t=dataSnapshot.getValue(Trabajador.class);
-            listaTrabajador.add(t);
+            public void onDataChange(@NonNull DataSnapshot snapshot){
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()){
+                    Trabajador t=dataSnapshot.getValue(Trabajador.class);
+                    listaTrabajador.add(t);
+                }
+                trabajadorAdapter.notifyDataSetChanged();
             }
-            trabajadorAdapter.notifyDataSetChanged();
-            }
-
             @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
+            public void onCancelled(@NonNull DatabaseError error) { }
         });
 
     }
@@ -153,7 +151,4 @@ public class TrabajadorActivity extends AppCompatActivity implements NavigationV
         }
         return true;
     }
-
-
-
 }

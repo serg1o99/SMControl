@@ -25,16 +25,15 @@ public class TrabajadorAdapter extends RecyclerView.Adapter<TrabajadorAdapter.My
     @NonNull
     @Override
     public TrabajadorAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v= LayoutInflater.from(context).inflate(R.layout.lista_trabajador_card,parent,false);
-
+        View v= LayoutInflater.from(context).inflate(R.layout.card_list,parent,false);
         return new MyViewHolder(v);
     }
 
     @Override
     public void onBindViewHolder(@NonNull TrabajadorAdapter.MyViewHolder holder, int position) {
-    Trabajador t=listaTrabajador.get(position);
-    holder.nombre.setText(t.getNombre());
-    holder.rol.setText(t.getRol());
+        Trabajador t=listaTrabajador.get(position);
+        holder.nombre.setText(t.getNombre());
+        holder.rol.setText(t.getRol());
     }
 
     @Override
@@ -44,12 +43,10 @@ public class TrabajadorAdapter extends RecyclerView.Adapter<TrabajadorAdapter.My
 
     public static class MyViewHolder extends RecyclerView.ViewHolder   {
         TextView nombre,rol;
-
-
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
-            nombre=itemView.findViewById(R.id.tvnombre);
-            rol=itemView.findViewById(R.id.tvrol);
+            nombre = itemView.findViewById(R.id.tvnombre);
+            rol = itemView.findViewById(R.id.tvrol);
 
         }
     }
