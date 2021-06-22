@@ -11,7 +11,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.SMControl">
-        <activity android:name=".Gestionar_TrabajadorActivity"></activity>
+        <activity android:name=".GestionarCategoria"></activity>
+        <activity android:name=".GestionarProveedor" />
+        <activity android:name=".Gestionar_TrabajadorActivity" />
         <activity android:name=".ReporteActivity" />
         <activity android:name=".ProveedorActivity" />
         <activity android:name=".CategoriaActivity" />

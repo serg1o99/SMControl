@@ -69,7 +69,7 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
                 startActivity(i);
                 break;
             case R.id.cardCategoria:
-                i = new Intent(this, CategoriaActivity.class);
+                i = new Intent(this, GestionarProveedor.class);
                 startActivity(i);
                 break;
             case R.id.cardProveedor:
@@ -117,7 +117,7 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
                 startActivity(i);
                 break;
             case R.id.nav_reporte:
-                i = new Intent(this, ReporteActivity.class);
+                i = new Intent(this, GestionarCategoria.class);
                 startActivity(i);
                 break;
         }

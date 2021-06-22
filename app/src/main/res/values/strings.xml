@@ -17,10 +17,12 @@
     <string name="navigation_drawer_close">Navigation drawer close</string>
 
     <string-array name="roles">
-     <item>Administrador</item>
-     <item>Almacenero</item>
+        <item>Administrador</item>
+        <item>Almacenero</item>
     </string-array>
 
     <string name="gestionar_trabajador">Gestionar Trabajador</string>
+    <string name="gestionar_proveedor">Gestionar Proveedor</string>
+    <string name="gestionar_categoria">Gestionar Categoriar</string>
     <string name="lista_trabajadores">Trabajadores</string>
 </resources>
