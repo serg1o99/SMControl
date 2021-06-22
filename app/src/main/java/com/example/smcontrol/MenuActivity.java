@@ -1,19 +1,22 @@
 package com.example.smcontrol;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
+import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 
 
 import com.google.android.material.navigation.NavigationView;
 
-public class MenuActivity extends AppCompatActivity implements View.OnClickListener {
+public class MenuActivity extends AppCompatActivity implements View.OnClickListener, NavigationView.OnNavigationItemSelectedListener {
 
     public CardView cardTrabajador, cardProducto, cardCategoria, cardProveedor,  cardReporte;
     DrawerLayout drawerLayout;
@@ -31,10 +34,12 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
         toolbar = findViewById(R.id.toolbar);
 
         setSupportActionBar(toolbar);
-
+        navigationView.bringToFront();
         ActionBarDrawerToggle toogle = new ActionBarDrawerToggle(this,drawerLayout,toolbar,R.string.navigation_drawer_open,R.string.navigation_drawer_close);
         drawerLayout.addDrawerListener(toogle);
         toogle.syncState();
+
+        navigationView.setNavigationItemSelectedListener(this);
 
         cardTrabajador = (CardView) findViewById(R.id.cardTrabajador);
         cardProducto = (CardView) findViewById(R.id.cardProducto);
@@ -50,11 +55,10 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
+
     @Override
     public void onClick(View v) {
-
         Intent i;
-
         switch (v.getId()){
             case R.id.cardTrabajador:
                 i = new Intent(this,TrabajadorActivity.class);
@@ -77,5 +81,46 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
                 startActivity(i);
                 break;
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if(drawerLayout.isDrawerOpen(GravityCompat.START)){
+            drawerLayout.closeDrawer(GravityCompat.START);
+        }else {
+            super.onBackPressed();
+        }
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        Intent i;
+        switch (item.getItemId()){
+            case R.id.nav_home:
+                i = new Intent(this,MenuActivity.class);
+                startActivity(i);
+                break;
+            case R.id.nav_trabajador:
+                i = new Intent(this,TrabajadorActivity.class);
+                startActivity(i);
+                break;
+            case R.id.nav_producto:
+                i = new Intent(this, ProductoActivity.class);
+                startActivity(i);
+                break;
+            case R.id.nav_categoria:
+                i = new Intent(this, CategoriaActivity.class);
+                startActivity(i);
+                break;
+            case R.id.nav_proveedor:
+                i = new Intent(this, ProveedorActivity.class);
+                startActivity(i);
+                break;
+            case R.id.nav_reporte:
+                i = new Intent(this, ReporteActivity.class);
+                startActivity(i);
+                break;
+        }
+        return true;
     }
 }

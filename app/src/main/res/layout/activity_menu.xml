@@ -28,16 +28,18 @@
 
 
             <com.google.android.material.appbar.MaterialToolbar
+
                 android:id="@+id/toolbar"
                 app:title="@string/menu"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 android:background="?attr/colorPrimary"
                 app:titleTextColor="@color/white"
+                app:titleTextAppearance="@style/Toolbar.TitleText"
                 app:navigationIconTint="@color/white"
-                android:theme="@style/Theme.SMControl"
-                app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
-
+                app:contentInsetStartWithNavigation="0dp"
+                android:theme="@style/ThemeOverlay.AppCompat.Dark"
+                app:popupTheme="@style/Theme.SMControl">
 
             </com.google.android.material.appbar.MaterialToolbar>
 

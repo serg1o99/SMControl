@@ -18,4 +18,10 @@
         <!-- Customize your theme here. -->
     </style>
 
+    <style name="Toolbar.TitleText" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
+        <item name="android:textSize">30dp</item>
+        <item name="fontFamily">@font/reem_kufi</item>
+    </style>
+
+
 </resources>

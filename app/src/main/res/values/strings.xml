@@ -20,4 +20,6 @@
      <item>Administrador</item>
      <item>Almacenero</item>
     </string-array>
+
+    <string name="gestionar_trabajador">Gestionar Trabajador</string>
 </resources>

@@ -1,10 +1,17 @@
 package com.example.smcontrol;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -13,13 +20,14 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import model.Trabajador;
 
-public class Gestionar_TrabajadorActivity extends AppCompatActivity {
+public class Gestionar_TrabajadorActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     //Atributos
     private EditText et_dni,et_nombre,et_apellido,et_ncorreo,et_npass;
     private AutoCompleteTextView atv_rol;
@@ -28,12 +36,29 @@ public class Gestionar_TrabajadorActivity extends AppCompatActivity {
     DatabaseReference databaseReference;
     //Variables globales
     public String nombre,apellido,correo,contraseña,rol,dni;
-
+    //
+    DrawerLayout drawerLayout;
+    NavigationView navigationView;
+    Toolbar toolbar;
+    //
     @RequiresApi(api= Build.VERSION_CODES.JELLY_BEAN_MR1)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gestionar__trabajador);
+        //
+        drawerLayout = findViewById(R.id.gestion_trabajador);
+        navigationView = findViewById(R.id.nav_view_);
+        toolbar = findViewById(R.id.toolbarr);
+
+        setSupportActionBar(toolbar);
+        navigationView.bringToFront();
+        ActionBarDrawerToggle toogle = new ActionBarDrawerToggle(this,drawerLayout,toolbar,R.string.navigation_drawer_open,R.string.navigation_drawer_close);
+        drawerLayout.addDrawerListener(toogle);
+        toogle.syncState();
+
+        navigationView.setNavigationItemSelectedListener(this);
+        //
         //enlazamos los atributos con los componentes
         et_dni=(EditText) findViewById(R.id.txt_dni);
         et_nombre=(EditText) findViewById(R.id.txt_nombre);
@@ -44,7 +69,6 @@ public class Gestionar_TrabajadorActivity extends AppCompatActivity {
         inicializarFirebase();
 
         ArrayAdapter arrayAdapter=new ArrayAdapter(this,R.layout.lista_roles_layout,getResources().getStringArray(R.array.roles));
-
         atv_rol.setAdapter(arrayAdapter);
     }
 
@@ -69,9 +93,6 @@ public class Gestionar_TrabajadorActivity extends AppCompatActivity {
         }else   {
          insertar();
         }
-
-
-
     }
 
     public void insertar()  {
@@ -120,7 +141,45 @@ public class Gestionar_TrabajadorActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onBackPressed() {
+        if(drawerLayout.isDrawerOpen(GravityCompat.START)){
+            drawerLayout.closeDrawer(GravityCompat.START);
+        }else {
+            super.onBackPressed();
+        }
+    }
 
-
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        Intent i;
+        switch (item.getItemId()){
+            case R.id.nav_home:
+                i = new Intent(this,MenuActivity.class);
+                startActivity(i);
+                break;
+            case R.id.nav_trabajador:
+                i = new Intent(this,TrabajadorActivity.class);
+                startActivity(i);
+                break;
+            case R.id.nav_producto:
+                i = new Intent(this, ProductoActivity.class);
+                startActivity(i);
+                break;
+            case R.id.nav_categoria:
+                i = new Intent(this, CategoriaActivity.class);
+                startActivity(i);
+                break;
+            case R.id.nav_proveedor:
+                i = new Intent(this, ProveedorActivity.class);
+                startActivity(i);
+                break;
+            case R.id.nav_reporte:
+                i = new Intent(this, ReporteActivity.class);
+                startActivity(i);
+                break;
+        }
+        return true;
+    }
 
 }
