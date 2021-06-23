@@ -6,18 +6,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_margin="0dp"
-    android:backgroundTint="#090909"
-    tools:context=".TrabajadorActivity"
+    android:backgroundTint="@color/white"
     android:fitsSystemWindows="true"
-    >
+    tools:context=".TrabajadorActivity">
 
     <com.google.android.material.navigation.NavigationView
+        android:id="@+id/nav_view__"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:id="@+id/nav_view__"
+        android:layout_gravity="start"
         app:headerLayout="@layout/header"
-        app:menu="@menu/main_menu"
-        android:layout_gravity="start"/>
+        app:menu="@menu/main_menu" />
 
     <ScrollView
         android:layout_width="match_parent"
@@ -46,7 +45,7 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="657dp"
                 android:layout_marginTop="0dp">
 
                 <View
@@ -65,9 +64,30 @@
                     android:layout_marginTop="35dp"
                     android:background="#00FFFFFF" />
 
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/fab"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginBottom="16dp"
+                    android:background="#FAF7F7"
+                    android:backgroundTint="@color/teal_200"
+                    android:src="@drawable/ic_add"
+                    app:backgroundTint="#F4F0F0"
+                    app:elevation="4dp"
+                    app:tint="@color/white"
+                    app:fab_colorPressed="#75DDD4"
+                    app:rippleColor="#009688" />
+
             </RelativeLayout>
 
+
         </LinearLayout>
+
 
     </ScrollView>
 

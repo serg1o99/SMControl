@@ -13,8 +13,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
 
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -39,6 +41,7 @@ public class TrabajadorActivity extends AppCompatActivity implements NavigationV
     DrawerLayout drawerLayout;
     NavigationView navigationView;
     Toolbar toolbar;
+    FloatingActionButton fab;
     //
 
     @Override
@@ -49,7 +52,7 @@ public class TrabajadorActivity extends AppCompatActivity implements NavigationV
         drawerLayout = findViewById(R.id.trabajador);
         navigationView = findViewById(R.id.nav_view__);
         toolbar = findViewById(R.id.toolbar_);
-
+        fab=findViewById(R.id.fab);
         setSupportActionBar(toolbar);
         navigationView.bringToFront();
         ActionBarDrawerToggle toogle = new ActionBarDrawerToggle(this,drawerLayout,toolbar,R.string.navigation_drawer_open,R.string.navigation_drawer_close);
@@ -83,6 +86,8 @@ public class TrabajadorActivity extends AppCompatActivity implements NavigationV
             @Override
             public void onCancelled(@NonNull DatabaseError error) { }
         });
+
+        OnClickFloatingButtonListener();
 
     }
 
@@ -151,4 +156,15 @@ public class TrabajadorActivity extends AppCompatActivity implements NavigationV
         }
         return true;
     }
+    public void OnClickFloatingButtonListener()   {
+    fab.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+        Intent it=new Intent(getApplicationContext(),Gestionar_TrabajadorActivity.class);
+        startActivity(it);
+        }
+    });
+    }
+
+
 }

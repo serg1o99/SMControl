@@ -32,7 +32,7 @@ public class TrabajadorAdapter extends RecyclerView.Adapter<TrabajadorAdapter.My
     @Override
     public void onBindViewHolder(@NonNull TrabajadorAdapter.MyViewHolder holder, int position) {
         Trabajador t=listaTrabajador.get(position);
-        holder.nombre.setText(t.getNombre());
+        holder.nombre.setText(t.getNombre()+" "+t.getApellido());
         holder.rol.setText(t.getRol());
     }
 
