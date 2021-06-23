@@ -12,7 +12,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -38,7 +40,7 @@ public class CategoriaActivity extends AppCompatActivity implements NavigationVi
     DrawerLayout drawerLayout;
     NavigationView navigationView;
     Toolbar toolbar;
-
+    FloatingActionButton fab;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +50,8 @@ public class CategoriaActivity extends AppCompatActivity implements NavigationVi
         drawerLayout = findViewById(R.id.categoria_layout);
         navigationView = findViewById(R.id.nav_view_cat_);
         toolbar = findViewById(R.id.toolbar_cat__);
-
+        //floating button
+        fab=findViewById(R.id.fab);
         setSupportActionBar(toolbar);
         navigationView.bringToFront();
         ActionBarDrawerToggle toogle = new ActionBarDrawerToggle(this,drawerLayout,toolbar,R.string.navigation_drawer_open,R.string.navigation_drawer_close);
@@ -77,6 +80,8 @@ public class CategoriaActivity extends AppCompatActivity implements NavigationVi
             @Override
             public void onCancelled(@NonNull DatabaseError error) { }
         });
+
+        OnClickFloatingButtonListener();
 
     }
 
@@ -119,5 +124,15 @@ public class CategoriaActivity extends AppCompatActivity implements NavigationVi
                 break;
         }
         return true;
+    }
+
+    public void OnClickFloatingButtonListener()   {
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent it=new Intent(getApplicationContext(),GestionarCategoria.class);
+                startActivity(it);
+            }
+        });
     }
 }

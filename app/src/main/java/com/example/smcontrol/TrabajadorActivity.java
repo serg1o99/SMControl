@@ -52,6 +52,7 @@ public class TrabajadorActivity extends AppCompatActivity implements NavigationV
         drawerLayout = findViewById(R.id.trabajador);
         navigationView = findViewById(R.id.nav_view__);
         toolbar = findViewById(R.id.toolbar_);
+        //floating button
         fab=findViewById(R.id.fab);
         setSupportActionBar(toolbar);
         navigationView.bringToFront();
