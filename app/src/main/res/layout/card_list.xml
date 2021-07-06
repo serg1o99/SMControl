@@ -74,8 +74,9 @@
         android:layout_width="89dp"
         android:layout_height="82dp"
         android:layout_marginLeft="10dp"
-        android:layout_marginTop="10dp"
-        app:srcCompat="@drawable/avatar" />
+        app:srcCompat="@drawable/avatar"
+        android:layout_gravity="center_vertical"
+        />
 
 
 </androidx.cardview.widget.CardView>

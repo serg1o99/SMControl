@@ -13,9 +13,10 @@ import com.example.smcontrol.R;
 
 import java.util.ArrayList;
 
-public class TrabajadorAdapter extends RecyclerView.Adapter<TrabajadorAdapter.MyViewHolder> {
+public class TrabajadorAdapter extends RecyclerView.Adapter<TrabajadorAdapter.MyViewHolder> implements View.OnClickListener {
     Context context;
     ArrayList<Trabajador> listaTrabajador;
+    private View.OnClickListener listener;
 
     public TrabajadorAdapter(Context context, ArrayList<Trabajador> listaTrabajador) {
         this.context = context;
@@ -26,6 +27,7 @@ public class TrabajadorAdapter extends RecyclerView.Adapter<TrabajadorAdapter.My
     @Override
     public TrabajadorAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v= LayoutInflater.from(context).inflate(R.layout.card_list,parent,false);
+        v.setOnClickListener(this);
         return new MyViewHolder(v);
     }
 
@@ -39,6 +41,15 @@ public class TrabajadorAdapter extends RecyclerView.Adapter<TrabajadorAdapter.My
     @Override
     public int getItemCount() {
      return listaTrabajador.size();
+    }
+    public void setOnClickListener(View.OnClickListener listener)   {
+    this.listener=listener;
+    }
+    @Override
+    public void onClick(View v) {
+    if(listener!=null)  {
+    listener.onClick(v);
+    }
     }
 
     public static class MyViewHolder extends RecyclerView.ViewHolder   {

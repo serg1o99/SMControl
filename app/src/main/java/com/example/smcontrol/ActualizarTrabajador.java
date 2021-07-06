@@ -1,20 +1,21 @@
 package com.example.smcontrol;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -25,7 +26,7 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import model.Trabajador;
 
-public class Gestionar_TrabajadorActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class ActualizarTrabajador extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     //Atributos
     private EditText et_dni,et_nombre,et_apellido,et_ncorreo,et_npass;
     private AutoCompleteTextView atv_rol;
@@ -38,14 +39,15 @@ public class Gestionar_TrabajadorActivity extends AppCompatActivity implements N
     DrawerLayout drawerLayout;
     NavigationView navigationView;
     Toolbar toolbar;
+
+
     //
-    @RequiresApi(api= Build.VERSION_CODES.JELLY_BEAN_MR1)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_gestionar__trabajador);
+        setContentView(R.layout.activity_actualizar_trabajador);
         //
-        drawerLayout = findViewById(R.id.gestion_trabajador);
+        drawerLayout = findViewById(R.id.Actualizar_trabajador);
         navigationView = findViewById(R.id.nav_view_s);
         toolbar = findViewById(R.id.toolbarr);
 
@@ -68,7 +70,11 @@ public class Gestionar_TrabajadorActivity extends AppCompatActivity implements N
 
         ArrayAdapter arrayAdapter=new ArrayAdapter(this,R.layout.lista_roles_layout,getResources().getStringArray(R.array.roles));
         atv_rol.setAdapter(arrayAdapter);
-    }
+        CargarDatosActualizar();
+
+
+}
+
 
     private void inicializarFirebase(){
 
@@ -78,35 +84,106 @@ public class Gestionar_TrabajadorActivity extends AppCompatActivity implements N
 
     }
 
-    public void crearTrabajador(View view) {
-        //declarando variables locales y asignandolos a los atributos que contienen los componentes
-        dni=et_dni.getText().toString();
-        nombre=et_nombre.getText().toString();
-        apellido=et_apellido.getText().toString();
-        correo=et_ncorreo.getText().toString();
-        contraseña=et_npass.getText().toString();
-        rol=atv_rol.getText().toString();
-        if( this.dni.equals("") || nombre.equals("") || apellido.equals("") || correo.equals("") || contraseña.equals("") || rol.equals("Escoja el rol") || rol.equals("") )     {
-           validarCampos();
-        }else   {
-         insertar();
-        }
+    public void CargarDatosActualizar()     {
+        dni=getIntent().getStringExtra("dni");
+        nombre=getIntent().getStringExtra("nombre");
+        apellido=getIntent().getStringExtra("apellido");
+        correo=getIntent().getStringExtra("correo");
+        contraseña=getIntent().getStringExtra("contraseña");
+        rol=getIntent().getStringExtra("rol");
+
+        et_dni.setText(dni);
+        et_nombre.setText(nombre);
+        et_apellido.setText(apellido);
+        et_ncorreo.setText(correo);
+        et_npass.setText(contraseña);
+
     }
 
-    public void insertar()  {
+    public void ActualizarTrabajador(View view){
+        //declarando variables locales y asignandolos a los atributos que contienen los componentes
 
-        //instanciamos un objeto de la clase Trabajador
-        Trabajador objTrabajador=new Trabajador();
-        objTrabajador.setDni(dni);
-        objTrabajador.setNombre(nombre);
-        objTrabajador.setApellido(apellido);
-        objTrabajador.setCorreo(correo);
-        objTrabajador.setContraseña(contraseña);
-        objTrabajador.setRol(rol);
-        databaseReference.child("Trabajador").child(""+objTrabajador.getDni()).setValue(objTrabajador);
-        Toast.makeText(this,"Agregado",Toast.LENGTH_SHORT).show();
-        limpiarCampos();
+        dni         = et_dni.getText().toString();
+        nombre      = et_nombre.getText().toString();
+        apellido    = et_apellido.getText().toString();
+        correo      = et_ncorreo.getText().toString();
+        contraseña  = et_npass.getText().toString();
+        rol         = atv_rol.getText().toString();
 
+        if( this.dni.equals("") || nombre.equals("") || apellido.equals("") || correo.equals("") || contraseña.equals("") || rol.equals("Escoja el rol") || rol.equals("") )     {
+            validarCampos();
+        }else   {
+            actualizar() ;
+        }
+
+    }
+
+    public void EliminarTrabajador(View view){
+        //declarando variables locales y asignandolos a los atributos que contienen los componentes
+
+        dni         = et_dni.getText().toString();
+        nombre      = et_nombre.getText().toString();
+        apellido    = et_apellido.getText().toString();
+        correo      = et_ncorreo.getText().toString();
+        contraseña  = et_npass.getText().toString();
+
+        if( this.dni.equals("") || nombre.equals("") || apellido.equals("") || correo.equals("") || contraseña.equals("") || rol.equals("Escoja el rol") )     {
+            validarCampos();
+        }else   {
+            eliminar();
+        }
+
+    }
+
+    public void actualizar()    {
+
+        AlertDialog.Builder alerta=new AlertDialog.Builder(this);
+        alerta.setMessage("¿Está seguro de que quiere actualizar al trabajador ?").setPositiveButton("Sí", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Trabajador t =new Trabajador();
+                t.setDni(et_dni.getText().toString().trim());
+                t.setNombre(et_nombre.getText().toString().trim());
+                t.setApellido(et_apellido.getText().toString().trim());
+                t.setCorreo(et_ncorreo.getText().toString().trim());
+                t.setContraseña(et_npass.getText().toString().trim());
+                t.setRol(atv_rol.getText().toString().trim());
+                databaseReference.child("Trabajador").child(t.getDni()).setValue(t);
+                Toast.makeText(getApplicationContext(),"Trabajador Actualizado",Toast.LENGTH_SHORT).show();
+                Intent ittrabajador=new Intent(getApplicationContext(),TrabajadorActivity.class);
+                startActivity(ittrabajador);
+                finish();
+            }
+        }).setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+
+        }).show();
+    }
+
+    public void eliminar()  {
+        AlertDialog.Builder alerta=new AlertDialog.Builder(this);
+        alerta.setMessage("¿Está seguro de que quiere eliminar al trabajador ?").setPositiveButton("Sí", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Trabajador t =new Trabajador();
+                t.setDni(et_dni.getText().toString().trim());
+                databaseReference.child("Trabajador").child(t.getDni()).removeValue();
+                Toast.makeText(getApplicationContext(),"Trabajador eliminado",Toast.LENGTH_SHORT).show();
+                Intent ittrabajador=new Intent(getApplicationContext(),TrabajadorActivity.class);
+                startActivity(ittrabajador);
+                finish();
+
+            }
+        }).setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+
+        }).show();
 
     }
 
@@ -132,15 +209,6 @@ public class Gestionar_TrabajadorActivity extends AppCompatActivity implements N
         }
     }
 
-    public void limpiarCampos(){
-        et_dni.setText("");
-        et_nombre.setText("");
-        et_apellido.setText("");
-        et_ncorreo.setText("");
-        et_npass.setText("");
-        et_dni.requestFocus();
-
-    }
 
     @Override
     public void onBackPressed() {
@@ -182,5 +250,7 @@ public class Gestionar_TrabajadorActivity extends AppCompatActivity implements N
         }
         return true;
     }
+
+
 
 }

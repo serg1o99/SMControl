@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">SM Control</string>
+    <string name="app_name">SMControl</string>
     <string name="msg_bienvenido">¡Bienvenido!</string>
     <string name="txt_email">Ingrese su correo</string>
     <string name="txt_pass">Ingrese su contraseña</string>

@@ -6,6 +6,7 @@ public class Trabajador {
     private String nombre;
     private String apellido;
     private String contraseña;
+    private String url;
 
     public String getNombre() {
         return nombre;
@@ -34,8 +35,6 @@ public class Trabajador {
     public Trabajador() {
     }
 
-
-
     public String getDni() {
         return dni;
     }
@@ -59,4 +58,10 @@ public class Trabajador {
     public void setRol(String rol) {
         this.rol = rol;
     }
+
+    public String getUrl() {return url;}
+
+    public void setUrl(String url) { this.url = url;  }
+
+
 }

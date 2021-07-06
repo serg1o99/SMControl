@@ -12,6 +12,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 
 
 import com.google.android.material.navigation.NavigationView;
@@ -33,6 +34,7 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
         navigationView = findViewById(R.id.nav_view);
         toolbar = findViewById(R.id.toolbar);
 
+
         setSupportActionBar(toolbar);
         navigationView.bringToFront();
         ActionBarDrawerToggle toogle = new ActionBarDrawerToggle(this,drawerLayout,toolbar,R.string.navigation_drawer_open,R.string.navigation_drawer_close);
@@ -53,6 +55,11 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
         cardProveedor.setOnClickListener(this);
         cardReporte.setOnClickListener(this);
 
+
+
+
+
+
     }
 
 
@@ -65,7 +72,7 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
                 startActivity(i);
                 break;
             case R.id.cardProducto:
-                i = new Intent(this, Gestionar_TrabajadorActivity.class);
+                i = new Intent(this, GestionarTrabajador.class);
                 startActivity(i);
                 break;
             case R.id.cardCategoria:

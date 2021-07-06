@@ -14,6 +14,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -35,20 +38,22 @@ public class TrabajadorActivity extends AppCompatActivity implements NavigationV
     RecyclerView recyclerView;
     ArrayList<Trabajador> listaTrabajador;
     TrabajadorAdapter trabajadorAdapter;
-    //FirebaseFirestore db;
     DatabaseReference database;
-    //
     DrawerLayout drawerLayout;
     NavigationView navigationView;
     Toolbar toolbar;
     FloatingActionButton fab;
-    //
+    Trabajador t;
+
+    //variables de guardado para actualizar
+    public String dni,correo,rol,nombre,apellido,contraseña;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_trabajador);
         //
+
         drawerLayout = findViewById(R.id.trabajador);
         navigationView = findViewById(R.id.nav_view__);
         toolbar = findViewById(R.id.toolbar_);
@@ -59,63 +64,25 @@ public class TrabajadorActivity extends AppCompatActivity implements NavigationV
         ActionBarDrawerToggle toogle = new ActionBarDrawerToggle(this,drawerLayout,toolbar,R.string.navigation_drawer_open,R.string.navigation_drawer_close);
         drawerLayout.addDrawerListener(toogle);
         toogle.syncState();
-
-        navigationView.setNavigationItemSelectedListener(this);
         //
+        navigationView.setNavigationItemSelectedListener(this);
 
         recyclerView = findViewById(R.id.recyclerView);
         database = FirebaseDatabase.getInstance().getReference("Trabajador");
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        // db=FirebaseFirestore.getInstance();
-        listaTrabajador=new ArrayList<>();
-        trabajadorAdapter=new TrabajadorAdapter(TrabajadorActivity.this,listaTrabajador);
-        recyclerView.setAdapter(trabajadorAdapter);
+        //metodo para las acciones de los cardview
+        OnClickRecyclerViewListener();
 
-        //EventChangeListener();
-
-        database.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot){
-                for (DataSnapshot dataSnapshot : snapshot.getChildren()){
-                    Trabajador t=dataSnapshot.getValue(Trabajador.class);
-                    listaTrabajador.add(t);
-                }
-                trabajadorAdapter.notifyDataSetChanged();
-            }
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) { }
-        });
-
+        //metodo para las acciones del floating button
         OnClickFloatingButtonListener();
+        //método para el llamado a la base de datos
+        FirebaseEventListener();
 
     }
 
-    /* FIRESTORE
-    private void EventChangeListener() {
-        db.collection("Trabajador").orderBy("dni", Query.Direction.ASCENDING).addSnapshotListener(new EventListener<QuerySnapshot>() {
-            @Override
-            public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
-            if(error !=null)    {
-                if(progressDialog.isShowing())
-                    progressDialog.dismiss();
-                Log.e("Firestore error",error.getMessage());
-                return;
-            }
-            for (DocumentChange dc : value.getDocumentChanges())    {
-            if(dc.getType() == DocumentChange.Type.ADDED)   {
-            listaTrabajador.add(dc.getDocument().toObject(Trabajador.class));
-            }
 
-            trabajadorAdapter.notifyDataSetChanged();
-                if(progressDialog.isShowing())
-                    progressDialog.dismiss();
-            }
-            }
-        });
-    }
-*/
 
     @Override
     public void onBackPressed() {
@@ -161,11 +128,61 @@ public class TrabajadorActivity extends AppCompatActivity implements NavigationV
     fab.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-        Intent it=new Intent(getApplicationContext(),Gestionar_TrabajadorActivity.class);
+        Intent it=new Intent(getApplicationContext(), GestionarTrabajador.class);
         startActivity(it);
+
         }
     });
     }
+
+    public void OnClickRecyclerViewListener()   {
+
+        listaTrabajador=new ArrayList<>();
+        trabajadorAdapter=new TrabajadorAdapter(TrabajadorActivity.this,listaTrabajador);
+        trabajadorAdapter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent itactualizar=new Intent(getApplicationContext(),ActualizarTrabajador.class);
+                //guardamos los datos a actualizar de cada cardview
+                dni=listaTrabajador.get(recyclerView.getChildAdapterPosition(v)).getDni();
+                nombre=listaTrabajador.get(recyclerView.getChildAdapterPosition(v)).getNombre();
+                apellido=listaTrabajador.get(recyclerView.getChildAdapterPosition(v)).getApellido();
+                correo=listaTrabajador.get(recyclerView.getChildAdapterPosition(v)).getCorreo();
+                contraseña=listaTrabajador.get(recyclerView.getChildAdapterPosition(v)).getContraseña();
+                rol=listaTrabajador.get(recyclerView.getChildAdapterPosition(v)).getRol();
+                itactualizar.putExtra("dni",dni);
+                itactualizar.putExtra("nombre",nombre);
+                itactualizar.putExtra("apellido",apellido);
+                itactualizar.putExtra("correo",correo);
+                itactualizar.putExtra("contraseña",contraseña);
+                itactualizar.putExtra("rol",rol);
+                startActivity(itactualizar);
+
+            }
+        });
+
+        recyclerView.setAdapter(trabajadorAdapter);
+
+    }
+
+    public void FirebaseEventListener() {
+
+        database.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot){
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()){
+                    Trabajador t=dataSnapshot.getValue(Trabajador.class);
+                    listaTrabajador.add(t);
+                }
+                trabajadorAdapter.notifyDataSetChanged();
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) { }
+        });
+    }
+
+
+
 
 
 }
