@@ -103,7 +103,6 @@ public class GestionarTrabajador extends AppCompatActivity implements Navigation
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                  Toast.makeText(getApplicationContext(),"Se subio exitosamente la foto.",Toast.LENGTH_SHORT).show();
-
                 }
             });
 
@@ -242,10 +241,9 @@ public class GestionarTrabajador extends AppCompatActivity implements Navigation
         return true;
     }
 
-    public void SubirFoto(View view)     {
+    public void SubirFoto(View view){
         Intent intent=new Intent(Intent.ACTION_PICK);
         intent.setType("image/*");
         startActivityForResult(intent,GALLERY_INTENT);
     }
-
 }

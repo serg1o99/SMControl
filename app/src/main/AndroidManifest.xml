@@ -3,7 +3,8 @@
     package="com.example.smcontrol">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -11,7 +12,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.SMControl">
-        <activity android:name=".ActualizarTrabajador"></activity>
+        <activity android:name=".GestionarProducto"></activity>
+        <activity android:name=".ActualizarProducto" />
+        <activity android:name=".ActualizarProveedor" />
+        <activity android:name=".ActualizarCategoria" />
+        <activity android:name=".ActualizarTrabajador" />
         <activity android:name=".GestionarCategoria" />
         <activity android:name=".GestionarProveedor" />
         <activity android:name=".GestionarTrabajador" />

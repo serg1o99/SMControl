@@ -14,7 +14,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -27,12 +26,12 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import model.Producto;
 import model.Proveedor;
-import model.Trabajador;
 
-public class GestionarProveedor extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
+public class GestionarProducto extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
-    private EditText et_codigo,et_nombre,et_nombreEmpresa,et_correo,et_direccion,et_telefono,et_fecha;
+    private EditText et_codigo,et_nombre,et_stock,et_precio,et_categoria;
     private static  final  int GALLERY_INTENT = 1;
     //
     private StorageReference storageReference;
@@ -41,21 +40,20 @@ public class GestionarProveedor extends AppCompatActivity implements NavigationV
     FirebaseDatabase firebaseDatabase;
     DatabaseReference databaseReference;
     //
-    public String nombre,nombreEmpresa,correo,direccion,telefono,codigo,fecha;
+    public String codigo,nombre,stock,precio,categoria;
     //
     DrawerLayout drawerLayout;
     NavigationView navigationView;
     Toolbar toolbar;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_gestionar_proveedor);
+        setContentView(R.layout.activity_gestionar_producto);
         //
-        drawerLayout = findViewById(R.id.gestion_proveedor);
-        navigationView = findViewById(R.id.nav_view_prov__);
-        toolbar = findViewById(R.id.toolbarprov_);
+        drawerLayout = findViewById(R.id.gestion_producto);
+        navigationView = findViewById(R.id.nav_view_prod);
+        toolbar = findViewById(R.id.toolbar_prod);
 
         setSupportActionBar(toolbar);
         navigationView.bringToFront();
@@ -67,13 +65,11 @@ public class GestionarProveedor extends AppCompatActivity implements NavigationV
         //
         navigationView.setNavigationItemSelectedListener(this);
         //
-        et_codigo        =  (EditText) findViewById(R.id.txt_cod);
-        et_nombre        =  (EditText) findViewById(R.id.txt_nom);
-        et_correo        =  (EditText) findViewById(R.id.txt_correo_prov);
-        et_direccion     =  (EditText) findViewById(R.id.txt_direccion);
-        et_telefono      =  (EditText) findViewById(R.id.txt_telefono);
-        et_fecha         =  (EditText) findViewById(R.id.txt_fecha);
-        et_nombreEmpresa =  (EditText) findViewById(R.id.txt_nom_empresa);
+        et_codigo     =  (EditText) findViewById(R.id.txt_codigo);
+        et_nombre     =  (EditText) findViewById(R.id.txt_nombre);
+        et_stock      =  (EditText) findViewById(R.id.txt_stock);
+        et_precio     =  (EditText) findViewById(R.id.txt_precio);
+        et_categoria  =  (EditText) findViewById(R.id.txt_categoria);
         inicializarFirebase();
     }
 
@@ -82,7 +78,7 @@ public class GestionarProveedor extends AppCompatActivity implements NavigationV
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode==GALLERY_INTENT && resultCode == RESULT_OK)  {
             Uri uri=data.getData();
-            StorageReference filePath=storageReference.child("img_Proveedores").child(uri.getLastPathSegment());
+            StorageReference filePath=storageReference.child("img_Productos").child(uri.getLastPathSegment());
             filePath.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
@@ -98,17 +94,16 @@ public class GestionarProveedor extends AppCompatActivity implements NavigationV
         databaseReference=firebaseDatabase.getReference();
     }
 
-    public void crearProveedor(View view) {
+    public void crearProducto(View view) {
 
-        codigo      = et_codigo.getText().toString();
-        nombre      = et_nombre.getText().toString();
-        correo      = et_correo.getText().toString();
-        direccion   = et_direccion.getText().toString();
-        telefono    = et_telefono.getText().toString();
-        fecha       = et_fecha.getText().toString();
-        nombreEmpresa = et_nombreEmpresa.getText().toString();
+        codigo       = et_codigo.getText().toString();
+        nombre       = et_nombre.getText().toString();
+        stock        = et_stock.getText().toString();
+        precio       = et_precio.getText().toString();
+        categoria    = et_categoria.getText().toString();
 
-        if( this.codigo.equals("") || nombre.equals("") || correo.equals("") || direccion.equals("") || telefono.equals("") || nombreEmpresa.equals("") || fecha.equals("")){
+
+        if( this.codigo.equals("") || nombre.equals("") || stock.equals("") || precio.equals("") || categoria.equals("") ){
             validarCampos();
         }else   {
             insertar();
@@ -116,16 +111,14 @@ public class GestionarProveedor extends AppCompatActivity implements NavigationV
     }
 
     public void insertar()  {
-        Proveedor obj = new Proveedor();
+        Producto obj = new Producto();
         obj.setCodigo(codigo);
-        obj.setNombreProveedor(nombre);
-        obj.setCorreo(correo);
-        obj.setDireccion(direccion);
-        obj.setTelefono(telefono);
-        obj.setFecha(fecha);
-        obj.setNombreEmpresa(nombreEmpresa);
+        obj.setNombre(nombre);
+        obj.setStock(stock);
+        obj.setPrecio(precio);
+        obj.setCategoria(categoria);
 
-        databaseReference.child("Proveedor").child(""+obj.getCodigo()).setValue(obj);
+        databaseReference.child("Producto").child(""+obj.getCodigo()).setValue(obj);
         Toast.makeText(this,"Agregado",Toast.LENGTH_SHORT).show();
         limpiarCampos();
     }
@@ -137,32 +130,24 @@ public class GestionarProveedor extends AppCompatActivity implements NavigationV
         }else if(nombre.isEmpty()) {
             Toast.makeText(this,"Campo nombre obligatorio",Toast.LENGTH_SHORT).show();
             et_nombre.requestFocus();
-        }else if(correo.isEmpty())    {
+        }else if(stock.isEmpty())    {
             Toast.makeText(this,"Campo correo obligatorio",Toast.LENGTH_SHORT).show();
-            et_correo.requestFocus();
-        }else if(direccion.isEmpty()) {
+            et_stock.requestFocus();
+        }else if(precio.isEmpty()) {
             Toast.makeText(this,"Campo direccion obligatorio",Toast.LENGTH_SHORT).show();
-            et_direccion.requestFocus();
-        }else if(telefono.isEmpty())  {
-            Toast.makeText(this,"Campo telefono obligatorio",Toast.LENGTH_SHORT).show();
-            et_telefono.requestFocus();
-        }else if(fecha.isEmpty())     {
-            Toast.makeText(this,"Campo fecha obligatorio",Toast.LENGTH_SHORT).show();
-            et_fecha.requestFocus();
-        }else if(nombreEmpresa.isEmpty())     {
-            Toast.makeText(this,"Campo nombre empresa obligatorio",Toast.LENGTH_SHORT).show();
-            et_nombreEmpresa.requestFocus();
+            et_precio.requestFocus();
+        }else if(categoria.isEmpty()) {
+            Toast.makeText(this, "Campo telefono obligatorio", Toast.LENGTH_SHORT).show();
+            et_categoria.requestFocus();
         }
     }
 
     public void limpiarCampos(){
         et_codigo.setText("");
         et_nombre.setText("");
-        et_correo.setText("");
-        et_direccion.setText("");
-        et_telefono.setText("");
-        et_fecha.setText("");
-        et_nombreEmpresa.setText("");
+        et_stock.setText("");
+        et_precio.setText("");
+        et_categoria.setText("");
     }
 
     @Override

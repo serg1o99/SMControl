@@ -2,12 +2,12 @@
 <androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/gestion_categoria"
+    android:id="@+id/Actualizar_proveedor"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_margin="0dp"
     android:backgroundTint="#090909"
-    tools:context=".GestionarCategoria"
+    tools:context=".ActualizarProveedor"
     android:fitsSystemWindows="true"
 
     >
@@ -15,7 +15,7 @@
     <com.google.android.material.navigation.NavigationView
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:id="@+id/nav_view_cat"
+        android:id="@+id/nav_view_prov__"
         app:headerLayout="@layout/header"
         app:menu="@menu/main_menu"
         android:layout_gravity="start"/>
@@ -31,7 +31,7 @@
             tools:ignore="MissingConstraints">
 
             <com.google.android.material.appbar.MaterialToolbar
-                android:id="@+id/toolbar_cat"
+                android:id="@+id/toolbarprov_"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 android:background="?attr/colorPrimary"
@@ -39,7 +39,7 @@
                 app:contentInsetStartWithNavigation="0dp"
                 app:navigationIconTint="@color/white"
                 app:popupTheme="@style/Theme.SMControl"
-                app:title="@string/gestionar_categoria"
+                app:title="@string/gestionar_proveedor"
                 app:titleTextAppearance="@style/Toolbar.TitleText"
                 app:titleTextColor="@color/white">
 
@@ -73,11 +73,13 @@
 
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/txt_cod_cat"
+                        android:id="@+id/txt_cod"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:fontFamily="@font/reem_kufi"
                         android:inputType="text"
+                        android:editable="false"
+                        android:enabled="false"
                         android:textColor="@color/black" />
 
 
@@ -88,7 +90,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginTop="20dp"
-                    android:hint="Ingrese nombre"
+                    android:hint="Ingrese nombres"
                     app:boxCornerRadiusBottomEnd="10dp"
                     app:boxCornerRadiusBottomStart="10dp"
                     app:boxCornerRadiusTopEnd="10dp"
@@ -102,7 +104,7 @@
 
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/txt_nom_cat"
+                        android:id="@+id/txt_nom"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:drawableStart="@drawable/person_outline"
@@ -115,7 +117,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_marginTop="20dp"
-                        android:hint="Ingrese descripcion"
+                        android:hint="Ingrese nombre de la empresa"
                         app:boxCornerRadiusBottomEnd="10dp"
                         app:boxCornerRadiusBottomStart="10dp"
                         app:boxCornerRadiusTopEnd="10dp"
@@ -129,7 +131,7 @@
 
 
                         <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/txt_descripcion"
+                            android:id="@+id/txt_nom_empresa"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:fontFamily="@font/reem_kufi"
@@ -142,37 +144,153 @@
 
                 </com.google.android.material.textfield.TextInputLayout>
 
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:hint="@string/txt_email"
+                    app:boxCornerRadiusBottomEnd="10dp"
+                    app:boxCornerRadiusBottomStart="10dp"
+                    app:boxCornerRadiusTopEnd="10dp"
+                    app:boxCornerRadiusTopStart="10dp"
+                    app:boxStrokeColor="@color/teal_1"
+                    app:boxStrokeWidthFocused="2dp"
+                    app:endIconMode="clear_text"
+                    app:endIconTint="@color/teal_1"
+                    app:hintTextColor="@color/hint"
+                    app:startIconDrawable="@drawable/person_outline"
+                    app:startIconTint="@color/teal_1">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/txt_correo_prov"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:fontFamily="@font/reem_kufi"
+                        android:inputType="textEmailAddress"
+                        android:textColor="@color/black" />
+
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:hint="Ingrese direccion"
+                    app:boxCornerRadiusBottomEnd="10dp"
+                    app:boxCornerRadiusBottomStart="10dp"
+                    app:boxCornerRadiusTopEnd="10dp"
+                    app:boxCornerRadiusTopStart="10dp"
+                    app:boxStrokeColor="@color/teal_1"
+                    app:boxStrokeWidthFocused="2dp"
+                    app:endIconTint="@color/teal_1"
+                    app:hintTextColor="@color/hint"
+                    app:startIconDrawable="@drawable/person_outline"
+                    app:startIconTint="@color/teal_1">
+
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/txt_direccion"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:fontFamily="@font/reem_kufi"
+                        android:inputType="text"
+                        android:textColor="@color/black" />
+
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:hint="Ingrese telefono"
+                    app:boxCornerRadiusBottomEnd="10dp"
+                    app:boxCornerRadiusBottomStart="10dp"
+                    app:boxCornerRadiusTopEnd="10dp"
+                    app:boxCornerRadiusTopStart="10dp"
+                    app:boxStrokeColor="@color/teal_1"
+                    app:boxStrokeWidthFocused="2dp"
+                    app:endIconTint="@color/teal_1"
+                    app:hintTextColor="@color/hint"
+                    app:startIconDrawable="@drawable/person_outline"
+                    app:startIconTint="@color/teal_1">
+
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/txt_telefono"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:fontFamily="@font/reem_kufi"
+                        android:inputType="text"
+                        android:textColor="@color/black" />
+
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:hint="Ingrese fecha"
+                    app:boxCornerRadiusBottomEnd="10dp"
+                    app:boxCornerRadiusBottomStart="10dp"
+                    app:boxCornerRadiusTopEnd="10dp"
+                    app:boxCornerRadiusTopStart="10dp"
+                    app:boxStrokeColor="@color/teal_1"
+                    app:boxStrokeWidthFocused="2dp"
+                    app:endIconTint="@color/teal_1"
+                    app:hintTextColor="@color/hint"
+                    app:startIconDrawable="@drawable/person_outline"
+                    app:startIconTint="@color/teal_1">
+
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/txt_fecha"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:fontFamily="@font/reem_kufi"
+                        android:inputType="text"
+                        android:textColor="@color/black" />
+
+
+                </com.google.android.material.textfield.TextInputLayout>
+
 
                 <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btnsubirfoto"
+                    android:id="@+id/btnactualizar"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
                     android:layout_marginBottom="1dp"
                     android:height="55dp"
-                    android:backgroundTint="@color/teal_200"
+                    android:backgroundTint="@android:color/holo_blue_light"
                     android:fontFamily="@font/reem_kufi"
-                    android:onClick="SubirFoto"
-                    android:text="Subir Foto"
+                    android:onClick="actualizarProveedor"
+                    android:text="Editar Proveedor"
                     android:textColor="@color/white"
                     android:textSize="14sp"
-                    app:backgroundTint="@color/teal_200"
+                    app:backgroundTint="@android:color/holo_blue_bright"
                     app:cornerRadius="8dp" />
 
                 <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btncrear"
+                    android:id="@+id/btneliminar"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
+                    android:layout_marginTop="20dp"
                     android:layout_marginBottom="1dp"
                     android:height="55dp"
-                    android:backgroundTint="@android:color/holo_orange_dark"
+                    android:backgroundTint="#F44336"
                     android:fontFamily="@font/reem_kufi"
-                    android:onClick="crearCategoria"
-                    android:text="Crear Categoria"
+                    android:onClick="eliminarProveedor"
+                    android:text="Eliminar Proveedor"
                     android:textColor="@color/white"
                     android:textSize="14sp"
-                    app:backgroundTint="@android:color/holo_orange_dark"
+                    app:backgroundTint="#F44336"
                     app:cornerRadius="8dp" />
 
             </LinearLayout>

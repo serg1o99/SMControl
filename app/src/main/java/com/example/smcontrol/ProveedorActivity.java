@@ -24,6 +24,8 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
+import model.Categoria;
+import model.CategoriaAdapter;
 import model.Proveedor;
 import model.ProveedorAdapter;
 import model.Trabajador;
@@ -40,7 +42,12 @@ public class ProveedorActivity extends AppCompatActivity implements NavigationVi
     DrawerLayout drawerLayout;
     NavigationView navigationView;
     Toolbar toolbar;
+    //
     FloatingActionButton fab;
+    //
+    Proveedor p;
+    //
+    public String nombre,nombreEmpresa,correo,direccion,telefono,codigo,fecha;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,8 +63,8 @@ public class ProveedorActivity extends AppCompatActivity implements NavigationVi
         ActionBarDrawerToggle toogle = new ActionBarDrawerToggle(this,drawerLayout,toolbar,R.string.navigation_drawer_open,R.string.navigation_drawer_close);
         drawerLayout.addDrawerListener(toogle);
         toogle.syncState();
-        navigationView.setNavigationItemSelectedListener(this);
         //
+        navigationView.setNavigationItemSelectedListener(this);
         recyclerView = findViewById(R.id.recyclerView_prov);
         database = FirebaseDatabase.getInstance().getReference("Proveedor");
         recyclerView.setHasFixedSize(true);
@@ -67,20 +74,9 @@ public class ProveedorActivity extends AppCompatActivity implements NavigationVi
         proveedorAdapter = new ProveedorAdapter(ProveedorActivity.this,listaProveedor);
         recyclerView.setAdapter(proveedorAdapter);
 
-        database.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot){
-                for (DataSnapshot dataSnapshot : snapshot.getChildren()){
-                    Proveedor p = dataSnapshot.getValue(Proveedor.class);
-                    listaProveedor.add(p);
-                }
-                proveedorAdapter.notifyDataSetChanged();
-            }
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) { }
-        });
-
+        OnClickRecyclerViewListener();
         OnClickFloatingButtonListener();
+        FirebaseEventListener();
     }
 
     @Override
@@ -124,6 +120,37 @@ public class ProveedorActivity extends AppCompatActivity implements NavigationVi
         return true;
     }
 
+    public void OnClickRecyclerViewListener(){
+
+        listaProveedor = new ArrayList<>();
+        proveedorAdapter = new ProveedorAdapter(ProveedorActivity.this,listaProveedor);
+        proveedorAdapter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(),ActualizarProveedor.class);
+
+                codigo = listaProveedor.get(recyclerView.getChildAdapterPosition(v)).getCodigo();
+                correo = listaProveedor.get(recyclerView.getChildAdapterPosition(v)).getCorreo();
+                direccion = listaProveedor.get(recyclerView.getChildAdapterPosition(v)).getDireccion();
+                fecha = listaProveedor.get(recyclerView.getChildAdapterPosition(v)).getFecha();
+                nombreEmpresa = listaProveedor.get(recyclerView.getChildAdapterPosition(v)).getNombreEmpresa();
+                nombre = listaProveedor.get(recyclerView.getChildAdapterPosition(v)).getNombreProveedor();
+                telefono = listaProveedor.get(recyclerView.getChildAdapterPosition(v)).getTelefono();
+
+                intent.putExtra("codigo",codigo);
+                intent.putExtra("correo",correo);
+                intent.putExtra("direccion",direccion);
+                intent.putExtra("fecha",fecha);
+                intent.putExtra("nombreEmpresa",nombreEmpresa);
+                intent.putExtra("nombre",nombre);
+                intent.putExtra("telefono",telefono);
+                startActivity(intent);
+
+            }
+        });
+        recyclerView.setAdapter(proveedorAdapter);
+    }
+
     public void OnClickFloatingButtonListener()   {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -131,6 +158,21 @@ public class ProveedorActivity extends AppCompatActivity implements NavigationVi
                 Intent it=new Intent(getApplicationContext(),GestionarProveedor.class);
                 startActivity(it);
             }
+        });
+    }
+
+    public void  FirebaseEventListener(){
+        database.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot){
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()){
+                    Proveedor p = dataSnapshot.getValue(Proveedor.class);
+                    listaProveedor.add(p);
+                }
+                proveedorAdapter.notifyDataSetChanged();
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) { }
         });
     }
 

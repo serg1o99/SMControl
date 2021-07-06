@@ -13,10 +13,11 @@ import com.example.smcontrol.R;
 
 import java.util.ArrayList;
 
-public class CategoriaAdapter extends RecyclerView.Adapter<CategoriaAdapter.MyViewHolder>{
+public class CategoriaAdapter extends RecyclerView.Adapter<CategoriaAdapter.MyViewHolder> implements View.OnClickListener{
 
     Context context;
     ArrayList<Categoria> listaCategoria;
+    private View.OnClickListener listener;
 
     public CategoriaAdapter(Context context, ArrayList<Categoria> listaCategoria) {
         this.context = context;
@@ -27,7 +28,8 @@ public class CategoriaAdapter extends RecyclerView.Adapter<CategoriaAdapter.MyVi
     @Override
     public CategoriaAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v= LayoutInflater.from(context).inflate(R.layout.card_list,parent,false);
-        return new CategoriaAdapter.MyViewHolder(v);
+        v.setOnClickListener(this);
+        return new MyViewHolder(v);
     }
 
     @Override
@@ -36,6 +38,17 @@ public class CategoriaAdapter extends RecyclerView.Adapter<CategoriaAdapter.MyVi
         holder.nombre.setText(c.getCodigo());
         holder.descricion.setText(c.getNombre());
         holder.txt.setText("Nombre: ");
+    }
+
+    public void setOnClickListener(View.OnClickListener listener)   {
+        this.listener=listener;
+    }
+
+    @Override
+    public void onClick(View v) {
+        if(listener!=null)  {
+            listener.onClick(v);
+        }
     }
 
     @Override

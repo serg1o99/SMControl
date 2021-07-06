@@ -17,6 +17,8 @@ import android.widget.TextView;
 
 import com.google.android.material.navigation.NavigationView;
 
+import model.Producto;
+
 public class MenuActivity extends AppCompatActivity implements View.OnClickListener, NavigationView.OnNavigationItemSelectedListener {
 
     public CardView cardTrabajador, cardProducto, cardCategoria, cardProveedor,  cardReporte;
@@ -72,7 +74,7 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
                 startActivity(i);
                 break;
             case R.id.cardProducto:
-                i = new Intent(this, GestionarTrabajador.class);
+                i = new Intent(this, ProductoActivity.class);
                 startActivity(i);
                 break;
             case R.id.cardCategoria:
@@ -124,7 +126,7 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
                 startActivity(i);
                 break;
             case R.id.nav_reporte:
-                i = new Intent(this, GestionarCategoria.class);
+                i = new Intent(this, ReporteActivity.class);
                 startActivity(i);
                 break;
         }

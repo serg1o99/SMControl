@@ -53,7 +53,6 @@ public class TrabajadorActivity extends AppCompatActivity implements NavigationV
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_trabajador);
         //
-
         drawerLayout = findViewById(R.id.trabajador);
         navigationView = findViewById(R.id.nav_view__);
         toolbar = findViewById(R.id.toolbar_);
@@ -166,7 +165,6 @@ public class TrabajadorActivity extends AppCompatActivity implements NavigationV
     }
 
     public void FirebaseEventListener() {
-
         database.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot){
@@ -180,9 +178,4 @@ public class TrabajadorActivity extends AppCompatActivity implements NavigationV
             public void onCancelled(@NonNull DatabaseError error) { }
         });
     }
-
-
-
-
-
 }

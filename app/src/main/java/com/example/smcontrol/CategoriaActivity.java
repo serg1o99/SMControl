@@ -40,7 +40,12 @@ public class CategoriaActivity extends AppCompatActivity implements NavigationVi
     DrawerLayout drawerLayout;
     NavigationView navigationView;
     Toolbar toolbar;
+    //
     FloatingActionButton fab;
+    //
+    Categoria c;
+    //
+    public String codigo, nombre, descripcion;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,32 +62,20 @@ public class CategoriaActivity extends AppCompatActivity implements NavigationVi
         ActionBarDrawerToggle toogle = new ActionBarDrawerToggle(this,drawerLayout,toolbar,R.string.navigation_drawer_open,R.string.navigation_drawer_close);
         drawerLayout.addDrawerListener(toogle);
         toogle.syncState();
-        navigationView.setNavigationItemSelectedListener(this);
         //
+        navigationView.setNavigationItemSelectedListener(this);
         recyclerView = findViewById(R.id.recyclerView_cat);
         database = FirebaseDatabase.getInstance().getReference("Categoria");
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        //an
+        //
         listaCategoria   = new ArrayList<>();
         categoriaAdapter = new CategoriaAdapter(CategoriaActivity.this,listaCategoria);
         recyclerView.setAdapter(categoriaAdapter);
-
-        database.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot){
-                for (DataSnapshot dataSnapshot : snapshot.getChildren()){
-                    Categoria c = dataSnapshot.getValue(Categoria.class);
-                    listaCategoria.add(c);
-                }
-                categoriaAdapter.notifyDataSetChanged();
-            }
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) { }
-        });
-
+        //
+        OnClickRecyclerViewListener();
         OnClickFloatingButtonListener();
-
+        FirebaseEventListener();
     }
 
     @Override
@@ -126,6 +119,29 @@ public class CategoriaActivity extends AppCompatActivity implements NavigationVi
         return true;
     }
 
+    public void OnClickRecyclerViewListener(){
+
+        listaCategoria = new ArrayList<>();
+        categoriaAdapter = new CategoriaAdapter(CategoriaActivity.this,listaCategoria);
+        categoriaAdapter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(),ActualizarCategoria.class);
+
+                codigo = listaCategoria.get(recyclerView.getChildAdapterPosition(v)).getCodigo();
+                nombre = listaCategoria.get(recyclerView.getChildAdapterPosition(v)).getNombre();
+                descripcion = listaCategoria.get(recyclerView.getChildAdapterPosition(v)).getDescripcion();
+
+                intent.putExtra("codigo",codigo);
+                intent.putExtra("nombre",nombre);
+                intent.putExtra("descripcion",descripcion);
+                startActivity(intent);
+
+            }
+        });
+        recyclerView.setAdapter(categoriaAdapter);
+    }
+
     public void OnClickFloatingButtonListener()   {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -133,6 +149,21 @@ public class CategoriaActivity extends AppCompatActivity implements NavigationVi
                 Intent it=new Intent(getApplicationContext(),GestionarCategoria.class);
                 startActivity(it);
             }
+        });
+    }
+
+    public void FirebaseEventListener(){
+        database.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot){
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()){
+                    Categoria c = dataSnapshot.getValue(Categoria.class);
+                    listaCategoria.add(c);
+                }
+                categoriaAdapter.notifyDataSetChanged();
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) { }
         });
     }
 }

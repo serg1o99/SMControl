@@ -13,36 +13,36 @@ import com.example.smcontrol.R;
 
 import java.util.ArrayList;
 
-public class ProveedorAdapter extends RecyclerView.Adapter<ProveedorAdapter.MyViewHolder> implements View.OnClickListener{
+public class ProductoAdapter extends RecyclerView.Adapter<ProductoAdapter.MyViewHolder> implements View.OnClickListener{
 
     Context context;
-    ArrayList<Proveedor> listaProveedor;
+    ArrayList<Producto> listaProducto;
     private View.OnClickListener listener;
 
-    public ProveedorAdapter(Context context, ArrayList<Proveedor> listaProveedor) {
+    public ProductoAdapter(Context context, ArrayList<Producto> listaProducto) {
         this.context = context;
-        this.listaProveedor = listaProveedor;
+        this.listaProducto = listaProducto;
     }
 
     @NonNull
     @Override
-    public ProveedorAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ProductoAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v= LayoutInflater.from(context).inflate(R.layout.card_list,parent,false);
         v.setOnClickListener(this);
         return new MyViewHolder(v);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ProveedorAdapter.MyViewHolder holder, int position) {
-        Proveedor p = listaProveedor.get(position);
-        holder.nombreProveedor.setText(p.getNombreProveedor());
-        holder.nombreEmpresa.setText(p.getNombreEmpresa());
-        holder.txt.setText("Empresa: ");
+    public void onBindViewHolder(@NonNull ProductoAdapter.MyViewHolder holder, int position) {
+        Producto p = listaProducto.get(position);
+        holder.nombreProveedor.setText(p.getNombre());
+        holder.nombreEmpresa.setText(p.getCategoria());
+        holder.txt.setText("Categoria: ");
     }
 
     @Override
     public int getItemCount() {
-        return listaProveedor.size();
+        return listaProducto.size();
     }
 
     public void setOnClickListener(View.OnClickListener listener)   {
@@ -66,4 +66,5 @@ public class ProveedorAdapter extends RecyclerView.Adapter<ProveedorAdapter.MyVi
             txt = itemView.findViewById(R.id.txt);
         }
     }
+
 }

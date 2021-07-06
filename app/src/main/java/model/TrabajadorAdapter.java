@@ -42,14 +42,16 @@ public class TrabajadorAdapter extends RecyclerView.Adapter<TrabajadorAdapter.My
     public int getItemCount() {
      return listaTrabajador.size();
     }
+
     public void setOnClickListener(View.OnClickListener listener)   {
     this.listener=listener;
     }
+
     @Override
     public void onClick(View v) {
-    if(listener!=null)  {
-    listener.onClick(v);
-    }
+        if(listener!=null)  {
+            listener.onClick(v);
+        }
     }
 
     public static class MyViewHolder extends RecyclerView.ViewHolder   {
@@ -58,7 +60,6 @@ public class TrabajadorAdapter extends RecyclerView.Adapter<TrabajadorAdapter.My
             super(itemView);
             nombre = itemView.findViewById(R.id.tvnombre);
             rol = itemView.findViewById(R.id.tvrol);
-
         }
     }
 }

@@ -1,41 +1,34 @@
 package com.example.smcontrol;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
 
 import model.Categoria;
-import model.Proveedor;
+import model.Trabajador;
 
-public class GestionarCategoria extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
+public class ActualizarCategoria extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
     private EditText et_codigo,et_nombre,et_descripcion;
-    private static  final  int GALLERY_INTENT = 1;
-    //
-    private StorageReference storageReference;
-    private ProgressDialog progressDialog;
     //
     FirebaseDatabase firebaseDatabase;
     DatabaseReference databaseReference;
@@ -49,9 +42,9 @@ public class GestionarCategoria extends AppCompatActivity implements NavigationV
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_gestionar_categoria);
+        setContentView(R.layout.activity_actualizar_categoria);
         //
-        drawerLayout = findViewById(R.id.gestion_categoria);
+        drawerLayout = findViewById(R.id.Actualizar_categoria);
         navigationView = findViewById(R.id.nav_view_cat);
         toolbar = findViewById(R.id.toolbar_cat);
 
@@ -61,29 +54,16 @@ public class GestionarCategoria extends AppCompatActivity implements NavigationV
         drawerLayout.addDrawerListener(toogle);
         toogle.syncState();
         //
-        storageReference = FirebaseStorage.getInstance().getReference();
-        //
         navigationView.setNavigationItemSelectedListener(this);
         //
         et_codigo        =  (EditText) findViewById(R.id.txt_cod_cat);
         et_nombre        =  (EditText) findViewById(R.id.txt_nom_cat);
         et_descripcion   =  (EditText) findViewById(R.id.txt_descripcion);
+        //
         inicializarFirebase();
-    }
+        //
+        CargarDatosActualizar();
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode==GALLERY_INTENT && resultCode == RESULT_OK)  {
-            Uri uri=data.getData();
-            StorageReference filePath=storageReference.child("img_Categorias").child(uri.getLastPathSegment());
-            filePath.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    Toast.makeText(getApplicationContext(),"Se subio exitosamente la foto.",Toast.LENGTH_SHORT).show();
-                }
-            });
-        }
     }
 
     private void inicializarFirebase(){
@@ -92,7 +72,18 @@ public class GestionarCategoria extends AppCompatActivity implements NavigationV
         databaseReference=firebaseDatabase.getReference();
     }
 
-    public void crearCategoria(View view) {
+    public void CargarDatosActualizar()     {
+
+        codigo      = getIntent().getStringExtra("codigo");
+        nombre      = getIntent().getStringExtra("nombre");
+        descripcion = getIntent().getStringExtra("descripcion");
+
+        et_codigo.setText(codigo);
+        et_nombre.setText(nombre);
+        et_descripcion.setText(descripcion);
+    }
+
+    public void actualizarCategoria(View view) {
 
         codigo      = et_codigo.getText().toString();
         nombre      = et_nombre.getText().toString();
@@ -101,19 +92,68 @@ public class GestionarCategoria extends AppCompatActivity implements NavigationV
         if( this.codigo.equals("") || nombre.equals("") || descripcion.equals("")){
             validarCampos();
         }else   {
-            insertar();
+            actualizar();
         }
     }
 
-    public void insertar()  {
-        Categoria obj = new Categoria();
-        obj.setCodigo(codigo);
-        obj.setNombre(nombre);
-        obj.setDescripcion(descripcion);
+    public void eliminarCategoria(View view) {
+        codigo      = et_codigo.getText().toString();
+        nombre      = et_nombre.getText().toString();
+        descripcion = et_descripcion.getText().toString();
 
-        databaseReference.child("Categoria").child(""+obj.getCodigo()).setValue(obj);
-        Toast.makeText(this,"Agregado",Toast.LENGTH_SHORT).show();
-        limpiarCampos();
+        if( this.codigo.equals("") || nombre.equals("") || descripcion.equals("")){
+            validarCampos();
+        }else   {
+            eliminar();
+        }
+    }
+
+    public void actualizar()    {
+
+        AlertDialog.Builder alerta=new AlertDialog.Builder(this);
+        alerta.setMessage("¿Está seguro de que quiere actualizar la categoria ?").setPositiveButton("Sí", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Categoria obj = new Categoria();
+                obj.setCodigo(et_codigo.getText().toString().trim());
+                obj.setNombre(et_nombre.getText().toString().trim());
+                obj.setDescripcion(et_descripcion.getText().toString().trim());
+
+                databaseReference.child("Categoria").child(obj.getCodigo()).setValue(obj);
+                Toast.makeText(getApplicationContext(),"Categoria actualizar",Toast.LENGTH_SHORT).show();
+                Intent intent =new Intent(getApplicationContext(),CategoriaActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        }).setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        }).show();
+    }
+
+    public void eliminar()  {
+        AlertDialog.Builder alerta=new AlertDialog.Builder(this);
+        alerta.setMessage("¿Está seguro de que quiere eliminar la categoria?").setPositiveButton("Sí", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Categoria obj = new Categoria();
+                obj.setCodigo(et_codigo.getText().toString().trim());
+                databaseReference.child("Categoria").child(obj.getCodigo()).removeValue();
+                Toast.makeText(getApplicationContext(),"Categoria eliminada",Toast.LENGTH_SHORT).show();
+                Intent intent =new Intent(getApplicationContext(),CategoriaActivity.class);
+                startActivity(intent);
+                finish();
+
+            }
+        }).setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+
+        }).show();
     }
 
     public void validarCampos() {
@@ -176,9 +216,4 @@ public class GestionarCategoria extends AppCompatActivity implements NavigationV
         return true;
     }
 
-    public void SubirFoto(View view){
-        Intent intent=new Intent(Intent.ACTION_PICK);
-        intent.setType("image/*");
-        startActivityForResult(intent,GALLERY_INTENT);
-    }
 }

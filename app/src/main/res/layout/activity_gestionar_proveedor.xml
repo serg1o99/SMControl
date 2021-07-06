@@ -9,7 +9,7 @@
     android:backgroundTint="#090909"
     tools:context=".GestionarProveedor"
     android:fitsSystemWindows="true"
-    tools:openDrawer="start"
+
     >
 
     <com.google.android.material.navigation.NavigationView
@@ -260,19 +260,35 @@
 
 
                 <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btn_crear_prov"
-                    android:layout_width="123dp"
+                    android:id="@+id/btnsubirfoto"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
-                    android:layout_marginBottom="25dp"
+                    android:layout_marginBottom="1dp"
                     android:height="55dp"
-                    android:backgroundTint="@color/teal_1"
+                    android:backgroundTint="@color/teal_200"
+                    android:fontFamily="@font/reem_kufi"
+                    android:onClick="SubirFoto"
+                    android:text="Subir Foto"
+                    android:textColor="@color/white"
+                    android:textSize="14sp"
+                    app:backgroundTint="@color/teal_200"
+                    app:cornerRadius="8dp" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btncrear"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="1dp"
+                    android:height="55dp"
+                    android:backgroundTint="@android:color/holo_orange_dark"
                     android:fontFamily="@font/reem_kufi"
                     android:onClick="crearProveedor"
-                    android:text="crear"
+                    android:text="Crear Proveedor"
                     android:textColor="@color/white"
-                    android:textSize="20sp"
-                    app:backgroundTint="@color/teal_1"
+                    android:textSize="14sp"
+                    app:backgroundTint="@android:color/holo_orange_dark"
                     app:cornerRadius="8dp" />
 
             </LinearLayout>
