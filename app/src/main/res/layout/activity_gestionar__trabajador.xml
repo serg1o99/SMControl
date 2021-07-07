@@ -233,10 +233,26 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnsubirfoto"
+                android:id="@+id/btnseleccionar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
+                android:layout_marginBottom="1dp"
+                android:height="55dp"
+                android:backgroundTint="#673AB7"
+                android:fontFamily="@font/reem_kufi"
+                android:onClick="SubirFoto"
+                android:text="Seleccionar una foto"
+                android:textColor="@color/white"
+                android:textSize="14sp"
+                app:backgroundTint="@color/teal_200"
+                app:cornerRadius="8dp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnsubirfoto"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
                 android:layout_marginBottom="1dp"
                 android:height="55dp"
                 android:backgroundTint="@color/teal_200"

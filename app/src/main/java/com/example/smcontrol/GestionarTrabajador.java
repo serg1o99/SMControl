@@ -10,6 +10,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -25,6 +26,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -35,9 +37,17 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Picasso;
 import com.theartofdev.edmodo.cropper.CropImage;
+import com.theartofdev.edmodo.cropper.CropImageView;
+
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
+import java.util.Objects;
 
 import Security.Encript;
+import id.zelory.compressor.Compressor;
 import model.Trabajador;
 
 public class GestionarTrabajador extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -47,7 +57,10 @@ public class GestionarTrabajador extends AppCompatActivity implements Navigation
     private static  final  int GALLERY_INTENT=1;
     //para la imagen
     private StorageReference storageReference;
-    private ProgressDialog progressDialog;
+    private ProgressDialog cargando;
+    private Button subir;
+    Bitmap thumb_bitmap = null;
+    private  Uri downloadurl;
     //FireBase
     FirebaseDatabase firebaseDatabase;
     DatabaseReference databaseReference;
@@ -73,7 +86,10 @@ public class GestionarTrabajador extends AppCompatActivity implements Navigation
         drawerLayout.addDrawerListener(toogle);
         toogle.syncState();
         //para subir imagen
-        storageReference = FirebaseStorage.getInstance().getReference();
+        subir=(Button) findViewById(R.id.btnsubirfoto);
+        storageReference = FirebaseStorage.getInstance().getReference().child("Img_Trabajador");
+        cargando = new ProgressDialog(this);
+
         //
         navigationView.setNavigationItemSelectedListener(this);
         //
@@ -91,22 +107,71 @@ public class GestionarTrabajador extends AppCompatActivity implements Navigation
 
 
     }
-    //para obtener una url de la imagen
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode==GALLERY_INTENT && resultCode == RESULT_OK)  {
+        if (requestCode == CropImage.PICK_IMAGE_CHOOSER_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
+            Uri imageuri = CropImage.getPickImageResultUri(this, data);
+            //recortar imagen
+            CropImage.activity(imageuri)
+                    .setGuidelines(CropImageView.Guidelines.ON)
+                    .setRequestedSize(640,480)
+                    .setAspectRatio(2,1)
+                    .start(GestionarTrabajador.this);
 
-            Uri uri=data.getData();
-            StorageReference filePath=storageReference.child("img_Trabajadores").child(uri.getLastPathSegment());
-            filePath.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+        }
+       if(requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE)    {
+         CropImage.ActivityResult result= CropImage.getActivityResult(data);
+         if(resultCode == RESULT_OK)    {
+          Uri resultUri = result.getUri();
+          File url= new File(resultUri.getPath());
+          //comprimiendo imagen
+          try {
+              thumb_bitmap = new Compressor(this)
+                      .setMaxWidth(640)
+                      .setMaxHeight(480)
+                      .setQuality(90)
+                      .compressToBitmap(url);
+          }catch (IOException e)    {
+              e.printStackTrace();
+          }
+             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+             thumb_bitmap.compress(Bitmap.CompressFormat.JPEG,90,byteArrayOutputStream);
+             final byte [] thumb_byte = byteArrayOutputStream.toByteArray();
+
+             // fin del compresor....
+            subir.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                 Toast.makeText(getApplicationContext(),"Se subio exitosamente la foto.",Toast.LENGTH_SHORT).show();
+                public void onClick(View v) {
+                    cargando.setTitle("Subiendo foto...");
+                    cargando.setMessage("Espere por favor...");
+                    cargando.show();
+                    StorageReference ref= storageReference.child("nombre.jpg");
+                    UploadTask uploadTask = ref.putBytes(thumb_byte);
+                    //subir al storage
+                    Task<Uri> uriTask = uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
+                        @Override
+                        public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
+                          if(!task.isSuccessful())  {
+                          throw Objects.requireNonNull(task.getException());
+
+                          }
+                            return ref.getDownloadUrl();
+                        }
+                    }).addOnCompleteListener(new OnCompleteListener<Uri>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Uri> task) {
+                            downloadurl = task.getResult();
+                           cargando.dismiss();
+                            Toast.makeText(GestionarTrabajador.this,"Imagen cargada con éxito",Toast.LENGTH_SHORT).show();
+                        }
+                    });
                 }
             });
 
-        }
+         }
+       }
     }
 
     private void inicializarFirebase(){
@@ -149,6 +214,7 @@ public class GestionarTrabajador extends AppCompatActivity implements Navigation
                 objTrabajador.setCorreo(correo);
                 objTrabajador.setContraseña(ec.Security(contraseña));
                 objTrabajador.setRol(rol);
+                objTrabajador.setUrl(""+downloadurl);
                 databaseReference.child("Trabajador").child(""+objTrabajador.getDni()).setValue(objTrabajador);
                 Toast.makeText(getApplicationContext(),"Trabajador Agregado",Toast.LENGTH_SHORT).show();
                 limpiarCampos();
@@ -241,9 +307,8 @@ public class GestionarTrabajador extends AppCompatActivity implements Navigation
         return true;
     }
 
-    public void SubirFoto(View view){
-        Intent intent=new Intent(Intent.ACTION_PICK);
-        intent.setType("image/*");
-        startActivityForResult(intent,GALLERY_INTENT);
+    public void SubirFoto(View view)     {
+        CropImage.startPickImageActivity(GestionarTrabajador.this);
     }
+
 }
