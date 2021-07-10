@@ -28,16 +28,16 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.FirebaseApp;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
-import com.squareup.picasso.Picasso;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
@@ -64,6 +64,7 @@ public class GestionarTrabajador extends AppCompatActivity implements Navigation
     //FireBase
     FirebaseDatabase firebaseDatabase;
     DatabaseReference databaseReference;
+    FirebaseAuth mAuth;
     //Variables globales
     public String nombre,apellido,correo,contraseña,rol,dni;
     //
@@ -88,8 +89,7 @@ public class GestionarTrabajador extends AppCompatActivity implements Navigation
         //para subir imagen
         subir=(Button) findViewById(R.id.btnsubirfoto);
         storageReference = FirebaseStorage.getInstance().getReference().child("Img_Trabajador");
-        cargando = new ProgressDialog(this);
-
+        cargando = new ProgressDialog(this,R.style.AppCompatAlertDialogStyle);
         //
         navigationView.setNavigationItemSelectedListener(this);
         //
@@ -102,9 +102,8 @@ public class GestionarTrabajador extends AppCompatActivity implements Navigation
         atv_rol=findViewById(R.id.txt_roles);
         inicializarFirebase();
 
-        ArrayAdapter arrayAdapter=new ArrayAdapter(this,R.layout.lista_roles_layout,getResources().getStringArray(R.array.roles));
+        ArrayAdapter arrayAdapter=new ArrayAdapter(this,R.layout.lista_items,getResources().getStringArray(R.array.roles));
         atv_rol.setAdapter(arrayAdapter);
-
 
     }
 
@@ -119,7 +118,6 @@ public class GestionarTrabajador extends AppCompatActivity implements Navigation
                     .setRequestedSize(640,480)
                     .setAspectRatio(2,1)
                     .start(GestionarTrabajador.this);
-
         }
        if(requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE)    {
          CropImage.ActivityResult result= CropImage.getActivityResult(data);
@@ -175,16 +173,14 @@ public class GestionarTrabajador extends AppCompatActivity implements Navigation
     }
 
     private void inicializarFirebase(){
-
         FirebaseApp.initializeApp(this);
         firebaseDatabase=FirebaseDatabase.getInstance().getInstance();
         databaseReference=firebaseDatabase.getReference();
-
+        mAuth =  FirebaseAuth.getInstance();
     }
 
     public void crearTrabajador(View view) {
         //declarando variables locales y asignandolos a los atributos que contienen los componentes
-
         dni         = et_dni.getText().toString();
         nombre      = et_nombre.getText().toString();
         apellido    = et_apellido.getText().toString();
@@ -196,7 +192,6 @@ public class GestionarTrabajador extends AppCompatActivity implements Navigation
            validarCampos();
         }else   {
          insertar();
-
         }
     }
 
@@ -205,32 +200,40 @@ public class GestionarTrabajador extends AppCompatActivity implements Navigation
         alerta.setMessage("¿Está seguro de que quiere crear un nuevo trabajador ?").setPositiveButton("Sí", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                //instanciamos un objeto de la clase Trabajador
-                Trabajador objTrabajador=new Trabajador();
-                Encript ec =new Encript();
-                objTrabajador.setDni(dni);
-                objTrabajador.setNombre(nombre);
-                objTrabajador.setApellido(apellido);
-                objTrabajador.setCorreo(correo);
-                objTrabajador.setContraseña(ec.Security(contraseña));
-                objTrabajador.setRol(rol);
-                objTrabajador.setUrl(""+downloadurl);
-                databaseReference.child("Trabajador").child(""+objTrabajador.getDni()).setValue(objTrabajador);
+                Registrar();
                 Toast.makeText(getApplicationContext(),"Trabajador Agregado",Toast.LENGTH_SHORT).show();
                 limpiarCampos();
-                Intent ittrabajador=new Intent(getApplicationContext(),TrabajadorActivity.class);
-                startActivity(ittrabajador);
+                Intent intent =new Intent(getApplicationContext(),TrabajadorActivity.class);
+                startActivity(intent);
                 finish();
-
             }
         }).setNegativeButton("No", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
             }
-
         }).show();
+    }
 
+    private void Registrar(){
+        mAuth.createUserWithEmailAndPassword(correo,contraseña).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if(task.isSuccessful()){
+                    String cod = mAuth.getCurrentUser().getUid();
+                    Trabajador obj =new Trabajador();
+                    //Encript ec =new Encript();
+                    obj.setDni(dni);
+                    obj.setNombre(nombre);
+                    obj.setApellido(apellido);
+                    obj.setCorreo(correo);
+                    obj.setContraseña(contraseña);
+                    obj.setRol(rol);
+                    obj.setUrl(""+downloadurl);
+                    databaseReference.child("Usuarios").child(cod).setValue(obj);
+                }
+            }
+        });
     }
 
 

@@ -14,24 +14,33 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.FirebaseApp;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import model.Categoria;
 import model.Producto;
-import model.Proveedor;
 
 public class GestionarProducto extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
-    private EditText et_codigo,et_nombre,et_stock,et_precio,et_categoria;
+    private EditText et_codigo,et_nombre,et_stock,et_precio;
+    private AutoCompleteTextView atv_categoria;
     private static  final  int GALLERY_INTENT = 1;
     //
     private StorageReference storageReference;
@@ -65,12 +74,31 @@ public class GestionarProducto extends AppCompatActivity implements NavigationVi
         //
         navigationView.setNavigationItemSelectedListener(this);
         //
-        et_codigo     =  (EditText) findViewById(R.id.txt_codigo);
-        et_nombre     =  (EditText) findViewById(R.id.txt_nombre);
-        et_stock      =  (EditText) findViewById(R.id.txt_stock);
-        et_precio     =  (EditText) findViewById(R.id.txt_precio);
-        et_categoria  =  (EditText) findViewById(R.id.txt_categoria);
+        et_codigo      =  (EditText) findViewById(R.id.txt_codigo);
+        et_nombre      =  (EditText) findViewById(R.id.txt_nombre);
+        et_stock       =  (EditText) findViewById(R.id.txt_stock);
+        et_precio      =  (EditText) findViewById(R.id.txt_precio);
+        atv_categoria  = findViewById(R.id.txt_categoria);
         inicializarFirebase();
+
+        listarCategorias();
+    }
+
+    private void listarCategorias() {
+        databaseReference.child("Categoria").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                final List<String> categorias = new ArrayList<>();
+                for (DataSnapshot snapshotCat : snapshot.getChildren()){
+                    String nombreCat = snapshotCat.child("nombre").getValue(String.class);
+                    categorias.add(nombreCat);
+                }
+                ArrayAdapter<String> adapterCategoria = new ArrayAdapter<String>(GestionarProducto.this,R.layout.lista_items,categorias);
+                atv_categoria.setAdapter(adapterCategoria);
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) { }
+        });
     }
 
     @Override
@@ -100,10 +128,9 @@ public class GestionarProducto extends AppCompatActivity implements NavigationVi
         nombre       = et_nombre.getText().toString();
         stock        = et_stock.getText().toString();
         precio       = et_precio.getText().toString();
-        categoria    = et_categoria.getText().toString();
+        categoria    = atv_categoria.getText().toString();
 
-
-        if( this.codigo.equals("") || nombre.equals("") || stock.equals("") || precio.equals("") || categoria.equals("") ){
+        if( this.codigo.equals("") || nombre.equals("") || stock.equals("") || precio.equals("") || categoria.equals("") || categoria.equals("Escoja la categoria")){
             validarCampos();
         }else   {
             insertar();
@@ -138,7 +165,7 @@ public class GestionarProducto extends AppCompatActivity implements NavigationVi
             et_precio.requestFocus();
         }else if(categoria.isEmpty()) {
             Toast.makeText(this, "Campo telefono obligatorio", Toast.LENGTH_SHORT).show();
-            et_categoria.requestFocus();
+            atv_categoria.requestFocus();
         }
     }
 
@@ -147,7 +174,6 @@ public class GestionarProducto extends AppCompatActivity implements NavigationVi
         et_nombre.setText("");
         et_stock.setText("");
         et_precio.setText("");
-        et_categoria.setText("");
     }
 
     @Override

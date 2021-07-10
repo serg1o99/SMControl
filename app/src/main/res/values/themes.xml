@@ -23,5 +23,7 @@
         <item name="fontFamily">@font/reem_kufi</item>
     </style>
 
-
+    <style name="AppCompatAlertDialogStyle" parent="Theme.AppCompat.DayNight.Dialog.Alert">
+        <item name="android:textColor">@color/black</item>
+    </style>
 </resources>

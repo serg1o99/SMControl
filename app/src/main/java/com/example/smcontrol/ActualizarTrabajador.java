@@ -15,7 +15,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -68,7 +67,7 @@ public class ActualizarTrabajador extends AppCompatActivity implements Navigatio
         atv_rol=findViewById(R.id.txt_roles);
         inicializarFirebase();
 
-        ArrayAdapter arrayAdapter=new ArrayAdapter(this,R.layout.lista_roles_layout,getResources().getStringArray(R.array.roles));
+        ArrayAdapter arrayAdapter=new ArrayAdapter(this,R.layout.lista_items,getResources().getStringArray(R.array.roles));
         atv_rol.setAdapter(arrayAdapter);
         CargarDatosActualizar();
 

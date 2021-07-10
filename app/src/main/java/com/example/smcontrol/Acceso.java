@@ -30,23 +30,15 @@ public class Acceso extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_acceso);
-        txtemail=(EditText) findViewById(R.id.txt_apellido);
-        txtpass=(EditText) findViewById(R.id.et_correo);
-        mAuth = FirebaseAuth.getInstance();
-
+        txtemail    = (EditText) findViewById(R.id.txt_apellido);
+        txtpass     = (EditText) findViewById(R.id.et_correo);
+        mAuth       = FirebaseAuth.getInstance();
+        databaseReference = FirebaseDatabase.getInstance().getReference();
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        //Check if user is signed in (non-null) and update UI accordingly.
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-        //updateUI(currentUser);
-    }
-
-    public void autentificarusuario(View view)   {
-        email=txtemail.getText().toString();
-        pass=txtpass.getText().toString();
+    public void validacion(View view)   {
+        email = txtemail.getText().toString();
+        pass  =  txtpass.getText().toString();
         if(email.isEmpty() && pass.isEmpty())  {
             Toast.makeText(getApplicationContext(),"Algún campo está vacío",Toast.LENGTH_SHORT).show();
         }else if(email.isEmpty()) {
@@ -56,63 +48,38 @@ public class Acceso extends AppCompatActivity {
             Toast.makeText(getApplicationContext(),"Introduzca su contraseña",Toast.LENGTH_SHORT).show();
             txtpass.requestFocus();
         }else {
-            //---AUTENTICACIÓN---//
-            mAuth.signInWithEmailAndPassword(txtemail.getText().toString().trim(),txtpass.getText().toString()).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                @Override
-                public void onComplete(@NonNull Task<AuthResult> task) {
-                    if (task.isSuccessful()) {
-                        // Sign in success, update UI with the signed-in user's information
-                        FirebaseUser user = mAuth.getCurrentUser();
-                        //updateUI(user);
-                        Intent it=new Intent(getApplicationContext(), MenuActivity.class);
-                        it.putExtra("email",email);
-                        startActivity(it);
-                        finish();
-                    } else {
-                        Toast.makeText(getApplicationContext(), "Email y/o Contraseña incorrecto .",Toast.LENGTH_SHORT).show();
-                        // updateUI(null);
-                    }
-                    // ...
-                }
-            });
-
-            //---LOGIN----//
-
+            login();
         }
     }
 
-    public void IniciarSesion(View view) {
-        databaseReference=FirebaseDatabase.getInstance().getReference();
-        databaseReference.child("Trabajador").addValueEventListener(new ValueEventListener() {
+    private void login(){
+        mAuth.signInWithEmailAndPassword(txtemail.getText().toString().trim(),txtpass.getText().toString()).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                String email=txtemail.getText().toString();
-                String pass=txtpass.getText().toString();
-            if(snapshot.child(email).exists())  {
-                if (snapshot.child(pass).exists()) {
-                if(snapshot.child("rol").equals("Administrador"))   {
-
-                }else   {
-
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if (task.isSuccessful()) {
+                    String id = mAuth.getCurrentUser().getUid();
+                    databaseReference.child("Usuarios").child(id).addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            if(snapshot.exists()){
+                                String rol = snapshot.child("rol").getValue().toString();
+                                if(rol.equals("Administrador")){
+                                    startActivity( new Intent(getApplicationContext(),MenuActivity.class));
+                                }else{
+                                    startActivity( new Intent(getApplicationContext(),MenuAlmacenero.class));
+                                }
+                            }
+                        }
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) { }
+                    });
+                } else {
+                    Toast.makeText(getApplicationContext(), "Email y/o Contraseña incorrecto .",Toast.LENGTH_SHORT).show();
                 }
-
-                }else   {
-
-                }
-
-            }
-
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
             }
         });
     }
 
     @Override
     public void onBackPressed(){}
-
 }

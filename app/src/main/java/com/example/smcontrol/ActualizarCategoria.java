@@ -110,8 +110,8 @@ public class ActualizarCategoria extends AppCompatActivity implements Navigation
 
     public void actualizar()    {
 
-        AlertDialog.Builder alerta=new AlertDialog.Builder(this);
-        alerta.setMessage("¿Está seguro de que quiere actualizar la categoria ?").setPositiveButton("Sí", new DialogInterface.OnClickListener() {
+        AlertDialog.Builder alerta=new AlertDialog.Builder(this,R.style.AppCompatAlertDialogStyle);
+        alerta.setMessage("¿Está seguro de que quiere actualizar la categoria ?").setTitle("Actualizar").setPositiveButton("Sí", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 Categoria obj = new Categoria();
