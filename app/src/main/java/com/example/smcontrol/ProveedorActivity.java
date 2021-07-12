@@ -13,9 +13,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -28,6 +30,7 @@ import model.Categoria;
 import model.CategoriaAdapter;
 import model.Proveedor;
 import model.ProveedorAdapter;
+import model.Static;
 import model.Trabajador;
 import model.TrabajadorAdapter;
 
@@ -47,6 +50,11 @@ public class ProveedorActivity extends AppCompatActivity implements NavigationVi
     //
     Proveedor p;
     //
+    FirebaseAuth mAuth;
+    //
+    View header;
+    TextView correoTrabajador,nombreTrabajador;
+
     public String nombre,nombreEmpresa,correo,direccion,telefono,codigo,fecha;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +63,13 @@ public class ProveedorActivity extends AppCompatActivity implements NavigationVi
         //
         drawerLayout = findViewById(R.id.Proveedor_layout);
         navigationView = findViewById(R.id.nav_view_prov);
+        //
+        header = navigationView.getHeaderView(0);
+        correoTrabajador = (TextView) header.findViewById(R.id.tv_email);
+        correoTrabajador.setText(Static.correo);
+        nombreTrabajador = (TextView) header.findViewById(R.id.tv_nombre);
+        nombreTrabajador.setText(Static.nombre);
+        //
         toolbar = findViewById(R.id.toolbar_prov);
         //floating button
         fab=findViewById(R.id.fab);
@@ -86,38 +101,6 @@ public class ProveedorActivity extends AppCompatActivity implements NavigationVi
         }else {
             super.onBackPressed();
         }
-    }
-
-    @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        Intent i;
-        switch (item.getItemId()){
-            case R.id.nav_home:
-                i = new Intent(this,MenuActivity.class);
-                startActivity(i);
-                break;
-            case R.id.nav_trabajador:
-                i = new Intent(this,TrabajadorActivity.class);
-                startActivity(i);
-                break;
-            case R.id.nav_producto:
-                i = new Intent(this, ProductoActivity.class);
-                startActivity(i);
-                break;
-            case R.id.nav_categoria:
-                i = new Intent(this, CategoriaActivity.class);
-                startActivity(i);
-                break;
-            case R.id.nav_proveedor:
-                i = new Intent(this, ProveedorActivity.class);
-                startActivity(i);
-                break;
-            case R.id.nav_reporte:
-                i = new Intent(this, ReporteActivity.class);
-                startActivity(i);
-                break;
-        }
-        return true;
     }
 
     public void OnClickRecyclerViewListener(){
@@ -176,4 +159,9 @@ public class ProveedorActivity extends AppCompatActivity implements NavigationVi
         });
     }
 
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        Static.OpcionesNav(item,this);
+        return true;
+    }
 }

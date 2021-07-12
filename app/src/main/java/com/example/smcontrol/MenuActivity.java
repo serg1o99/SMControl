@@ -16,8 +16,10 @@ import android.widget.TextView;
 
 
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.auth.FirebaseAuth;
 
 import model.Producto;
+import model.Static;
 
 public class MenuActivity extends AppCompatActivity implements View.OnClickListener, NavigationView.OnNavigationItemSelectedListener {
 
@@ -25,15 +27,25 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
     DrawerLayout drawerLayout;
     NavigationView navigationView;
     Toolbar toolbar;
+    FirebaseAuth mAuth;
+    //
+    View header;
+    TextView correoTrabajador,nombreTrabajador;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
 
-
         drawerLayout = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.nav_view);
+        //
+        header = navigationView.getHeaderView(0);
+        correoTrabajador = (TextView) header.findViewById(R.id.tv_email);
+        correoTrabajador.setText(Static.correo);
+        nombreTrabajador = (TextView) header.findViewById(R.id.tv_nombre);
+        nombreTrabajador.setText(Static.nombre);
+        //
         toolbar = findViewById(R.id.toolbar);
 
 
@@ -44,6 +56,8 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
         toogle.syncState();
 
         navigationView.setNavigationItemSelectedListener(this);
+
+        mAuth = FirebaseAuth.getInstance();
 
         cardTrabajador = (CardView) findViewById(R.id.cardTrabajador);
         cardProducto = (CardView) findViewById(R.id.cardProducto);
@@ -56,12 +70,6 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
         cardCategoria.setOnClickListener(this);
         cardProveedor.setOnClickListener(this);
         cardReporte.setOnClickListener(this);
-
-
-
-
-
-
     }
 
 
@@ -88,6 +96,7 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.cardReporte:
                 i = new Intent(this, ReporteActivity.class);
                 startActivity(i);
+                finish();
                 break;
         }
     }
@@ -103,33 +112,7 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        Intent i;
-        switch (item.getItemId()){
-            case R.id.nav_home:
-                i = new Intent(this,MenuActivity.class);
-                startActivity(i);
-                break;
-            case R.id.nav_trabajador:
-                i = new Intent(this,TrabajadorActivity.class);
-                startActivity(i);
-                break;
-            case R.id.nav_producto:
-                i = new Intent(this, ProductoActivity.class);
-                startActivity(i);
-                break;
-            case R.id.nav_categoria:
-                i = new Intent(this, CategoriaActivity.class);
-                startActivity(i);
-                break;
-            case R.id.nav_proveedor:
-                i = new Intent(this, ProveedorActivity.class);
-                startActivity(i);
-                break;
-            case R.id.nav_reporte:
-                i = new Intent(this, ReporteActivity.class);
-                startActivity(i);
-                break;
-        }
+        Static.OpcionesNav(item,this);
         return true;
     }
 }

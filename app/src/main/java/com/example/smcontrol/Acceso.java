@@ -13,12 +13,13 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
+import model.Static;
 
 public class Acceso extends AppCompatActivity {
     private EditText txtemail;
@@ -58,16 +59,20 @@ public class Acceso extends AppCompatActivity {
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
                     String id = mAuth.getCurrentUser().getUid();
-                    databaseReference.child("Usuarios").child(id).addValueEventListener(new ValueEventListener() {
+                    databaseReference.child("Trabajador").child(id).addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
-                            if(snapshot.exists()){
-                                String rol = snapshot.child("rol").getValue().toString();
-                                if(rol.equals("Administrador")){
-                                    startActivity( new Intent(getApplicationContext(),MenuActivity.class));
-                                }else{
-                                    startActivity( new Intent(getApplicationContext(),MenuAlmacenero.class));
-                                }
+                            String nombre = snapshot.child("nombre").getValue().toString();
+                            String correo = snapshot.child("correo").getValue().toString();
+                            String rol = snapshot.child("rol").getValue().toString();
+                            Static.nombre = nombre;
+                            Static.correo = correo;
+                            if(rol.equals("Administrador")){
+                                startActivity( new Intent(getApplicationContext(),MenuActivity.class));
+                                finish();
+                            }else{
+                                startActivity( new Intent(getApplicationContext(),MenuAlmacenero.class));
+                                finish();
                             }
                         }
                         @Override
@@ -79,6 +84,9 @@ public class Acceso extends AppCompatActivity {
             }
         });
     }
+
+
+
 
     @Override
     public void onBackPressed(){}

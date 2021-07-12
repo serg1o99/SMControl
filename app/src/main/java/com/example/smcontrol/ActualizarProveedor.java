@@ -14,16 +14,19 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.FirebaseApp;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 
 import model.Categoria;
 import model.Proveedor;
+import model.Static;
 
 public class ActualizarProveedor extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
@@ -31,6 +34,10 @@ public class ActualizarProveedor extends AppCompatActivity implements Navigation
     //
     FirebaseDatabase firebaseDatabase;
     DatabaseReference databaseReference;
+    FirebaseAuth mAuth;
+    //
+    View header;
+    TextView correoTrabajador,nombreTrabajador;
     //
     public String nombre,nombreEmpresa,correo,direccion,telefono,codigo,fecha;
     //
@@ -45,6 +52,13 @@ public class ActualizarProveedor extends AppCompatActivity implements Navigation
         //
         drawerLayout = findViewById(R.id.Actualizar_proveedor);
         navigationView = findViewById(R.id.nav_view_prov__);
+        //
+        header = navigationView.getHeaderView(0);
+        correoTrabajador = (TextView) header.findViewById(R.id.tv_email);
+        correoTrabajador.setText(Static.correo);
+        nombreTrabajador = (TextView) header.findViewById(R.id.tv_nombre);
+        nombreTrabajador.setText(Static.nombre);
+        //
         toolbar = findViewById(R.id.toolbarprov_);
 
         setSupportActionBar(toolbar);
@@ -128,8 +142,8 @@ public class ActualizarProveedor extends AppCompatActivity implements Navigation
 
     public void actualizar()    {
 
-        AlertDialog.Builder alerta=new AlertDialog.Builder(this);
-        alerta.setMessage("¿Está seguro de que quiere actualizar el proveedor ?").setPositiveButton("Sí", new DialogInterface.OnClickListener() {
+        AlertDialog.Builder alerta=new AlertDialog.Builder(this,R.style.AppCompatAlertDialogStyle);
+        alerta.setMessage("¿Está seguro de que quiere actualizar el proveedor ?").setTitle("Actualizar").setPositiveButton("Sí", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 Proveedor obj = new Proveedor();
@@ -157,8 +171,8 @@ public class ActualizarProveedor extends AppCompatActivity implements Navigation
 
     public void eliminar()    {
 
-        AlertDialog.Builder alerta=new AlertDialog.Builder(this);
-        alerta.setMessage("¿Está seguro de que quiere eliminar el proveedor ?").setPositiveButton("Sí", new DialogInterface.OnClickListener() {
+        AlertDialog.Builder alerta=new AlertDialog.Builder(this,R.style.AppCompatAlertDialogStyle);
+        alerta.setMessage("¿Está seguro de que quiere eliminar el proveedor ?").setTitle("Eliminar").setPositiveButton("Sí", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 Proveedor obj = new Proveedor();
@@ -224,33 +238,7 @@ public class ActualizarProveedor extends AppCompatActivity implements Navigation
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        Intent i;
-        switch (item.getItemId()){
-            case R.id.nav_home:
-                i = new Intent(this,MenuActivity.class);
-                startActivity(i);
-                break;
-            case R.id.nav_trabajador:
-                i = new Intent(this,TrabajadorActivity.class);
-                startActivity(i);
-                break;
-            case R.id.nav_producto:
-                i = new Intent(this, ProductoActivity.class);
-                startActivity(i);
-                break;
-            case R.id.nav_categoria:
-                i = new Intent(this, CategoriaActivity.class);
-                startActivity(i);
-                break;
-            case R.id.nav_proveedor:
-                i = new Intent(this, ProveedorActivity.class);
-                startActivity(i);
-                break;
-            case R.id.nav_reporte:
-                i = new Intent(this, ReporteActivity.class);
-                startActivity(i);
-                break;
-        }
+        Static.OpcionesNav(item,this);
         return true;
     }
 }

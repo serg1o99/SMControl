@@ -24,6 +24,7 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.Continuation;
@@ -48,6 +49,7 @@ import java.util.Objects;
 
 import Security.Encript;
 import id.zelory.compressor.Compressor;
+import model.Static;
 import model.Trabajador;
 
 public class GestionarTrabajador extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -71,6 +73,9 @@ public class GestionarTrabajador extends AppCompatActivity implements Navigation
     DrawerLayout drawerLayout;
     NavigationView navigationView;
     Toolbar toolbar;
+    //
+    View header;
+    TextView correoTrabajador,nombreTrabajador;
 
     @RequiresApi(api= Build.VERSION_CODES.JELLY_BEAN_MR1)
     @Override
@@ -80,6 +85,13 @@ public class GestionarTrabajador extends AppCompatActivity implements Navigation
         //
         drawerLayout = findViewById(R.id.gestion_trabajador);
         navigationView = findViewById(R.id.nav_view_s);
+        //
+        header = navigationView.getHeaderView(0);
+        correoTrabajador = (TextView) header.findViewById(R.id.tv_email);
+        correoTrabajador.setText(Static.correo);
+        nombreTrabajador = (TextView) header.findViewById(R.id.tv_nombre);
+        nombreTrabajador.setText(Static.nombre);
+        //
         toolbar = findViewById(R.id.toolbarr);
         setSupportActionBar(toolbar);
         navigationView.bringToFront();
@@ -196,8 +208,8 @@ public class GestionarTrabajador extends AppCompatActivity implements Navigation
     }
 
     public void insertar()  {
-        AlertDialog.Builder alerta=new AlertDialog.Builder(this);
-        alerta.setMessage("¿Está seguro de que quiere crear un nuevo trabajador ?").setPositiveButton("Sí", new DialogInterface.OnClickListener() {
+        AlertDialog.Builder alerta=new AlertDialog.Builder(this,R.style.AppCompatAlertDialogStyle);
+        alerta.setMessage("¿Está seguro de que quiere crear un nuevo trabajador ?").setTitle("Registrar").setPositiveButton("Sí", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 Registrar();
@@ -230,7 +242,7 @@ public class GestionarTrabajador extends AppCompatActivity implements Navigation
                     obj.setContraseña(contraseña);
                     obj.setRol(rol);
                     obj.setUrl(""+downloadurl);
-                    databaseReference.child("Usuarios").child(cod).setValue(obj);
+                    databaseReference.child("Trabajador").child(cod).setValue(obj);
                 }
             }
         });
@@ -280,33 +292,7 @@ public class GestionarTrabajador extends AppCompatActivity implements Navigation
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        Intent i;
-        switch (item.getItemId()){
-            case R.id.nav_home:
-                i = new Intent(this,MenuActivity.class);
-                startActivity(i);
-                break;
-            case R.id.nav_trabajador:
-                i = new Intent(this,TrabajadorActivity.class);
-                startActivity(i);
-                break;
-            case R.id.nav_producto:
-                i = new Intent(this, ProductoActivity.class);
-                startActivity(i);
-                break;
-            case R.id.nav_categoria:
-                i = new Intent(this, CategoriaActivity.class);
-                startActivity(i);
-                break;
-            case R.id.nav_proveedor:
-                i = new Intent(this, ProveedorActivity.class);
-                startActivity(i);
-                break;
-            case R.id.nav_reporte:
-                i = new Intent(this, ReporteActivity.class);
-                startActivity(i);
-                break;
-        }
+        Static.OpcionesNav(item,this);
         return true;
     }
 

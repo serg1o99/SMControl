@@ -3,12 +3,14 @@ package com.example.smcontrol;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -17,11 +19,13 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.FirebaseApp;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -36,11 +40,13 @@ import java.util.List;
 
 import model.Categoria;
 import model.Producto;
+import model.Proveedor;
+import model.Static;
 
 public class GestionarProducto extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
     private EditText et_codigo,et_nombre,et_stock,et_precio;
-    private AutoCompleteTextView atv_categoria;
+    public AutoCompleteTextView atv_categoria;
     private static  final  int GALLERY_INTENT = 1;
     //
     private StorageReference storageReference;
@@ -48,7 +54,11 @@ public class GestionarProducto extends AppCompatActivity implements NavigationVi
     //
     FirebaseDatabase firebaseDatabase;
     DatabaseReference databaseReference;
+    FirebaseAuth mAuth;
     //
+    View header;
+    TextView correoTrabajador,nombreTrabajador;
+
     public String codigo,nombre,stock,precio,categoria;
     //
     DrawerLayout drawerLayout;
@@ -62,6 +72,13 @@ public class GestionarProducto extends AppCompatActivity implements NavigationVi
         //
         drawerLayout = findViewById(R.id.gestion_producto);
         navigationView = findViewById(R.id.nav_view_prod);
+        //
+        header = navigationView.getHeaderView(0);
+        correoTrabajador = (TextView) header.findViewById(R.id.tv_email);
+        correoTrabajador.setText(Static.correo);
+        nombreTrabajador = (TextView) header.findViewById(R.id.tv_nombre);
+        nombreTrabajador.setText(Static.nombre);
+        //
         toolbar = findViewById(R.id.toolbar_prod);
 
         setSupportActionBar(toolbar);
@@ -78,27 +95,27 @@ public class GestionarProducto extends AppCompatActivity implements NavigationVi
         et_nombre      =  (EditText) findViewById(R.id.txt_nombre);
         et_stock       =  (EditText) findViewById(R.id.txt_stock);
         et_precio      =  (EditText) findViewById(R.id.txt_precio);
-        atv_categoria  = findViewById(R.id.txt_categoria);
+        atv_categoria  = (AutoCompleteTextView) findViewById(R.id.txt_categorias);
+        //
         inicializarFirebase();
-
         listarCategorias();
     }
 
     private void listarCategorias() {
+        final ArrayAdapter<String> autoComplete = new ArrayAdapter<>(this, R.layout.lista_items);
         databaseReference.child("Categoria").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                final List<String> categorias = new ArrayList<>();
                 for (DataSnapshot snapshotCat : snapshot.getChildren()){
                     String nombreCat = snapshotCat.child("nombre").getValue(String.class);
-                    categorias.add(nombreCat);
+                    System.out.println(nombreCat );
+                    autoComplete.add(nombreCat);
                 }
-                ArrayAdapter<String> adapterCategoria = new ArrayAdapter<String>(GestionarProducto.this,R.layout.lista_items,categorias);
-                atv_categoria.setAdapter(adapterCategoria);
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error) { }
         });
+        atv_categoria.setAdapter(autoComplete);
     }
 
     @Override
@@ -138,16 +155,30 @@ public class GestionarProducto extends AppCompatActivity implements NavigationVi
     }
 
     public void insertar()  {
-        Producto obj = new Producto();
-        obj.setCodigo(codigo);
-        obj.setNombre(nombre);
-        obj.setStock(stock);
-        obj.setPrecio(precio);
-        obj.setCategoria(categoria);
+        AlertDialog.Builder alerta=new AlertDialog.Builder(this,R.style.AppCompatAlertDialogStyle);
+        alerta.setMessage("¿Está seguro de que quiere crear un nuevo Producto ?").setTitle("Registrar").setPositiveButton("Sí", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Producto obj = new Producto();
+                obj.setCodigo(codigo);
+                obj.setNombre(nombre);
+                obj.setStock(stock);
+                obj.setPrecio(precio);
+                obj.setCategoria(categoria);
 
-        databaseReference.child("Producto").child(""+obj.getCodigo()).setValue(obj);
-        Toast.makeText(this,"Agregado",Toast.LENGTH_SHORT).show();
-        limpiarCampos();
+                databaseReference.child("Producto").child(""+obj.getCodigo()).setValue(obj);
+                Toast.makeText(getApplicationContext(),"Producto Agregado",Toast.LENGTH_SHORT).show();
+                limpiarCampos();
+                Intent intent =new Intent(getApplicationContext(),ProductoActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        }).setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        }).show();
     }
 
     public void validarCampos() {
@@ -187,33 +218,7 @@ public class GestionarProducto extends AppCompatActivity implements NavigationVi
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        Intent i;
-        switch (item.getItemId()){
-            case R.id.nav_home:
-                i = new Intent(this,MenuActivity.class);
-                startActivity(i);
-                break;
-            case R.id.nav_trabajador:
-                i = new Intent(this,TrabajadorActivity.class);
-                startActivity(i);
-                break;
-            case R.id.nav_producto:
-                i = new Intent(this, ProductoActivity.class);
-                startActivity(i);
-                break;
-            case R.id.nav_categoria:
-                i = new Intent(this, CategoriaActivity.class);
-                startActivity(i);
-                break;
-            case R.id.nav_proveedor:
-                i = new Intent(this, ProveedorActivity.class);
-                startActivity(i);
-                break;
-            case R.id.nav_reporte:
-                i = new Intent(this, ReporteActivity.class);
-                startActivity(i);
-                break;
-        }
+        Static.OpcionesNav(item,this);
         return true;
     }
 

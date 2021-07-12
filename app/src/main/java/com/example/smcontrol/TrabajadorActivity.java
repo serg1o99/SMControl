@@ -21,6 +21,7 @@ import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -29,6 +30,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
+import model.Static;
 import model.Trabajador;
 import model.TrabajadorAdapter;
 
@@ -44,7 +46,11 @@ public class TrabajadorActivity extends AppCompatActivity implements NavigationV
     Toolbar toolbar;
     FloatingActionButton fab;
     Trabajador t;
-
+    //
+    FirebaseAuth mAuth;
+    //
+    View header;
+    TextView correoTrabajador,nombreTrabajador;
     //variables de guardado para actualizar
     public String dni,correo,rol,nombre,apellido,contraseña;
 
@@ -55,6 +61,13 @@ public class TrabajadorActivity extends AppCompatActivity implements NavigationV
         //
         drawerLayout = findViewById(R.id.trabajador);
         navigationView = findViewById(R.id.nav_view__);
+        //
+        header = navigationView.getHeaderView(0);
+        correoTrabajador = (TextView) header.findViewById(R.id.tv_email);
+        correoTrabajador.setText(Static.correo);
+        nombreTrabajador = (TextView) header.findViewById(R.id.tv_nombre);
+        nombreTrabajador.setText(Static.nombre);
+        //
         toolbar = findViewById(R.id.toolbar_);
         //floating button
         fab=findViewById(R.id.fab);
@@ -92,37 +105,6 @@ public class TrabajadorActivity extends AppCompatActivity implements NavigationV
         }
     }
 
-    @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        Intent i;
-        switch (item.getItemId()){
-            case R.id.nav_home:
-                i = new Intent(this,MenuActivity.class);
-                startActivity(i);
-                break;
-            case R.id.nav_trabajador:
-                i = new Intent(this,TrabajadorActivity.class);
-                startActivity(i);
-                break;
-            case R.id.nav_producto:
-                i = new Intent(this, ProductoActivity.class);
-                startActivity(i);
-                break;
-            case R.id.nav_categoria:
-                i = new Intent(this, CategoriaActivity.class);
-                startActivity(i);
-                break;
-            case R.id.nav_proveedor:
-                i = new Intent(this, ProveedorActivity.class);
-                startActivity(i);
-                break;
-            case R.id.nav_reporte:
-                i = new Intent(this, ReporteActivity.class);
-                startActivity(i);
-                break;
-        }
-        return true;
-    }
     public void OnClickFloatingButtonListener()   {
     fab.setOnClickListener(new View.OnClickListener() {
         @Override
@@ -177,5 +159,11 @@ public class TrabajadorActivity extends AppCompatActivity implements NavigationV
             @Override
             public void onCancelled(@NonNull DatabaseError error) { }
         });
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        Static.OpcionesNav(item,this);
+        return true;
     }
 }

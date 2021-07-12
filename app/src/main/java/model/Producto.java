@@ -6,6 +6,7 @@ public class Producto {
     private String stock;
     private String precio;
     private String categoria;
+    public static String nom;
 
     public String getCodigo() {
         return codigo;

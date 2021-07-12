@@ -15,15 +15,18 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.FirebaseApp;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.StorageReference;
 
 import model.Categoria;
+import model.Static;
 import model.Trabajador;
 
 public class ActualizarCategoria extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
@@ -32,6 +35,10 @@ public class ActualizarCategoria extends AppCompatActivity implements Navigation
     //
     FirebaseDatabase firebaseDatabase;
     DatabaseReference databaseReference;
+    FirebaseAuth mAuth;
+    //
+    View header;
+    TextView correoTrabajador,nombreTrabajador;
     //
     public String codigo,nombre,descripcion;
     //
@@ -46,6 +53,13 @@ public class ActualizarCategoria extends AppCompatActivity implements Navigation
         //
         drawerLayout = findViewById(R.id.Actualizar_categoria);
         navigationView = findViewById(R.id.nav_view_cat);
+        //
+        header = navigationView.getHeaderView(0);
+        correoTrabajador = (TextView) header.findViewById(R.id.tv_email);
+        correoTrabajador.setText(Static.correo);
+        nombreTrabajador = (TextView) header.findViewById(R.id.tv_nombre);
+        nombreTrabajador.setText(Static.nombre);
+        //
         toolbar = findViewById(R.id.toolbar_cat);
 
         setSupportActionBar(toolbar);
@@ -134,8 +148,8 @@ public class ActualizarCategoria extends AppCompatActivity implements Navigation
     }
 
     public void eliminar()  {
-        AlertDialog.Builder alerta=new AlertDialog.Builder(this);
-        alerta.setMessage("¿Está seguro de que quiere eliminar la categoria?").setPositiveButton("Sí", new DialogInterface.OnClickListener() {
+        AlertDialog.Builder alerta=new AlertDialog.Builder(this,R.style.AppCompatAlertDialogStyle);
+        alerta.setMessage("¿Está seguro de que quiere eliminar la categoria?").setTitle("Eliminar").setPositiveButton("Sí", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 Categoria obj = new Categoria();
@@ -186,33 +200,7 @@ public class ActualizarCategoria extends AppCompatActivity implements Navigation
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        Intent i;
-        switch (item.getItemId()){
-            case R.id.nav_home:
-                i = new Intent(this,MenuActivity.class);
-                startActivity(i);
-                break;
-            case R.id.nav_trabajador:
-                i = new Intent(this,TrabajadorActivity.class);
-                startActivity(i);
-                break;
-            case R.id.nav_producto:
-                i = new Intent(this, ProductoActivity.class);
-                startActivity(i);
-                break;
-            case R.id.nav_categoria:
-                i = new Intent(this, CategoriaActivity.class);
-                startActivity(i);
-                break;
-            case R.id.nav_proveedor:
-                i = new Intent(this, ProveedorActivity.class);
-                startActivity(i);
-                break;
-            case R.id.nav_reporte:
-                i = new Intent(this, ReporteActivity.class);
-                startActivity(i);
-                break;
-        }
+        Static.OpcionesNav(item,this);
         return true;
     }
 

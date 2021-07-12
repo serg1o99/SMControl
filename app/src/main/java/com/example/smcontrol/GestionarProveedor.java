@@ -3,12 +3,14 @@ package com.example.smcontrol;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -16,11 +18,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.FirebaseApp;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
@@ -28,6 +32,7 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import model.Proveedor;
+import model.Static;
 import model.Trabajador;
 
 public class GestionarProveedor extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
@@ -46,6 +51,10 @@ public class GestionarProveedor extends AppCompatActivity implements NavigationV
     DrawerLayout drawerLayout;
     NavigationView navigationView;
     Toolbar toolbar;
+    FirebaseAuth mAuth;
+    //
+    View header;
+    TextView correoTrabajador,nombreTrabajador;
 
 
     @Override
@@ -55,6 +64,13 @@ public class GestionarProveedor extends AppCompatActivity implements NavigationV
         //
         drawerLayout = findViewById(R.id.gestion_proveedor);
         navigationView = findViewById(R.id.nav_view_prov__);
+        //
+        header = navigationView.getHeaderView(0);
+        correoTrabajador = (TextView) header.findViewById(R.id.tv_email);
+        correoTrabajador.setText(Static.correo);
+        nombreTrabajador = (TextView) header.findViewById(R.id.tv_nombre);
+        nombreTrabajador.setText(Static.nombre);
+        //
         toolbar = findViewById(R.id.toolbarprov_);
 
         setSupportActionBar(toolbar);
@@ -116,18 +132,32 @@ public class GestionarProveedor extends AppCompatActivity implements NavigationV
     }
 
     public void insertar()  {
-        Proveedor obj = new Proveedor();
-        obj.setCodigo(codigo);
-        obj.setNombreProveedor(nombre);
-        obj.setCorreo(correo);
-        obj.setDireccion(direccion);
-        obj.setTelefono(telefono);
-        obj.setFecha(fecha);
-        obj.setNombreEmpresa(nombreEmpresa);
+        AlertDialog.Builder alerta=new AlertDialog.Builder(this,R.style.AppCompatAlertDialogStyle);
+        alerta.setMessage("¿Está seguro de que quiere crear un nuevo Proveedor ?").setTitle("Registrar").setPositiveButton("Sí", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Proveedor obj = new Proveedor();
+                obj.setCodigo(codigo);
+                obj.setNombreProveedor(nombre);
+                obj.setCorreo(correo);
+                obj.setDireccion(direccion);
+                obj.setTelefono(telefono);
+                obj.setFecha(fecha);
+                obj.setNombreEmpresa(nombreEmpresa);
 
-        databaseReference.child("Proveedor").child(""+obj.getCodigo()).setValue(obj);
-        Toast.makeText(this,"Agregado",Toast.LENGTH_SHORT).show();
-        limpiarCampos();
+                databaseReference.child("Proveedor").child(""+obj.getCodigo()).setValue(obj);
+                Toast.makeText(getApplicationContext() ,"Proveedor Agregado",Toast.LENGTH_SHORT).show();
+                limpiarCampos();
+                Intent intent =new Intent(getApplicationContext(),ProveedorActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        }).setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        }).show();
     }
 
     public void validarCampos() {
@@ -176,33 +206,7 @@ public class GestionarProveedor extends AppCompatActivity implements NavigationV
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        Intent i;
-        switch (item.getItemId()){
-            case R.id.nav_home:
-                i = new Intent(this,MenuActivity.class);
-                startActivity(i);
-                break;
-            case R.id.nav_trabajador:
-                i = new Intent(this,TrabajadorActivity.class);
-                startActivity(i);
-                break;
-            case R.id.nav_producto:
-                i = new Intent(this, ProductoActivity.class);
-                startActivity(i);
-                break;
-            case R.id.nav_categoria:
-                i = new Intent(this, CategoriaActivity.class);
-                startActivity(i);
-                break;
-            case R.id.nav_proveedor:
-                i = new Intent(this, ProveedorActivity.class);
-                startActivity(i);
-                break;
-            case R.id.nav_reporte:
-                i = new Intent(this, ReporteActivity.class);
-                startActivity(i);
-                break;
-        }
+        Static.OpcionesNav(item,this);
         return true;
     }
 

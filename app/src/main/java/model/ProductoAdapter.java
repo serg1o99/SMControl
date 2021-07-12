@@ -58,7 +58,6 @@ public class ProductoAdapter extends RecyclerView.Adapter<ProductoAdapter.MyView
 
     public static class MyViewHolder extends RecyclerView.ViewHolder   {
         TextView nombreProveedor,nombreEmpresa,txt;
-
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             nombreProveedor = itemView.findViewById(R.id.tvnombre);

@@ -3,23 +3,27 @@ package com.example.smcontrol;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.FirebaseApp;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
@@ -28,6 +32,7 @@ import com.google.firebase.storage.UploadTask;
 
 import model.Categoria;
 import model.Proveedor;
+import model.Static;
 
 public class GestionarCategoria extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
@@ -42,6 +47,11 @@ public class GestionarCategoria extends AppCompatActivity implements NavigationV
     //
     public String codigo,nombre,descripcion;
     //
+    FirebaseAuth mAuth;
+    //
+    View header;
+    TextView correoTrabajador,nombreTrabajador;
+
     DrawerLayout drawerLayout;
     NavigationView navigationView;
     Toolbar toolbar;
@@ -53,6 +63,13 @@ public class GestionarCategoria extends AppCompatActivity implements NavigationV
         //
         drawerLayout = findViewById(R.id.gestion_categoria);
         navigationView = findViewById(R.id.nav_view_cat);
+        //
+        header = navigationView.getHeaderView(0);
+        correoTrabajador = (TextView) header.findViewById(R.id.tv_email);
+        correoTrabajador.setText(Static.correo);
+        nombreTrabajador = (TextView) header.findViewById(R.id.tv_nombre);
+        nombreTrabajador.setText(Static.nombre);
+        //
         toolbar = findViewById(R.id.toolbar_cat);
 
         setSupportActionBar(toolbar);
@@ -106,14 +123,28 @@ public class GestionarCategoria extends AppCompatActivity implements NavigationV
     }
 
     public void insertar()  {
-        Categoria obj = new Categoria();
-        obj.setCodigo(codigo);
-        obj.setNombre(nombre);
-        obj.setDescripcion(descripcion);
+        AlertDialog.Builder alerta=new AlertDialog.Builder(this,R.style.AppCompatAlertDialogStyle);
+        alerta.setMessage("¿Está seguro de que quiere crear una nueva Categoria ?").setTitle("Registrar").setPositiveButton("Sí", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Categoria obj = new Categoria();
+                obj.setCodigo(codigo);
+                obj.setNombre(nombre);
+                obj.setDescripcion(descripcion);
 
-        databaseReference.child("Categoria").child(""+obj.getCodigo()).setValue(obj);
-        Toast.makeText(this,"Agregado",Toast.LENGTH_SHORT).show();
-        limpiarCampos();
+                databaseReference.child("Categoria").child(""+obj.getCodigo()).setValue(obj);
+                Toast.makeText(getApplicationContext(),"Categoria agregada",Toast.LENGTH_SHORT).show();
+                limpiarCampos();
+                Intent intent =new Intent(getApplicationContext(),CategoriaActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        }).setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        }).show();
     }
 
     public void validarCampos() {
@@ -144,41 +175,15 @@ public class GestionarCategoria extends AppCompatActivity implements NavigationV
         }
     }
 
-    @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        Intent i;
-        switch (item.getItemId()){
-            case R.id.nav_home:
-                i = new Intent(this,MenuActivity.class);
-                startActivity(i);
-                break;
-            case R.id.nav_trabajador:
-                i = new Intent(this,TrabajadorActivity.class);
-                startActivity(i);
-                break;
-            case R.id.nav_producto:
-                i = new Intent(this, ProductoActivity.class);
-                startActivity(i);
-                break;
-            case R.id.nav_categoria:
-                i = new Intent(this, CategoriaActivity.class);
-                startActivity(i);
-                break;
-            case R.id.nav_proveedor:
-                i = new Intent(this, ProveedorActivity.class);
-                startActivity(i);
-                break;
-            case R.id.nav_reporte:
-                i = new Intent(this, ReporteActivity.class);
-                startActivity(i);
-                break;
-        }
-        return true;
-    }
-
     public void SubirFoto(View view){
         Intent intent=new Intent(Intent.ACTION_PICK);
         intent.setType("image/*");
         startActivityForResult(intent,GALLERY_INTENT);
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        Static.OpcionesNav(item,this);
+        return true;
     }
 }

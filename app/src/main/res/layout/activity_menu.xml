@@ -28,7 +28,6 @@
 
 
             <com.google.android.material.appbar.MaterialToolbar
-
                 android:id="@+id/toolbar"
                 app:title="@string/menu"
                 android:layout_width="match_parent"
