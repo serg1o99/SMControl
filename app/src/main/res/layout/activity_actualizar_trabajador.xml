@@ -75,8 +75,8 @@
                         android:id="@+id/txt_dni"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:editable="false"
-                        android:enabled="false"
+                        android:editable="true"
+                        android:enabled="true"
                         android:fontFamily="@font/reem_kufi"
                         android:inputType="number"
                         android:textColor="@color/black" />
