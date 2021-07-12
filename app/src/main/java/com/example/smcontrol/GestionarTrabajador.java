@@ -18,6 +18,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Patterns;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -127,8 +128,7 @@ public class GestionarTrabajador extends AppCompatActivity implements Navigation
             //recortar imagen
             CropImage.activity(imageuri)
                     .setGuidelines(CropImageView.Guidelines.ON)
-                    .setRequestedSize(640,480)
-                    .setAspectRatio(2,1)
+                    .setAspectRatio(1,1)
                     .start(GestionarTrabajador.this);
         }
        if(requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE)    {
@@ -151,13 +151,15 @@ public class GestionarTrabajador extends AppCompatActivity implements Navigation
              final byte [] thumb_byte = byteArrayOutputStream.toByteArray();
 
              // fin del compresor....
+             //codigo autogenerado
+
             subir.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     cargando.setTitle("Subiendo foto...");
                     cargando.setMessage("Espere por favor...");
                     cargando.show();
-                    StorageReference ref= storageReference.child("nombre.jpg");
+                    StorageReference ref= storageReference.child(autogenerarcodigofoto());
                     UploadTask uploadTask = ref.putBytes(thumb_byte);
                     //subir al storage
                     Task<Uri> uriTask = uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
@@ -202,6 +204,10 @@ public class GestionarTrabajador extends AppCompatActivity implements Navigation
 
         if( this.dni.equals("") || nombre.equals("") || apellido.equals("") || correo.equals("") || contraseña.equals("") || rol.equals("Escoja el rol") || rol.equals("") )     {
            validarCampos();
+        }else if(!Patterns.EMAIL_ADDRESS.matcher(correo).matches())  {
+            Toast.makeText(this,"El correo es inválido",Toast.LENGTH_SHORT).show();
+            et_ncorreo.requestFocus();
+
         }else   {
          insertar();
         }
@@ -299,5 +305,17 @@ public class GestionarTrabajador extends AppCompatActivity implements Navigation
     public void SubirFoto(View view)     {
         CropImage.startPickImageActivity(GestionarTrabajador.this);
     }
+
+
+    public String autogenerarcodigofoto() {
+    int p = (int) (Math.random() * 25 + 1); int s = (int) (Math.random() * 25 + 1);
+    int t = (int) (Math.random() * 25 + 1); int c = (int) (Math.random() * 25 + 1);
+    int numero1= (int) (Math.random() * 1012 + 2111);
+    int numero2= (int) (Math.random() * 1012 + 2111);
+    String[] elementos= {"a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z"};
+    final String aleatorio = elementos[p] + elementos[s] + numero1 + elementos[t] + elementos[c] + numero2 + "trabajador.jpg";
+    return aleatorio;
+    }
+
 
 }

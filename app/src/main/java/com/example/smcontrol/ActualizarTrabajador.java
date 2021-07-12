@@ -45,9 +45,8 @@ public class ActualizarTrabajador extends AppCompatActivity implements Navigatio
     DrawerLayout drawerLayout;
     NavigationView navigationView;
     Toolbar toolbar;
-
-
     //
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -94,7 +93,7 @@ public class ActualizarTrabajador extends AppCompatActivity implements Navigatio
         FirebaseApp.initializeApp(this);
         firebaseDatabase=FirebaseDatabase.getInstance().getInstance();
         databaseReference=firebaseDatabase.getReference();
-
+        mAuth =  FirebaseAuth.getInstance();
     }
 
     public void CargarDatosActualizar()     {
@@ -155,13 +154,14 @@ public class ActualizarTrabajador extends AppCompatActivity implements Navigatio
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 Trabajador t =new Trabajador();
+                String cod = mAuth.getCurrentUser().getUid();
                 t.setDni(et_dni.getText().toString().trim());
                 t.setNombre(et_nombre.getText().toString().trim());
                 t.setApellido(et_apellido.getText().toString().trim());
                 t.setCorreo(et_ncorreo.getText().toString().trim());
                 t.setContraseña(et_npass.getText().toString().trim());
                 t.setRol(atv_rol.getText().toString().trim());
-                databaseReference.child("Trabajador").child(t.getDni()).setValue(t);
+                databaseReference.child("Trabajador").child(cod).setValue(t);
                 Toast.makeText(getApplicationContext(),"Trabajador Actualizado",Toast.LENGTH_SHORT).show();
                 Intent ittrabajador=new Intent(getApplicationContext(),TrabajadorActivity.class);
                 startActivity(ittrabajador);

@@ -31,8 +31,8 @@ public class Acceso extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_acceso);
-        txtemail    = (EditText) findViewById(R.id.txt_apellido);
-        txtpass     = (EditText) findViewById(R.id.et_correo);
+        txtemail    = (EditText) findViewById(R.id.et_correo);
+        txtpass     = (EditText) findViewById(R.id.et_pass);
         mAuth       = FirebaseAuth.getInstance();
         databaseReference = FirebaseDatabase.getInstance().getReference();
     }
@@ -58,6 +58,7 @@ public class Acceso extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
+
                     String id = mAuth.getCurrentUser().getUid();
                     databaseReference.child("Trabajador").child(id).addValueEventListener(new ValueEventListener() {
                         @Override
@@ -78,6 +79,8 @@ public class Acceso extends AppCompatActivity {
                         @Override
                         public void onCancelled(@NonNull DatabaseError error) { }
                     });
+
+                    startActivity( new Intent(getApplicationContext(),MenuActivity.class));
                 } else {
                     Toast.makeText(getApplicationContext(), "Email y/o Contraseña incorrecto .",Toast.LENGTH_SHORT).show();
                 }
