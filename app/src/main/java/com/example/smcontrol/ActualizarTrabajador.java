@@ -228,6 +228,8 @@ public class ActualizarTrabajador extends AppCompatActivity implements Navigatio
         if(drawerLayout.isDrawerOpen(GravityCompat.START)){
             drawerLayout.closeDrawer(GravityCompat.START);
         }else {
+            startActivity(new Intent(this, TrabajadorActivity.class));
+            finish();
             super.onBackPressed();
         }
     }

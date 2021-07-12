@@ -111,7 +111,7 @@ public class TrabajadorActivity extends AppCompatActivity implements NavigationV
         public void onClick(View v) {
         Intent it=new Intent(getApplicationContext(), GestionarTrabajador.class);
         startActivity(it);
-
+        finish();
         }
     });
     }
@@ -138,7 +138,7 @@ public class TrabajadorActivity extends AppCompatActivity implements NavigationV
                 itactualizar.putExtra("contraseña",contraseña);
                 itactualizar.putExtra("rol",rol);
                 startActivity(itactualizar);
-
+                finish();
             }
         });
 

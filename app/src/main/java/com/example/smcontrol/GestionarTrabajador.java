@@ -50,6 +50,7 @@ import java.util.Objects;
 
 import Security.Encript;
 import id.zelory.compressor.Compressor;
+import model.Foto;
 import model.Static;
 import model.Trabajador;
 
@@ -59,10 +60,7 @@ public class GestionarTrabajador extends AppCompatActivity implements Navigation
     private AutoCompleteTextView atv_rol;
     private static  final  int GALLERY_INTENT=1;
     //para la imagen
-    private StorageReference storageReference;
-    private ProgressDialog cargando;
     private Button subir;
-    Bitmap thumb_bitmap = null;
     private  Uri downloadurl;
     //FireBase
     FirebaseDatabase firebaseDatabase;
@@ -100,9 +98,7 @@ public class GestionarTrabajador extends AppCompatActivity implements Navigation
         drawerLayout.addDrawerListener(toogle);
         toogle.syncState();
         //para subir imagen
-        subir=(Button) findViewById(R.id.btnsubirfoto);
-        storageReference = FirebaseStorage.getInstance().getReference().child("Img_Trabajador");
-        cargando = new ProgressDialog(this,R.style.AppCompatAlertDialogStyle);
+        subir = (Button) findViewById(R.id.btnsubirfoto);
         //
         navigationView.setNavigationItemSelectedListener(this);
         //
@@ -118,72 +114,6 @@ public class GestionarTrabajador extends AppCompatActivity implements Navigation
         ArrayAdapter arrayAdapter=new ArrayAdapter(this,R.layout.lista_items,getResources().getStringArray(R.array.roles));
         atv_rol.setAdapter(arrayAdapter);
 
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == CropImage.PICK_IMAGE_CHOOSER_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
-            Uri imageuri = CropImage.getPickImageResultUri(this, data);
-            //recortar imagen
-            CropImage.activity(imageuri)
-                    .setGuidelines(CropImageView.Guidelines.ON)
-                    .setAspectRatio(1,1)
-                    .start(GestionarTrabajador.this);
-        }
-       if(requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE)    {
-         CropImage.ActivityResult result= CropImage.getActivityResult(data);
-         if(resultCode == RESULT_OK)    {
-          Uri resultUri = result.getUri();
-          File url= new File(resultUri.getPath());
-          //comprimiendo imagen
-          try {
-              thumb_bitmap = new Compressor(this)
-                      .setMaxWidth(640)
-                      .setMaxHeight(480)
-                      .setQuality(90)
-                      .compressToBitmap(url);
-          }catch (IOException e)    {
-              e.printStackTrace();
-          }
-             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-             thumb_bitmap.compress(Bitmap.CompressFormat.JPEG,90,byteArrayOutputStream);
-             final byte [] thumb_byte = byteArrayOutputStream.toByteArray();
-
-             // fin del compresor....
-             //codigo autogenerado
-
-            subir.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    cargando.setTitle("Subiendo foto...");
-                    cargando.setMessage("Espere por favor...");
-                    cargando.show();
-                    StorageReference ref= storageReference.child(autogenerarcodigofoto());
-                    UploadTask uploadTask = ref.putBytes(thumb_byte);
-                    //subir al storage
-                    Task<Uri> uriTask = uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
-                        @Override
-                        public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
-                          if(!task.isSuccessful())  {
-                          throw Objects.requireNonNull(task.getException());
-
-                          }
-                            return ref.getDownloadUrl();
-                        }
-                    }).addOnCompleteListener(new OnCompleteListener<Uri>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Uri> task) {
-                            downloadurl = task.getResult();
-                           cargando.dismiss();
-                            Toast.makeText(GestionarTrabajador.this,"Imagen cargada con éxito",Toast.LENGTH_SHORT).show();
-                        }
-                    });
-                }
-            });
-
-         }
-       }
     }
 
     private void inicializarFirebase(){
@@ -284,7 +214,24 @@ public class GestionarTrabajador extends AppCompatActivity implements Navigation
         et_ncorreo.setText("");
         et_npass.setText("");
         et_dni.requestFocus();
+    }
 
+    public void SubirFoto(View view){
+        CropImage.startPickImageActivity(GestionarTrabajador.this);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Foto foto = new Foto(this,this,requestCode,resultCode,data,subir,"Img_Trabajador");
+        foto.generadorDeFoto();
+        downloadurl = foto.getDownloadurl();
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        Static.OpcionesNav(item,this);
+        return true;
     }
 
     @Override
@@ -295,27 +242,4 @@ public class GestionarTrabajador extends AppCompatActivity implements Navigation
             super.onBackPressed();
         }
     }
-
-    @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        Static.OpcionesNav(item,this);
-        return true;
-    }
-
-    public void SubirFoto(View view)     {
-        CropImage.startPickImageActivity(GestionarTrabajador.this);
-    }
-
-
-    public String autogenerarcodigofoto() {
-    int p = (int) (Math.random() * 25 + 1); int s = (int) (Math.random() * 25 + 1);
-    int t = (int) (Math.random() * 25 + 1); int c = (int) (Math.random() * 25 + 1);
-    int numero1= (int) (Math.random() * 1012 + 2111);
-    int numero2= (int) (Math.random() * 1012 + 2111);
-    String[] elementos= {"a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z"};
-    final String aleatorio = elementos[p] + elementos[s] + numero1 + elementos[t] + elementos[c] + numero2 + "trabajador.jpg";
-    return aleatorio;
-    }
-
-
 }

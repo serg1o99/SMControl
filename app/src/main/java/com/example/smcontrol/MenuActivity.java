@@ -106,6 +106,7 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
         if(drawerLayout.isDrawerOpen(GravityCompat.START)){
             drawerLayout.closeDrawer(GravityCompat.START);
         }else {
+
             super.onBackPressed();
         }
     }
