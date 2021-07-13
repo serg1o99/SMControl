@@ -59,6 +59,9 @@ public class Foto {
         cargando = new ProgressDialog(context,R.style.AppCompatAlertDialogStyle);
     }
 
+    public Foto() {
+    }
+
     public void  generadorDeFoto(){
         obtenerFoto();
         if(requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE)    {

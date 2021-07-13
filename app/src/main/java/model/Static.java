@@ -55,4 +55,37 @@ public class Static {
                 break;
         }
     }
+
+    public static void OpcionesNavAlmacenero(MenuItem item, Context context){
+        Intent i;
+        switch (item.getItemId()){
+            case R.id.nav_home:
+                i = new Intent(context, negocio.MenuAlmacenero.class);
+                context.startActivity(i);
+                break;
+            case R.id.nav_Entradas:
+                i = new Intent(context, negocio.GestionarEntradas.class);
+                context.startActivity(i);
+                break;
+            case R.id.nav_Salidas:
+                i = new Intent(context, negocio.GestionarSalidas.class);
+                context.startActivity(i);
+                break;
+            case R.id.nav_Almacen:
+                i = new Intent(context, negocio.GestionarAlmacen.class);
+                context.startActivity(i);
+                break;
+            case R.id.nav_ReporteAlmacenero:
+                i = new Intent(context, negocio.ReporteAlmacenActivity.class);
+                context.startActivity(i);
+                break;
+            case R.id.nav_salir:
+                FirebaseAuth mAuth = FirebaseAuth.getInstance();
+                mAuth.signOut();
+                i = new Intent(context, Acceso.class);
+                context.startActivity(i);
+                break;
+        }
+    }
+
 }

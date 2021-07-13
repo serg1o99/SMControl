@@ -72,7 +72,7 @@ public class Acceso extends AppCompatActivity {
                                 startActivity( new Intent(getApplicationContext(),MenuActivity.class));
                                 finish();
                             }else{
-                                startActivity( new Intent(getApplicationContext(),MenuAlmacenero.class));
+                                startActivity( new Intent(getApplicationContext(),negocio.MenuAlmacenero.class));
                                 finish();
                             }
                         }

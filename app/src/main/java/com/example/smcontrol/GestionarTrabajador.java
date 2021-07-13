@@ -15,6 +15,7 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -62,6 +63,7 @@ public class GestionarTrabajador extends AppCompatActivity implements Navigation
     //para la imagen
     private Button subir;
     private  Uri downloadurl;
+    Foto objFoto;
     //FireBase
     FirebaseDatabase firebaseDatabase;
     DatabaseReference databaseReference;
@@ -75,7 +77,6 @@ public class GestionarTrabajador extends AppCompatActivity implements Navigation
     //
     View header;
     TextView correoTrabajador,nombreTrabajador;
-    Foto foto;
 
     @RequiresApi(api= Build.VERSION_CODES.JELLY_BEAN_MR1)
     @Override
@@ -115,6 +116,7 @@ public class GestionarTrabajador extends AppCompatActivity implements Navigation
         ArrayAdapter arrayAdapter=new ArrayAdapter(this,R.layout.lista_items,getResources().getStringArray(R.array.roles));
         atv_rol.setAdapter(arrayAdapter);
 
+
     }
 
     private void inicializarFirebase(){
@@ -139,7 +141,10 @@ public class GestionarTrabajador extends AppCompatActivity implements Navigation
             Toast.makeText(this,"El correo es inválido",Toast.LENGTH_SHORT).show();
             et_ncorreo.requestFocus();
 
-        }else   {
+        }else if (!subir.isEnabled())   {
+            Toast.makeText(this,"Debe subir una foto",Toast.LENGTH_SHORT).show();
+        }
+        else   {
          insertar();
         }
     }
@@ -171,6 +176,7 @@ public class GestionarTrabajador extends AppCompatActivity implements Navigation
                 if(task.isSuccessful()){
                     String cod = mAuth.getCurrentUser().getUid();
                     Trabajador obj =new Trabajador();
+                    downloadurl=objFoto.getDownloadurl();
                     //Encript ec =new Encript();
                     obj.setDni(dni);
                     obj.setNombre(nombre);
@@ -178,7 +184,7 @@ public class GestionarTrabajador extends AppCompatActivity implements Navigation
                     obj.setCorreo(correo);
                     obj.setContraseña(contraseña);
                     obj.setRol(rol);
-                    obj.setUrl(""+foto.getDownloadurl());
+                    obj.setUrl(""+downloadurl);
                     databaseReference.child("Trabajador").child(cod).setValue(obj);
                 }
             }
@@ -208,6 +214,9 @@ public class GestionarTrabajador extends AppCompatActivity implements Navigation
         }
     }
 
+
+
+
     public void limpiarCampos(){
         et_dni.setText("");
         et_nombre.setText("");
@@ -217,15 +226,18 @@ public class GestionarTrabajador extends AppCompatActivity implements Navigation
         et_dni.requestFocus();
     }
 
-    public void SubirFoto(View view){
+    public void SelecFoto(View view){
         CropImage.startPickImageActivity(GestionarTrabajador.this);
+        subir.setEnabled(true);
+        subir.setBackgroundColor(getResources().getColor(R.color.teal_200));
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        foto = new Foto(this,this,requestCode,resultCode,data,subir,"Img_Trabajador");
-        foto.generadorDeFoto();
+        objFoto = new Foto(this,this,requestCode,resultCode,data,subir,"Img_Trabajador");
+        objFoto.generadorDeFoto();
+        downloadurl = objFoto.getDownloadurl();
     }
 
     @Override

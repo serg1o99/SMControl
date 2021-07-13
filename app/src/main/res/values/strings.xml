@@ -12,6 +12,9 @@
     <string name="Proveedores">Proveedores</string>
     <string name="Inicio">Inicio</string>
     <string name="salir">Salir</string>
+    <string name="Entradas">Entradas</string>
+    <string name="Salidas">Salidas</string>
+    <string name="Productos">Product</string>
 
     <string name="navigation_drawer_open">Navigation drawer open</string>
     <string name="navigation_drawer_close">Navigation drawer close</string>
