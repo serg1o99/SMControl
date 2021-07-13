@@ -64,15 +64,15 @@ public class Static {
                 context.startActivity(i);
                 break;
             case R.id.nav_Entradas:
-                i = new Intent(context, negocio.GestionarEntradas.class);
+                i = new Intent(context, negocio.EntradasActivity.class);
                 context.startActivity(i);
                 break;
             case R.id.nav_Salidas:
-                i = new Intent(context, negocio.GestionarSalidas.class);
+                i = new Intent(context, negocio.SalidasActivity.class);
                 context.startActivity(i);
                 break;
             case R.id.nav_Almacen:
-                i = new Intent(context, negocio.GestionarAlmacen.class);
+                i = new Intent(context, negocio.AlmacenActivity.class);
                 context.startActivity(i);
                 break;
             case R.id.nav_ReporteAlmacenero:

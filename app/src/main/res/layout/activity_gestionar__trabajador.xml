@@ -272,7 +272,7 @@
                 android:layout_marginTop="5dp"
                 android:layout_marginBottom="1dp"
                 android:height="55dp"
-                android:backgroundTint="@android:color/darker_gray"
+                android:backgroundTint="@color/teal_200"
                 android:enabled="false"
                 android:fontFamily="@font/reem_kufi"
                 android:text="Subir Foto"

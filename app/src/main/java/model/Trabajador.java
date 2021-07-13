@@ -1,5 +1,6 @@
 package model;
 public class Trabajador {
+    private String uid;
     private String dni;
     private String correo;
     private  String rol;
@@ -7,6 +8,16 @@ public class Trabajador {
     private String apellido;
     private String contraseña;
     private String url;
+    public Trabajador() {
+    }
+
+    public String getUid() {
+        return uid;
+    }
+
+    public void setUid(String uid) {
+        this.uid = uid;
+    }
 
     public String getNombre() {
         return nombre;
@@ -30,9 +41,6 @@ public class Trabajador {
 
     public void setContraseña(String contraseña) {
         this.contraseña = contraseña;
-    }
-
-    public Trabajador() {
     }
 
     public String getDni() {

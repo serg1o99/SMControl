@@ -40,7 +40,7 @@ public class ActualizarTrabajador extends AppCompatActivity implements Navigatio
     View header;
     TextView correoTrabajador,nombreTrabajador;
     //Variables globales
-    public String nombre,apellido,correo,contraseña,rol,dni;
+    public String uid,nombre,apellido,correo,contraseña,rol,dni,url;
     //
     DrawerLayout drawerLayout;
     NavigationView navigationView;
@@ -97,13 +97,14 @@ public class ActualizarTrabajador extends AppCompatActivity implements Navigatio
     }
 
     public void CargarDatosActualizar()     {
+        uid=getIntent().getStringExtra("uid");
         dni=getIntent().getStringExtra("dni");
         nombre=getIntent().getStringExtra("nombre");
         apellido=getIntent().getStringExtra("apellido");
         correo=getIntent().getStringExtra("correo");
         contraseña=getIntent().getStringExtra("contraseña");
         rol=getIntent().getStringExtra("rol");
-
+        url=getIntent().getStringExtra("url");
         et_dni.setText(dni);
         et_nombre.setText(nombre);
         et_apellido.setText(apellido);
@@ -154,14 +155,15 @@ public class ActualizarTrabajador extends AppCompatActivity implements Navigatio
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 Trabajador t =new Trabajador();
-                String cod = mAuth.getCurrentUser().getUid();
+                t.setUid(uid);
                 t.setDni(et_dni.getText().toString().trim());
                 t.setNombre(et_nombre.getText().toString().trim());
                 t.setApellido(et_apellido.getText().toString().trim());
                 t.setCorreo(et_ncorreo.getText().toString().trim());
                 t.setContraseña(et_npass.getText().toString().trim());
                 t.setRol(atv_rol.getText().toString().trim());
-                databaseReference.child("Trabajador").child(cod).setValue(t);
+                t.setUrl(url);
+                databaseReference.child("Trabajador").child(uid).setValue(t);
                 Toast.makeText(getApplicationContext(),"Trabajador Actualizado",Toast.LENGTH_SHORT).show();
                 Intent ittrabajador=new Intent(getApplicationContext(),TrabajadorActivity.class);
                 startActivity(ittrabajador);
@@ -181,9 +183,9 @@ public class ActualizarTrabajador extends AppCompatActivity implements Navigatio
         alerta.setMessage("¿Está seguro de que quiere eliminar al trabajador ?").setTitle("Eliminar").setPositiveButton("Sí", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                Trabajador t =new Trabajador();
-                t.setDni(et_dni.getText().toString().trim());
-                databaseReference.child("Trabajador").child(t.getDni()).removeValue();
+                String code;
+                code=uid;
+                databaseReference.child("Trabajador").child(uid).removeValue();
                 Toast.makeText(getApplicationContext(),"Trabajador eliminado",Toast.LENGTH_SHORT).show();
                 Intent ittrabajador=new Intent(getApplicationContext(),TrabajadorActivity.class);
                 startActivity(ittrabajador);

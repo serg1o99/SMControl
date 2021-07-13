@@ -35,9 +35,9 @@ public class ProductoAdapter extends RecyclerView.Adapter<ProductoAdapter.MyView
     @Override
     public void onBindViewHolder(@NonNull ProductoAdapter.MyViewHolder holder, int position) {
         Producto p = listaProducto.get(position);
-        holder.nombreProveedor.setText(p.getNombre());
-        holder.nombreEmpresa.setText(p.getCategoria());
-        holder.txt.setText("Categoria: ");
+        holder.nombreproducto.setText(p.getNombre());
+        holder.nombrecategoria.setText(p.getCategoria()+"\n"+"S/."+p.getPrecio());
+        holder.txt.setText("Tipo: "+"\nPrecio: ");
     }
 
     @Override
@@ -57,11 +57,11 @@ public class ProductoAdapter extends RecyclerView.Adapter<ProductoAdapter.MyView
     }
 
     public static class MyViewHolder extends RecyclerView.ViewHolder   {
-        TextView nombreProveedor,nombreEmpresa,txt;
+        TextView nombreproducto,nombrecategoria,precio,txt;
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
-            nombreProveedor = itemView.findViewById(R.id.tvnombre);
-            nombreEmpresa = itemView.findViewById(R.id.tvrol);
+            nombreproducto = itemView.findViewById(R.id.tvnombre);
+            nombrecategoria = itemView.findViewById(R.id.tvrol);
             txt = itemView.findViewById(R.id.txt);
         }
     }
