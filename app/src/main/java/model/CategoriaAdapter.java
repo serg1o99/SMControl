@@ -37,7 +37,7 @@ public class CategoriaAdapter extends RecyclerView.Adapter<CategoriaAdapter.MyVi
         Categoria c = listaCategoria.get(position);
         holder.nombre.setText(c.getCodigo());
         holder.descricion.setText(c.getNombre());
-        holder.txt.setText("Nombre: ");
+        holder.txt.setText("Tipo: ");
     }
 
     public void setOnClickListener(View.OnClickListener listener)   {

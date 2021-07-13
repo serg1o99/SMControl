@@ -14,7 +14,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.SMControl">
-        <activity android:name="negocio.ReporteAlmacenActivity"></activity>
+        <activity android:name="negocio.SalidasActivity"></activity>
+        <activity android:name="negocio.EntradasActivity" />
+        <activity android:name="negocio.AlmacenActivity" />
+        <activity android:name="negocio.ReporteAlmacenActivity" />
         <activity android:name="negocio.GestionarAlmacen" />
         <activity android:name="negocio.GestionarSalidas" />
         <activity android:name="negocio.GestionarEntradas" />

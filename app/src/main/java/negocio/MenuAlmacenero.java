@@ -81,15 +81,15 @@ public class MenuAlmacenero extends AppCompatActivity implements View.OnClickLis
         Intent i;
         switch (v.getId()){
             case R.id.cardEntradas:
-                i = new Intent(this, negocio.GestionarEntradas.class);
+                i = new Intent(this, negocio.EntradasActivity.class);
                 startActivity(i);
                 break;
             case R.id.cardSalidas:
-                i = new Intent(this, negocio.GestionarSalidas.class);
+                i = new Intent(this, negocio.SalidasActivity.class);
                 startActivity(i);
                 break;
             case R.id.cardAlmacen:
-                i = new Intent(this, negocio.GestionarAlmacen.class);
+                i = new Intent(this, negocio.AlmacenActivity.class);
                 startActivity(i);
                 break;
             case R.id.cardReporteAlmacenero:

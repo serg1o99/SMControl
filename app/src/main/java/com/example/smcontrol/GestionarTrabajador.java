@@ -69,7 +69,7 @@ public class GestionarTrabajador extends AppCompatActivity implements Navigation
     DatabaseReference databaseReference;
     FirebaseAuth mAuth;
     //Variables globales
-    public String nombre,apellido,correo,contraseña,rol,dni;
+    public String uid,nombre,apellido,correo,contraseña,rol,dni;
     //
     DrawerLayout drawerLayout;
     NavigationView navigationView;
@@ -175,9 +175,11 @@ public class GestionarTrabajador extends AppCompatActivity implements Navigation
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if(task.isSuccessful()){
                     String cod = mAuth.getCurrentUser().getUid();
+                    uid=cod;
                     Trabajador obj =new Trabajador();
                     downloadurl=objFoto.getDownloadurl();
                     //Encript ec =new Encript();
+                    obj.setUid(uid);
                     obj.setDni(dni);
                     obj.setNombre(nombre);
                     obj.setApellido(apellido);
@@ -185,7 +187,7 @@ public class GestionarTrabajador extends AppCompatActivity implements Navigation
                     obj.setContraseña(contraseña);
                     obj.setRol(rol);
                     obj.setUrl(""+downloadurl);
-                    databaseReference.child("Trabajador").child(cod).setValue(obj);
+                    databaseReference.child("Trabajador").child(uid).setValue(obj);
                 }
             }
         });

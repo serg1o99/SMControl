@@ -52,7 +52,7 @@ public class TrabajadorActivity extends AppCompatActivity implements NavigationV
     View header;
     TextView correoTrabajador,nombreTrabajador;
     //variables de guardado para actualizar
-    public String dni,correo,rol,nombre,apellido,contraseña;
+    public String uid,dni,correo,rol,nombre,apellido,contraseña,url;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -125,20 +125,25 @@ public class TrabajadorActivity extends AppCompatActivity implements NavigationV
             public void onClick(View v) {
                 Intent itactualizar=new Intent(getApplicationContext(),ActualizarTrabajador.class);
                 //guardamos los datos a actualizar de cada cardview
+                uid=listaTrabajador.get(recyclerView.getChildAdapterPosition(v)).getUid();
                 dni=listaTrabajador.get(recyclerView.getChildAdapterPosition(v)).getDni();
                 nombre=listaTrabajador.get(recyclerView.getChildAdapterPosition(v)).getNombre();
                 apellido=listaTrabajador.get(recyclerView.getChildAdapterPosition(v)).getApellido();
                 correo=listaTrabajador.get(recyclerView.getChildAdapterPosition(v)).getCorreo();
                 contraseña=listaTrabajador.get(recyclerView.getChildAdapterPosition(v)).getContraseña();
                 rol=listaTrabajador.get(recyclerView.getChildAdapterPosition(v)).getRol();
+                url=listaTrabajador.get(recyclerView.getChildAdapterPosition(v)).getUrl();
+                itactualizar.putExtra("uid",uid);
                 itactualizar.putExtra("dni",dni);
                 itactualizar.putExtra("nombre",nombre);
                 itactualizar.putExtra("apellido",apellido);
                 itactualizar.putExtra("correo",correo);
                 itactualizar.putExtra("contraseña",contraseña);
                 itactualizar.putExtra("rol",rol);
+                itactualizar.putExtra("url",url);
                 startActivity(itactualizar);
                 finish();
+
             }
         });
 
@@ -150,6 +155,7 @@ public class TrabajadorActivity extends AppCompatActivity implements NavigationV
         database.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot){
+                listaTrabajador.clear();
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()){
                     Trabajador t=dataSnapshot.getValue(Trabajador.class);
                     listaTrabajador.add(t);
@@ -166,4 +172,6 @@ public class TrabajadorActivity extends AppCompatActivity implements NavigationV
         Static.OpcionesNav(item,this);
         return true;
     }
+
+
 }

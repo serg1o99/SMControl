@@ -10,7 +10,6 @@
         <item name="fontFamily">@font/reem_kufi</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">#41A888</item>
-        <item name="colorSecondaryVariant">@color/hint</item>
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">@color/bar</item>
@@ -25,5 +24,7 @@
 
     <style name="AppCompatAlertDialogStyle" parent="Theme.AppCompat.DayNight.Dialog.Alert">
         <item name="android:textColor">@color/black</item>
+        <item name="colorOnPrimary">@color/teal_200</item>
+
     </style>
 </resources>
