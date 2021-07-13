@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
+import com.example.smcontrol.GestionarTrabajador;
 import com.example.smcontrol.R;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -116,7 +117,7 @@ public class Foto {
         cargando.show();
     }
 
-    private void cargarAlStorage(UploadTask upload){
+    private void cargarAlStorage(@NonNull UploadTask upload){
         Task<Uri> uriTask = upload.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
             @Override
             public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
@@ -129,7 +130,6 @@ public class Foto {
             @Override
             public void onComplete(@NonNull Task<Uri> task) {
                 downloadurl = task.getResult();
-                System.out.println(""+downloadurl);
                 cargando.dismiss();
                 Toast.makeText(context, "Imagen cargada con exito", Toast.LENGTH_SHORT).show();
             }

@@ -75,6 +75,7 @@ public class GestionarTrabajador extends AppCompatActivity implements Navigation
     //
     View header;
     TextView correoTrabajador,nombreTrabajador;
+    Foto foto;
 
     @RequiresApi(api= Build.VERSION_CODES.JELLY_BEAN_MR1)
     @Override
@@ -177,7 +178,7 @@ public class GestionarTrabajador extends AppCompatActivity implements Navigation
                     obj.setCorreo(correo);
                     obj.setContraseña(contraseña);
                     obj.setRol(rol);
-                    obj.setUrl(""+downloadurl);
+                    obj.setUrl(""+foto.getDownloadurl());
                     databaseReference.child("Trabajador").child(cod).setValue(obj);
                 }
             }
@@ -223,9 +224,8 @@ public class GestionarTrabajador extends AppCompatActivity implements Navigation
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        Foto foto = new Foto(this,this,requestCode,resultCode,data,subir,"Img_Trabajador");
+        foto = new Foto(this,this,requestCode,resultCode,data,subir,"Img_Trabajador");
         foto.generadorDeFoto();
-        downloadurl = foto.getDownloadurl();
     }
 
     @Override
