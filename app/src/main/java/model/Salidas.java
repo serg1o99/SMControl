@@ -1,13 +1,15 @@
 package model;
 
 public class Salidas {
+
+    private String dni;
     private String cod_salida;
     private String cod_prod;
     private String nombre_prod;
+    private String fecha_salida;
     private int stock;
     private int cantidad_salida;
-    private String fecha_salida;
-    private String dni;
+
 
     public String getCod_salida() {
         return cod_salida;

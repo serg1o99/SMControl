@@ -28,5 +28,6 @@
     <string name="gestionar_proveedor">Gestionar Proveedor</string>
     <string name="gestionar_categoria">Gestionar Categoria</string>
     <string name="gestionar_producto">Gestionar Producto</string>
+    <string name="gestionar_salida">Gestionar Salida</string>
     <string name="lista_trabajadores">Trabajadores</string>
 </resources>

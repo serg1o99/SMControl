@@ -58,14 +58,15 @@ public class Acceso extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
-
                     String id = mAuth.getCurrentUser().getUid();
                     databaseReference.child("Trabajador").child(id).addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            String dni    = snapshot.child("dni").getValue().toString();
                             String nombre = snapshot.child("nombre").getValue().toString();
                             String correo = snapshot.child("correo").getValue().toString();
                             String rol = snapshot.child("rol").getValue().toString();
+                            Static.dni = dni;
                             Static.nombre = nombre;
                             Static.correo = correo;
                             if(rol.equals("Administrador")){
@@ -79,7 +80,6 @@ public class Acceso extends AppCompatActivity {
                         @Override
                         public void onCancelled(@NonNull DatabaseError error) { }
                     });
-
                     startActivity( new Intent(getApplicationContext(),MenuActivity.class));
                 } else {
                     Toast.makeText(getApplicationContext(), "Email y/o Contraseña incorrecto .",Toast.LENGTH_SHORT).show();
@@ -87,9 +87,6 @@ public class Acceso extends AppCompatActivity {
             }
         });
     }
-
-
-
 
     @Override
     public void onBackPressed(){}

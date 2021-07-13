@@ -17,6 +17,7 @@ import com.google.firebase.database.FirebaseDatabase;
 
 public class Static {
 
+    public static String dni;
     public static String nombre;
     public static String correo;
 
