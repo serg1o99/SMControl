@@ -1,15 +1,22 @@
 package model;
 
-public class Salidas {
+public class Salida {
 
     private String dni;
     private String cod_salida;
     private String cod_prod;
     private String nombre_prod;
     private String fecha_salida;
-    private int stock;
+    private String descripcion;
     private int cantidad_salida;
 
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
+    }
 
     public String getCod_salida() {
         return cod_salida;
@@ -33,14 +40,6 @@ public class Salidas {
 
     public void setNombre_prod(String nombre_prod) {
         this.nombre_prod = nombre_prod;
-    }
-
-    public int getStock() {
-        return stock;
-    }
-
-    public void setStock(int stock) {
-        this.stock = stock;
     }
 
     public int getCantidad_salida() {
