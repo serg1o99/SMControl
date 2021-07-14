@@ -3,25 +3,26 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_home"
-            android:title="@string/Inicio"
+            android:id="@+id/nav_Menu"
+            android:title="Inicio"
             android:icon="@drawable/home" />
         <item
             android:id="@+id/nav_Entradas"
             android:title="@string/Entradas"
-            android:icon="@drawable/outbox"/>
+            android:icon="@drawable/ic_enter"/>
         <item
             android:id="@+id/nav_Salidas"
             android:title="@string/Salidas"
-            android:icon="@drawable/salidass"/>
+            android:icon="@drawable/ico_prod"/>
         <item
             android:id="@+id/nav_Almacen"
             android:title="@string/productos"
-            android:icon="@drawable/producto"/>
+
+            android:icon="@drawable/ico_salidas"/>
         <item
             android:id="@+id/nav_ReporteAlmacenero"
             android:title="@string/reportes"
-            android:icon="@drawable/reportes"/>
+            android:icon="@drawable/ico_report"/>
     </group>
 
     <group android:checkableBehavior="single">

@@ -1,7 +1,9 @@
 package negocio;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
@@ -10,9 +12,13 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.smcontrol.CategoriaActivity;
 import com.example.smcontrol.ProductoActivity;
@@ -21,8 +27,19 @@ import com.example.smcontrol.R;
 import com.example.smcontrol.ReporteActivity;
 import com.example.smcontrol.TrabajadorActivity;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import Seguridad.Alerta;
+import model.Producto;
 import model.Static;
 
 public class MenuAlmacenero extends AppCompatActivity implements View.OnClickListener, NavigationView.OnNavigationItemSelectedListener {
@@ -37,6 +54,8 @@ public class MenuAlmacenero extends AppCompatActivity implements View.OnClickLis
     //
     View header;
     TextView correoTrabajador,nombreTrabajador;
+    Alerta alert;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,6 +92,10 @@ public class MenuAlmacenero extends AppCompatActivity implements View.OnClickLis
         cardSalidas.setOnClickListener(this);
         cardReporte.setOnClickListener(this);
         cardAlmacen.setOnClickListener(this);
+        cargarAlerta();
+
+        //
+
     }
 
 
@@ -81,8 +104,9 @@ public class MenuAlmacenero extends AppCompatActivity implements View.OnClickLis
         Intent i;
         switch (v.getId()){
             case R.id.cardEntradas:
-                i = new Intent(this, negocio.EntradasActivity.class);
-                startActivity(i);
+                alert.ListadeProductos();
+                alert.BusquedaStock();
+                AlertaStock();
                 break;
             case R.id.cardSalidas:
                 i = new Intent(this, negocio.SalidasActivity.class);
@@ -114,4 +138,49 @@ public class MenuAlmacenero extends AppCompatActivity implements View.OnClickLis
         Static.OpcionesNavAlmacenero(item,this);
         return true;
     }
+
+    private void cargarAlerta() {
+    alert=new Alerta(this,this);
+    alert.inicializarFirebase();
+
+    }
+
+    private  void AlertaStock(){
+        String alerta;
+        AlertDialog.Builder builder=new AlertDialog.Builder(this);
+        LayoutInflater inflater= getLayoutInflater();
+        View view= inflater.inflate(R.layout.alerta_stock,null);
+
+        builder.setView(view);
+        AlertDialog dialog= builder.create();
+
+        if(alert.BusquedaStock().equals("true"))   {
+            dialog.show();
+        }else   {
+            Toast.makeText(this,"Todo bien",Toast.LENGTH_SHORT).show();
+        }
+
+        TextView txt=view.findViewById(R.id.text_dialog);
+        txt.setText("Nos estamos quedando sin stock");
+
+        Button btnCancelar= view.findViewById(R.id.btncancelar);
+        btnCancelar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+        Button btnAceptar= view.findViewById(R.id.btnaceptar);
+        btnAceptar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent it=new Intent(getApplicationContext(),negocio.AlmacenActivity.class);
+                startActivity(it);
+                finish();
+            }
+        });
+
+    }
+
+
 }

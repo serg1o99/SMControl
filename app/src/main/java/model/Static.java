@@ -15,12 +15,15 @@ import com.example.smcontrol.TrabajadorActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
 
+import negocio.MenuAlmacenero;
+
 public class Static {
 
     public static String dni;
     public static String nombre;
     public static String correo;
-
+    public static String stock;
+    public static String alerta;
     public static void OpcionesNav(MenuItem item, Context context){
         Intent i;
         switch (item.getItemId()){
@@ -60,7 +63,7 @@ public class Static {
     public static void OpcionesNavAlmacenero(MenuItem item, Context context){
         Intent i;
         switch (item.getItemId()){
-            case R.id.nav_home:
+            case R.id.nav_Menu:
                 i = new Intent(context, negocio.MenuAlmacenero.class);
                 context.startActivity(i);
                 break;

@@ -4,9 +4,8 @@ public class Entradas {
     private String cod_entrada;
     private String cod_prod;
     private String nombre_prod;
-    private int stock;
-    private String nom_proveedor;
-    private String cantidad_entrada;
+    private String proveedor;
+    private int cantidad_entrante;
     private String fecha_ingreso;
     private String dni;
 
@@ -34,28 +33,21 @@ public class Entradas {
         this.nombre_prod = nombre_prod;
     }
 
-    public int getStock() {
-        return stock;
+
+    public String getProveedor() {
+        return proveedor;
     }
 
-    public void setStock(int stock) {
-        this.stock = stock;
+    public void setProveedor(String proveedor) {
+        this.proveedor = proveedor;
     }
 
-    public String getNom_proveedor() {
-        return nom_proveedor;
+    public int getCantidad_entrante() {
+        return cantidad_entrante;
     }
 
-    public void setNom_proveedor(String nom_proveedor) {
-        this.nom_proveedor = nom_proveedor;
-    }
-
-    public String getCantidad_entrada() {
-        return cantidad_entrada;
-    }
-
-    public void setCantidad_entrada(String cantidad_entrada) {
-        this.cantidad_entrada = cantidad_entrada;
+    public void setCantidad_entrante(int cantidad_entrante) {
+        this.cantidad_entrante = cantidad_entrante;
     }
 
     public String getFecha_ingreso() {
