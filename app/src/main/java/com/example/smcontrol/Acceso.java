@@ -31,10 +31,9 @@ import model.Static;
 public class Acceso extends AppCompatActivity {
     private EditText txtemail;
     private EditText txtpass;
-    String email,pass;
-    //FireBase
     private FirebaseAuth mAuth;
-    Alerta alert=new Alerta(this,this);
+    private DatabaseReference databaseReference;
+    String email,pass;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,20 +41,9 @@ public class Acceso extends AppCompatActivity {
         setContentView(R.layout.activity_acceso);
         txtemail    = (EditText) findViewById(R.id.et_correo);
         txtpass     = (EditText) findViewById(R.id.et_pass);
-        inicializarAunth();
-        alert.inicializarFirebase();
-        alert.ListadeProductos();
+        mAuth       = FirebaseAuth.getInstance();
+        databaseReference = FirebaseDatabase.getInstance().getReference();
     }
-
-
-
-    public void inicializarAunth(){
-        FirebaseApp.initializeApp(this);
-        mAuth               = FirebaseAuth.getInstance();
-
-    }
-
-
 
     public void validacion(View view)   {
         email = txtemail.getText().toString();
@@ -78,9 +66,8 @@ public class Acceso extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
-
                     String id = mAuth.getCurrentUser().getUid();
-                    alert.getDatabaseReference().child("Trabajador").child(id).addValueEventListener(new ValueEventListener() {
+                    databaseReference.child("Trabajador").child(id).addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
                             String nombre = snapshot.child("nombre").getValue().toString();
@@ -102,7 +89,6 @@ public class Acceso extends AppCompatActivity {
                         @Override
                         public void onCancelled(@NonNull DatabaseError error) { }
                     });
-
                     startActivity( new Intent(getApplicationContext(),MenuActivity.class));
                 } else {
                     Toast.makeText(getApplicationContext(), "Email y/o Contraseña incorrecto .",Toast.LENGTH_SHORT).show();
@@ -110,7 +96,6 @@ public class Acceso extends AppCompatActivity {
             }
         });
     }
-    
 
     @Override
     public void onBackPressed(){}

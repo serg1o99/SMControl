@@ -37,8 +37,10 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 import Seguridad.Alerta;
+import model.ProductListCallback;
 import model.Producto;
 import model.Static;
 
@@ -50,10 +52,10 @@ public class MenuAlmacenero extends AppCompatActivity implements View.OnClickLis
     DrawerLayout drawerLayout;
     NavigationView navigationView;
     Toolbar toolbar;
-    FirebaseAuth mAuth;
     //
     View header;
     TextView correoTrabajador,nombreTrabajador;
+    boolean alerta;
     Alerta alert;
 
     @Override
@@ -72,7 +74,6 @@ public class MenuAlmacenero extends AppCompatActivity implements View.OnClickLis
         //
         toolbar = findViewById(R.id.toolbar);
 
-
         setSupportActionBar(toolbar);
         navigationView.bringToFront();
         ActionBarDrawerToggle toogle = new ActionBarDrawerToggle(this,drawerLayout,toolbar,R.string.navigation_drawer_open,R.string.navigation_drawer_close);
@@ -80,8 +81,6 @@ public class MenuAlmacenero extends AppCompatActivity implements View.OnClickLis
         toogle.syncState();
 
         navigationView.setNavigationItemSelectedListener(this);
-
-        mAuth = FirebaseAuth.getInstance();
 
         cardEntradas= (CardView) findViewById(R.id.cardEntradas);
         cardSalidas= (CardView) findViewById(R.id.cardSalidas);
@@ -92,21 +91,30 @@ public class MenuAlmacenero extends AppCompatActivity implements View.OnClickLis
         cardSalidas.setOnClickListener(this);
         cardReporte.setOnClickListener(this);
         cardAlmacen.setOnClickListener(this);
-        cargarAlerta();
-
-        //
-
+        inicializar();
     }
 
+    public void inicializar(){
+        alert = new Alerta(this,this);
+        alert.inicializarFirebase();
+        alert.listaProductos(new ProductListCallback() {
+            @Override
+            public void onCallback(List<Producto> productos) {
+                for (int i = 0; i < productos.size() && alerta == false; i++){
+                    alerta = ((Integer.parseInt(productos.get(i).getStock())) < 1) ? true : false;
+                }
+                alert.AlertaStock(alerta);
+            }
+        });
+    }
 
     @Override
     public void onClick(View v) {
         Intent i;
         switch (v.getId()){
             case R.id.cardEntradas:
-                alert.ListadeProductos();
-                alert.BusquedaStock();
-                AlertaStock();
+                i = new Intent(this, negocio.EntradasActivity.class);
+                startActivity(i);
                 break;
             case R.id.cardSalidas:
                 i = new Intent(this, negocio.SalidasActivity.class);
@@ -124,63 +132,17 @@ public class MenuAlmacenero extends AppCompatActivity implements View.OnClickLis
     }
 
     @Override
-    public void onBackPressed() {
-        if(drawerLayout.isDrawerOpen(GravityCompat.START)){
-            drawerLayout.closeDrawer(GravityCompat.START);
-        }else {
-
-            super.onBackPressed();
-        }
-    }
-
-    @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         Static.OpcionesNavAlmacenero(item,this);
         return true;
     }
 
-    private void cargarAlerta() {
-    alert=new Alerta(this,this);
-    alert.inicializarFirebase();
-
-    }
-
-    private  void AlertaStock(){
-        String alerta;
-        AlertDialog.Builder builder=new AlertDialog.Builder(this);
-        LayoutInflater inflater= getLayoutInflater();
-        View view= inflater.inflate(R.layout.alerta_stock,null);
-
-        builder.setView(view);
-        AlertDialog dialog= builder.create();
-
-        if(alert.BusquedaStock().equals("true"))   {
-            dialog.show();
-        }else   {
-            Toast.makeText(this,"Todo bien",Toast.LENGTH_SHORT).show();
+    @Override
+    public void onBackPressed() {
+        if(drawerLayout.isDrawerOpen(GravityCompat.START)){
+            drawerLayout.closeDrawer(GravityCompat.START);
+        }else {
+            super.onBackPressed();
         }
-
-        TextView txt=view.findViewById(R.id.text_dialog);
-        txt.setText("Nos estamos quedando sin stock");
-
-        Button btnCancelar= view.findViewById(R.id.btncancelar);
-        btnCancelar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
-        Button btnAceptar= view.findViewById(R.id.btnaceptar);
-        btnAceptar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent it=new Intent(getApplicationContext(),negocio.AlmacenActivity.class);
-                startActivity(it);
-                finish();
-            }
-        });
-
     }
-
-
 }
