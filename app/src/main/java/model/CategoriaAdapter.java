@@ -4,11 +4,13 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.smcontrol.R;
 
 import java.util.ArrayList;
@@ -38,6 +40,8 @@ public class CategoriaAdapter extends RecyclerView.Adapter<CategoriaAdapter.MyVi
         holder.nombre.setText(c.getCodigo());
         holder.descricion.setText(c.getNombre());
         holder.txt.setText("Tipo: ");
+        String url=c.getUrl();
+        Glide.with(this.context).load(url).placeholder(R.drawable.avatar).error(R.drawable.avatar).into(holder.foto);
     }
 
     public void setOnClickListener(View.OnClickListener listener)   {
@@ -58,12 +62,13 @@ public class CategoriaAdapter extends RecyclerView.Adapter<CategoriaAdapter.MyVi
 
     public static class MyViewHolder extends RecyclerView.ViewHolder   {
         TextView nombre,descricion,txt;
-
+        ImageView foto;
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             nombre = itemView.findViewById(R.id.tvnombre);
             descricion = itemView.findViewById(R.id.tvrol);
             txt = itemView.findViewById(R.id.txt);
+            foto= itemView.findViewById(R.id.ivtrabajador);
         }
     }
 

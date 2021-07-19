@@ -30,7 +30,7 @@ import model.Static;
 
 public class ActualizarProveedor extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
-    private EditText et_codigo,et_nombre,et_nombreEmpresa,et_correo,et_direccion,et_telefono,et_fecha;
+    private EditText et_codigo,et_nombre,et_nombreEmpresa,et_correo,et_direccion,et_telefono;
     //
     FirebaseDatabase firebaseDatabase;
     DatabaseReference databaseReference;
@@ -39,7 +39,7 @@ public class ActualizarProveedor extends AppCompatActivity implements Navigation
     View header;
     TextView correoTrabajador,nombreTrabajador;
     //
-    public String nombre,nombreEmpresa,correo,direccion,telefono,codigo,fecha;
+    public String nombre,nombreEmpresa,correo,direccion,telefono,codigo,url;
     //
     DrawerLayout drawerLayout;
     NavigationView navigationView;
@@ -74,7 +74,6 @@ public class ActualizarProveedor extends AppCompatActivity implements Navigation
         et_correo        =  (EditText) findViewById(R.id.txt_correo_prov);
         et_direccion     =  (EditText) findViewById(R.id.txt_direccion);
         et_telefono      =  (EditText) findViewById(R.id.txt_telefono);
-        et_fecha         =  (EditText) findViewById(R.id.txt_fecha);
         et_nombreEmpresa =  (EditText) findViewById(R.id.txt_nom_empresa);
         //
         inicializarFirebase();
@@ -95,15 +94,13 @@ public class ActualizarProveedor extends AppCompatActivity implements Navigation
         correo      = getIntent().getStringExtra("correo");
         direccion   = getIntent().getStringExtra("direccion");
         telefono    = getIntent().getStringExtra("telefono");
-        fecha       = getIntent().getStringExtra("fecha");
         nombreEmpresa   = getIntent().getStringExtra("nombreEmpresa");
-
+        url             =getIntent().getStringExtra("url");
         et_codigo.setText(codigo);
         et_nombre.setText(nombre);
         et_correo.setText(correo);
         et_direccion.setText(direccion);
         et_telefono.setText(telefono);
-        et_fecha.setText(fecha);
         et_nombreEmpresa.setText(nombreEmpresa);
 
     }
@@ -114,10 +111,9 @@ public class ActualizarProveedor extends AppCompatActivity implements Navigation
         correo      = et_correo.getText().toString();
         direccion   = et_direccion.getText().toString();
         telefono    = et_telefono.getText().toString();
-        fecha       = et_fecha.getText().toString();
         nombreEmpresa = et_nombreEmpresa.getText().toString();
 
-        if( this.codigo.equals("") || nombre.equals("") || correo.equals("") || direccion.equals("") || telefono.equals("") || nombreEmpresa.equals("") || fecha.equals("")){
+        if( this.codigo.equals("") || nombre.equals("") || correo.equals("") || direccion.equals("") || telefono.equals("") || nombreEmpresa.equals("")){
             validarCampos();
         }else   {
             actualizar();
@@ -130,10 +126,9 @@ public class ActualizarProveedor extends AppCompatActivity implements Navigation
         correo      = et_correo.getText().toString();
         direccion   = et_direccion.getText().toString();
         telefono    = et_telefono.getText().toString();
-        fecha       = et_fecha.getText().toString();
         nombreEmpresa = et_nombreEmpresa.getText().toString();
 
-        if( this.codigo.equals("") || nombre.equals("") || correo.equals("") || direccion.equals("") || telefono.equals("") || nombreEmpresa.equals("") || fecha.equals("")){
+        if( this.codigo.equals("") || nombre.equals("") || correo.equals("") || direccion.equals("") || telefono.equals("") || nombreEmpresa.equals("") ){
             validarCampos();
         }else   {
             eliminar();
@@ -148,16 +143,15 @@ public class ActualizarProveedor extends AppCompatActivity implements Navigation
             public void onClick(DialogInterface dialog, int which) {
                 Proveedor obj = new Proveedor();
                 obj.setCodigo(et_codigo.getText().toString().trim());
-                obj.setNombreProveedor(et_nombre.getText().toString().trim());
+                obj.setNombre(et_nombre.getText().toString().trim());
                 obj.setCorreo(et_correo.getText().toString().trim());
                 obj.setDireccion(et_direccion.getText().toString().trim());
                 obj.setTelefono(et_telefono.getText().toString().trim());
-                obj.setFecha(et_fecha.getText().toString().trim());
-                obj.setNombreEmpresa(et_nombreEmpresa.getText().toString().trim());
-
+                obj.setEmpresa(et_nombreEmpresa.getText().toString().trim());
+                obj.setUrl(url);
                 databaseReference.child("Proveedor").child(""+obj.getCodigo()).setValue(obj);
                 Toast.makeText(getApplicationContext(),"Proveedor actualizado",Toast.LENGTH_SHORT).show();
-                Intent intent =new Intent(getApplicationContext(),CategoriaActivity.class);
+                Intent intent =new Intent(getApplicationContext(),ProveedorActivity.class);
                 startActivity(intent);
                 finish();
             }
@@ -194,7 +188,7 @@ public class ActualizarProveedor extends AppCompatActivity implements Navigation
 
     public void validarCampos() {
         if(codigo.isEmpty()) {
-            Toast.makeText(this,"Campo codigo obligatorio",Toast.LENGTH_SHORT).show();
+            Toast.makeText(this,"Campo código obligatorio",Toast.LENGTH_SHORT).show();
             et_codigo.requestFocus();
         }else if(nombre.isEmpty()) {
             Toast.makeText(this,"Campo nombre obligatorio",Toast.LENGTH_SHORT).show();
@@ -203,14 +197,11 @@ public class ActualizarProveedor extends AppCompatActivity implements Navigation
             Toast.makeText(this,"Campo correo obligatorio",Toast.LENGTH_SHORT).show();
             et_correo.requestFocus();
         }else if(direccion.isEmpty()) {
-            Toast.makeText(this,"Campo direccion obligatorio",Toast.LENGTH_SHORT).show();
+            Toast.makeText(this,"Campo dirección obligatorio",Toast.LENGTH_SHORT).show();
             et_direccion.requestFocus();
         }else if(telefono.isEmpty())  {
-            Toast.makeText(this,"Campo telefono obligatorio",Toast.LENGTH_SHORT).show();
+            Toast.makeText(this,"Campo teléfono obligatorio",Toast.LENGTH_SHORT).show();
             et_telefono.requestFocus();
-        }else if(fecha.isEmpty())     {
-            Toast.makeText(this,"Campo fecha obligatorio",Toast.LENGTH_SHORT).show();
-            et_fecha.requestFocus();
         }else if(nombreEmpresa.isEmpty())     {
             Toast.makeText(this,"Campo nombre empresa obligatorio",Toast.LENGTH_SHORT).show();
             et_nombreEmpresa.requestFocus();
@@ -223,7 +214,6 @@ public class ActualizarProveedor extends AppCompatActivity implements Navigation
         et_correo.setText("");
         et_direccion.setText("");
         et_telefono.setText("");
-        et_fecha.setText("");
         et_nombreEmpresa.setText("");
     }
 

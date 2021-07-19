@@ -10,11 +10,13 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.ResultReceiver;
 import android.util.Patterns;
 import android.view.MenuItem;
 import android.view.View;
@@ -43,7 +45,7 @@ public class GestionarTrabajador extends AppCompatActivity implements Navigation
     //Atributos
     private EditText et_dni,et_nombre,et_apellido,et_ncorreo,et_npass;
     private AutoCompleteTextView atv_rol;
-    private static  final  int GALLERY_INTENT=1;
+
     //para la imagen
     private Button subir;
     private  Uri downloadurl;
@@ -90,7 +92,7 @@ public class GestionarTrabajador extends AppCompatActivity implements Navigation
         //
         //enlazamos los atributos con los componentes
         et_dni=(EditText) findViewById(R.id.txt_dni);
-        et_nombre=(EditText) findViewById(R.id.txt_nombre);
+        et_nombre=(EditText) findViewById(R.id.txt_nombre_prod_entra);
         et_apellido=(EditText) findViewById(R.id.txt_apellido);
         et_ncorreo=(EditText) findViewById(R.id.txt_ncorreo);
         et_npass=(EditText) findViewById(R.id.txt_npass);
@@ -121,14 +123,19 @@ public class GestionarTrabajador extends AppCompatActivity implements Navigation
 
         if( this.dni.equals("") || nombre.equals("") || apellido.equals("") || correo.equals("") || contraseña.equals("") || rol.equals("Escoja el rol") || rol.equals("") )     {
            validarCampos();
+        }else if(dni.length()<8)    {
+            Toast.makeText(this,"El dni debe tener 8 dígitos",Toast.LENGTH_SHORT).show();
+            et_dni.requestFocus();
         }else if(!Patterns.EMAIL_ADDRESS.matcher(correo).matches())  {
             Toast.makeText(this,"El correo es inválido",Toast.LENGTH_SHORT).show();
             et_ncorreo.requestFocus();
 
+        } else if(contraseña.length()<6) {
+            Toast.makeText(this,"La contraseña debe tener 6 a más dígitos ",Toast.LENGTH_SHORT).show();
+            et_npass.requestFocus();
         }else if (!subir.isEnabled())   {
             Toast.makeText(this,"Debe subir una foto",Toast.LENGTH_SHORT).show();
-        }
-        else   {
+        }else   {
          insertar();
         }
     }
@@ -212,10 +219,16 @@ public class GestionarTrabajador extends AppCompatActivity implements Navigation
         et_dni.requestFocus();
     }
 
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        Static.OpcionesNav(item,this);
+        return true;
+    }
+
+
     public void SelecFoto(View view){
         CropImage.startPickImageActivity(GestionarTrabajador.this);
-        subir.setEnabled(true);
-        subir.setBackgroundColor(getResources().getColor(R.color.teal_200));
+
     }
 
     @Override
@@ -223,14 +236,13 @@ public class GestionarTrabajador extends AppCompatActivity implements Navigation
         super.onActivityResult(requestCode, resultCode, data);
         objFoto = new Foto(this,this,requestCode,resultCode,data,subir,"Img_Trabajador");
         objFoto.generadorDeFoto();
+        if(objFoto.color==true) {
+            subir.setBackgroundColor(getResources().getColor(R.color.teal_200));
+        }
         downloadurl = objFoto.getDownloadurl();
     }
 
-    @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        Static.OpcionesNav(item,this);
-        return true;
-    }
+
 
     @Override
     public void onBackPressed() {

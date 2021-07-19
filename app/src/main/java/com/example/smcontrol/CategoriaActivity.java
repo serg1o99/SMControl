@@ -52,7 +52,7 @@ public class CategoriaActivity extends AppCompatActivity implements NavigationVi
     View header;
     TextView correoTrabajador,nombreTrabajador;
 
-    public String codigo, nombre, descripcion;
+    public String codigo, nombre, descripcion,url;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,7 +97,7 @@ public class CategoriaActivity extends AppCompatActivity implements NavigationVi
         if(drawerLayout.isDrawerOpen(GravityCompat.START)){
             drawerLayout.closeDrawer(GravityCompat.START);
         }else {
-            super.onBackPressed();
+            startActivity(new Intent(this,MenuActivity.class));
         }
     }
 
@@ -113,10 +113,11 @@ public class CategoriaActivity extends AppCompatActivity implements NavigationVi
                 codigo = listaCategoria.get(recyclerView.getChildAdapterPosition(v)).getCodigo();
                 nombre = listaCategoria.get(recyclerView.getChildAdapterPosition(v)).getNombre();
                 descripcion = listaCategoria.get(recyclerView.getChildAdapterPosition(v)).getDescripcion();
-
+                url =   listaCategoria.get(recyclerView.getChildAdapterPosition(v)).getUrl();
                 intent.putExtra("codigo",codigo);
                 intent.putExtra("nombre",nombre);
                 intent.putExtra("descripcion",descripcion);
+                intent.putExtra("url",url);
                 startActivity(intent);
 
             }

@@ -4,11 +4,13 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.smcontrol.R;
 
 import java.util.ArrayList;
@@ -38,6 +40,8 @@ public class ProductoAdapter extends RecyclerView.Adapter<ProductoAdapter.MyView
         holder.nombreproducto.setText(p.getNombre());
         holder.nombrecategoria.setText(p.getCategoria()+"\n"+p.getStock());
         holder.txt.setText("Tipo: "+"\nStock: ");
+        String url=p.getUrl();
+        Glide.with(this.context).load(url).placeholder(R.drawable.avatar).error(R.drawable.avatar).into(holder.foto);
     }
 
     @Override
@@ -57,12 +61,14 @@ public class ProductoAdapter extends RecyclerView.Adapter<ProductoAdapter.MyView
     }
 
     public static class MyViewHolder extends RecyclerView.ViewHolder   {
-        TextView nombreproducto,nombrecategoria,precio,txt;
+        TextView nombreproducto,nombrecategoria,txt;
+        ImageView foto;
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             nombreproducto = itemView.findViewById(R.id.tvnombre);
             nombrecategoria = itemView.findViewById(R.id.tvrol);
             txt = itemView.findViewById(R.id.txt);
+            foto= itemView.findViewById(R.id.ivtrabajador);
         }
     }
 

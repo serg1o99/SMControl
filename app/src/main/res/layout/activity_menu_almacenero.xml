@@ -159,7 +159,7 @@
                                 android:layout_marginTop="12dp"
                                 android:textColor="@color/black"
                                 android:textSize="18dp"
-                                android:text="@string/productos"
+                                android:text="Agotandose"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"/>
                         </LinearLayout>

@@ -2,22 +2,21 @@
 <androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/Actualizar_producto"
+    android:id="@+id/Gestionar_entrada"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_margin="0dp"
     android:backgroundTint="#090909"
     tools:context="negocio.GestionarEntradas"
     android:fitsSystemWindows="true"
-
     >
 
     <com.google.android.material.navigation.NavigationView
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:id="@+id/nav_view_prod"
+        android:id="@+id/nav_view_gentr"
         app:headerLayout="@layout/header"
-        app:menu="@menu/main_menu"
+        app:menu="@menu/main_menu_almacenero"
         android:layout_gravity="start"/>
 
     <ScrollView
@@ -31,7 +30,7 @@
             tools:ignore="MissingConstraints">
 
             <com.google.android.material.appbar.MaterialToolbar
-                android:id="@+id/toolbar_prod"
+                android:id="@+id/toolbar_gentra"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 android:background="?attr/colorPrimary"
@@ -39,7 +38,7 @@
                 app:contentInsetStartWithNavigation="0dp"
                 app:navigationIconTint="@color/white"
                 app:popupTheme="@style/Theme.SMControl"
-                app:title="@string/gestionar_producto"
+                app:title="@string/gestionar_entrada"
                 app:titleTextAppearance="@style/Toolbar.TitleText"
                 app:titleTextColor="@color/white">
 
@@ -53,13 +52,12 @@
                 android:layout_marginRight="30dp"
                 android:orientation="vertical">
 
-
                 <com.google.android.material.textfield.TextInputLayout
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginTop="20dp"
-                    android:hint="Código del producto"
+                    android:hint="Empleado"
                     app:boxCornerRadiusBottomEnd="10dp"
                     app:boxCornerRadiusBottomStart="10dp"
                     app:boxCornerRadiusTopEnd="10dp"
@@ -73,43 +71,13 @@
 
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/txt_codigo"
+                        android:id="@+id/txt_nombre_empleado"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
+                        android:fontFamily="@font/reem_kufi"
+                        android:inputType="text"
                         android:editable="false"
                         android:enabled="false"
-                        android:fontFamily="@font/reem_kufi"
-                        android:inputType="text"
-                        android:textColor="@color/black" />
-
-
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:hint="Dni Almacenero"
-                    app:boxCornerRadiusBottomEnd="10dp"
-                    app:boxCornerRadiusBottomStart="10dp"
-                    app:boxCornerRadiusTopEnd="10dp"
-                    app:boxCornerRadiusTopStart="10dp"
-                    app:boxStrokeColor="@color/teal_1"
-                    app:boxStrokeWidthFocused="2dp"
-                    app:endIconTint="@color/teal_1"
-                    app:hintTextColor="@color/hint"
-                    app:startIconDrawable="@drawable/person_outline"
-                    app:startIconTint="@color/teal_1">
-
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/txt_dni"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:enabled="false"
-                        android:fontFamily="@font/reem_kufi"
-                        android:inputType="text"
                         android:textColor="@color/black" />
 
 
@@ -120,97 +88,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginTop="20dp"
-                    android:hint="Nombre del producto"
-                    app:boxCornerRadiusBottomEnd="10dp"
-                    app:boxCornerRadiusBottomStart="10dp"
-                    app:boxCornerRadiusTopEnd="10dp"
-                    app:boxCornerRadiusTopStart="10dp"
-                    app:boxStrokeColor="@color/teal_1"
-                    app:boxStrokeWidthFocused="2dp"
-                    app:endIconTint="@color/teal_1"
-                    app:hintTextColor="@color/hint"
-                    app:startIconDrawable="@drawable/person_outline"
-                    app:startIconTint="@color/teal_1">
-
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/txt_nombre"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:drawableStart="@drawable/person_outline"
-                        android:enabled="false"
-                        android:fontFamily="@font/reem_kufi"
-                        android:inputType="text"
-                        android:textColor="@color/black" />
-
-                    <com.google.android.material.textfield.TextInputLayout
-                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_marginTop="20dp"
-                        android:hint="Stock actual"
-                        app:boxCornerRadiusBottomEnd="10dp"
-                        app:boxCornerRadiusBottomStart="10dp"
-                        app:boxCornerRadiusTopEnd="10dp"
-                        app:boxCornerRadiusTopStart="10dp"
-                        app:boxStrokeColor="@color/teal_1"
-                        app:boxStrokeWidthFocused="2dp"
-                        app:endIconTint="@color/teal_1"
-                        app:hintTextColor="@color/hint"
-                        app:startIconDrawable="@drawable/person_outline"
-                        app:startIconTint="@color/teal_1">
-
-
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/txt_stock"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:enabled="false"
-                            android:fontFamily="@font/reem_kufi"
-                            android:inputType="number|text"
-                            android:textColor="@color/black" />
-
-
-                    </com.google.android.material.textfield.TextInputLayout>
-
-
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:hint="Proveedor"
-                    app:boxCornerRadiusBottomEnd="10dp"
-                    app:boxCornerRadiusBottomStart="10dp"
-                    app:boxCornerRadiusTopEnd="10dp"
-                    app:boxCornerRadiusTopStart="10dp"
-                    app:boxStrokeColor="@color/teal_1"
-                    app:boxStrokeWidthFocused="2dp"
-                    app:endIconMode="clear_text"
-                    app:endIconTint="@color/teal_1"
-                    app:hintTextColor="@color/hint"
-                    app:startIconDrawable="@drawable/person_outline"
-                    app:startIconTint="@color/teal_1">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/txt_proveedor"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:fontFamily="@font/reem_kufi"
-                        android:inputType="text"
-                        android:textColor="@color/black" />
-
-
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:hint="Ingrese el código de entrada"
+                    android:hint="Ingrese codigo"
                     app:boxCornerRadiusBottomEnd="10dp"
                     app:boxCornerRadiusBottomStart="10dp"
                     app:boxCornerRadiusTopEnd="10dp"
@@ -228,17 +106,162 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:fontFamily="@font/reem_kufi"
-                        android:inputType="text"
+                        android:inputType="number"
                         android:textColor="@color/black" />
 
 
                 </com.google.android.material.textfield.TextInputLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    >
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="20dp"
+                        android:hint="codigo"
+                        android:layout_marginRight="10dp"
+                        app:boxCornerRadiusBottomEnd="10dp"
+                        app:boxCornerRadiusBottomStart="10dp"
+                        app:boxCornerRadiusTopEnd="10dp"
+                        app:boxCornerRadiusTopStart="10dp"
+                        app:boxStrokeColor="@color/teal_1"
+                        app:boxStrokeWidthFocused="2dp"
+                        app:endIconTint="@color/teal_1"
+                        app:hintTextColor="@color/hint"
+                        app:startIconDrawable="@drawable/person_outline"
+                        app:startIconTint="@color/teal_1"
+                        android:layout_weight="1"
+                        >
+
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/txt_code"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:fontFamily="@font/reem_kufi"
+                            android:inputType="text"
+                            android:editable="false"
+                            android:enabled="false"
+                            android:textColor="@color/black" />
+
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="20dp"
+                        android:hint="Nombre producto"
+                        app:boxCornerRadiusBottomEnd="10dp"
+                        app:boxCornerRadiusBottomStart="10dp"
+                        app:boxCornerRadiusTopEnd="10dp"
+                        app:boxCornerRadiusTopStart="10dp"
+                        app:boxStrokeColor="@color/teal_1"
+                        app:boxStrokeWidthFocused="2dp"
+                        app:endIconTint="@color/teal_1"
+                        app:hintTextColor="@color/hint"
+                        app:startIconDrawable="@drawable/person_outline"
+                        app:startIconTint="@color/teal_1"
+                        android:layout_weight="1.5">
+
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/txt_nombre_prod_entra"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:fontFamily="@font/reem_kufi"
+                            android:inputType="text"
+                            android:editable="false"
+                            android:enabled="false"
+                            android:textColor="@color/black" />
+
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    >
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="20dp"
+                        android:hint="Stock"
+                        android:layout_marginRight="10dp"
+                        app:boxCornerRadiusBottomEnd="10dp"
+                        app:boxCornerRadiusBottomStart="10dp"
+                        app:boxCornerRadiusTopEnd="10dp"
+                        app:boxCornerRadiusTopStart="10dp"
+                        app:boxStrokeColor="@color/teal_1"
+                        app:boxStrokeWidthFocused="2dp"
+                        app:endIconTint="@color/teal_1"
+                        app:hintTextColor="@color/hint"
+                        app:startIconDrawable="@drawable/person_outline"
+                        app:startIconTint="@color/teal_1"
+                        android:layout_weight="1"
+                        >
+
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/txt_stock_prod_entra"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:fontFamily="@font/reem_kufi"
+                            android:inputType="text"
+                            android:editable="false"
+                            android:enabled="false"
+                            android:textColor="@color/black" />
+
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="20dp"
+                        android:hint="Ingrese cantidad"
+                        app:boxCornerRadiusBottomEnd="10dp"
+                        app:boxCornerRadiusBottomStart="10dp"
+                        app:boxCornerRadiusTopEnd="10dp"
+                        app:boxCornerRadiusTopStart="10dp"
+                        app:boxStrokeColor="@color/teal_1"
+                        app:boxStrokeWidthFocused="2dp"
+                        app:endIconTint="@color/teal_1"
+                        app:hintTextColor="@color/hint"
+                        app:startIconDrawable="@drawable/person_outline"
+                        app:startIconTint="@color/teal_1"
+                        android:layout_weight="1.5">
+
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/txt_cantidad_entrante"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:fontFamily="@font/reem_kufi"
+                            android:inputType="number"
+                            android:textColor="@color/black" />
+
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                </LinearLayout>
+
                 <com.google.android.material.textfield.TextInputLayout
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_marginTop="20dp"
-                    android:hint="Ingrese cantidad entrante"
+                    android:hint="Ingrese fecha de entrada"
                     app:boxCornerRadiusBottomEnd="10dp"
                     app:boxCornerRadiusBottomStart="10dp"
                     app:boxCornerRadiusTopEnd="10dp"
@@ -247,69 +270,82 @@
                     app:boxStrokeWidthFocused="2dp"
                     app:endIconTint="@color/teal_1"
                     app:hintTextColor="@color/hint"
-                    app:startIconDrawable="@drawable/person_outline"
+                    app:startIconDrawable="@drawable/ic_calendar"
                     app:startIconTint="@color/teal_1">
 
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/txt_cantidad"
+                        android:id="@+id/txt_fecha_entrada"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
+                        android:clickable="false"
+                        android:drawableStart="@drawable/person_outline"
+                        android:enabled="false"
                         android:fontFamily="@font/reem_kufi"
-                        android:inputType="text"
-                        android:textColor="@color/black" />
+                        android:inputType="none"
+                        android:textColor="@color/black"
+                        app:textInputLayoutFocusedRectEnabled="false" />
+
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        style = "@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        app:boxCornerRadiusBottomEnd="10dp"
+                        app:boxCornerRadiusBottomStart="10dp"
+                        app:boxCornerRadiusTopEnd="10dp"
+                        app:boxCornerRadiusTopStart="10dp"
+                        app:boxStrokeColor="@color/teal_1"
+                        app:boxStrokeWidthFocused="2dp"
+                        android:layout_marginTop="20dp"
+                        app:endIconTint="@color/teal_1"
+                        app:startIconDrawable="@drawable/person_outline"
+                        app:startIconTint="@color/teal_1"
+                        app:hintTextColor="@color/hint">
+                        >
+
+                        <AutoCompleteTextView
+                            android:id="@+id/txt_prov"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/reem_kufi"
+                            android:hint="Seleccione un proveedor"
+                            android:inputType="none"
+
+                            />
+                    </com.google.android.material.textfield.TextInputLayout>
 
 
                 </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:hint="Fecha de Entrada"
-                    app:boxCornerRadiusBottomEnd="10dp"
-                    app:boxCornerRadiusBottomStart="10dp"
-                    app:boxCornerRadiusTopEnd="10dp"
-                    app:boxCornerRadiusTopStart="10dp"
-                    app:boxStrokeColor="@color/teal_1"
-                    app:boxStrokeWidthFocused="2dp"
-                    app:endIconTint="@color/teal_1"
-                    app:hintTextColor="@color/hint"
-                    app:startIconDrawable="@drawable/person_outline"
-                    app:startIconTint="@color/teal_1">
-
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/txt_fec_entrada"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:fontFamily="@font/reem_kufi"
-                        android:inputType="text"
-                        android:textColor="@color/black" />
-
-
-                </com.google.android.material.textfield.TextInputLayout>
-
 
                 <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btnentrada"
+                    android:id="@+id/btn_procesar_entrada"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
-                    android:layout_marginBottom="1dp"
+                    android:layout_weight="1"
                     android:height="55dp"
-                    android:backgroundTint="@android:color/holo_blue_light"
+                    android:backgroundTint="#03A9F4"
                     android:fontFamily="@font/reem_kufi"
-                    android:onClick="ProcesarEntrada"
-                    android:text="Procesar Entrada"
+                    android:onClick="procesarEntrada"
+                    android:text="PROCESAR ENTRADA"
                     android:textColor="@color/white"
                     android:textSize="14sp"
-                    app:backgroundTint="@android:color/holo_blue_bright"
+                    app:backgroundTint="#F44336"
                     app:cornerRadius="8dp" />
 
-            </LinearLayout>
 
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginTop="20dp">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                </TextView>
+            </LinearLayout>
 
         </LinearLayout>
 

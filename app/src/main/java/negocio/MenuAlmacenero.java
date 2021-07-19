@@ -142,7 +142,7 @@ public class MenuAlmacenero extends AppCompatActivity implements View.OnClickLis
         if(drawerLayout.isDrawerOpen(GravityCompat.START)){
             drawerLayout.closeDrawer(GravityCompat.START);
         }else {
-            super.onBackPressed();
+           super.onBackPressed();
         }
     }
 }

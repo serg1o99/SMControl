@@ -16,7 +16,7 @@
         android:layout_height="match_parent"
         android:id="@+id/nav_view_salidas"
         app:headerLayout="@layout/header"
-        app:menu="@menu/main_menu"
+        app:menu="@menu/main_menu_almacenero"
         android:layout_gravity="start"/>
 
     <ScrollView

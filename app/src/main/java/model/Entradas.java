@@ -7,6 +7,7 @@ public class Entradas {
     private String proveedor;
     private int cantidad_entrante;
     private String fecha_ingreso;
+    private String hora_ingreso;
     private String dni;
 
     public String getCod_entrada() {
@@ -64,5 +65,18 @@ public class Entradas {
 
     public void setDni(String dni) {
         this.dni = dni;
+    }
+
+    public String getHora_ingreso() {
+        return hora_ingreso;
+    }
+
+    public void setHora_ingreso(String hora_ingreso) {
+        this.hora_ingreso = hora_ingreso;
+    }
+
+    @Override
+    public String toString() {
+        return getCod_entrada();
     }
 }

@@ -55,7 +55,7 @@ public class ProveedorActivity extends AppCompatActivity implements NavigationVi
     View header;
     TextView correoTrabajador,nombreTrabajador;
 
-    public String nombre,nombreEmpresa,correo,direccion,telefono,codigo,fecha;
+    public String nombre,nombreEmpresa,correo,direccion,telefono,codigo,url;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -99,7 +99,7 @@ public class ProveedorActivity extends AppCompatActivity implements NavigationVi
         if(drawerLayout.isDrawerOpen(GravityCompat.START)){
             drawerLayout.closeDrawer(GravityCompat.START);
         }else {
-            super.onBackPressed();
+            startActivity(new Intent(this,MenuActivity.class));
         }
     }
 
@@ -115,18 +115,17 @@ public class ProveedorActivity extends AppCompatActivity implements NavigationVi
                 codigo = listaProveedor.get(recyclerView.getChildAdapterPosition(v)).getCodigo();
                 correo = listaProveedor.get(recyclerView.getChildAdapterPosition(v)).getCorreo();
                 direccion = listaProveedor.get(recyclerView.getChildAdapterPosition(v)).getDireccion();
-                fecha = listaProveedor.get(recyclerView.getChildAdapterPosition(v)).getFecha();
-                nombreEmpresa = listaProveedor.get(recyclerView.getChildAdapterPosition(v)).getNombreEmpresa();
-                nombre = listaProveedor.get(recyclerView.getChildAdapterPosition(v)).getNombreProveedor();
+                nombreEmpresa = listaProveedor.get(recyclerView.getChildAdapterPosition(v)).getEmpresa();
+                nombre = listaProveedor.get(recyclerView.getChildAdapterPosition(v)).getNombre();
                 telefono = listaProveedor.get(recyclerView.getChildAdapterPosition(v)).getTelefono();
-
+                url = listaProveedor.get(recyclerView.getChildAdapterPosition(v)).getUrl();
                 intent.putExtra("codigo",codigo);
                 intent.putExtra("correo",correo);
                 intent.putExtra("direccion",direccion);
-                intent.putExtra("fecha",fecha);
                 intent.putExtra("nombreEmpresa",nombreEmpresa);
                 intent.putExtra("nombre",nombre);
                 intent.putExtra("telefono",telefono);
+                intent.putExtra("url",url);
                 startActivity(intent);
 
             }

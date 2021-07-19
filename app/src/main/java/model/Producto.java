@@ -6,7 +6,7 @@ public class Producto {
     private String stock;
     private String precio;
     private String categoria;
-    public static String nom;
+    private String url;
 
     public String getCodigo() {
         return codigo;
@@ -46,5 +46,13 @@ public class Producto {
 
     public void setCategoria(String categoria) {
         this.categoria = categoria;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
     }
 }

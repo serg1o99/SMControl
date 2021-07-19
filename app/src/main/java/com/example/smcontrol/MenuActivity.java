@@ -47,8 +47,6 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
         nombreTrabajador.setText(Static.nombre);
         //
         toolbar = findViewById(R.id.toolbar);
-
-
         setSupportActionBar(toolbar);
         navigationView.bringToFront();
         ActionBarDrawerToggle toogle = new ActionBarDrawerToggle(this,drawerLayout,toolbar,R.string.navigation_drawer_open,R.string.navigation_drawer_close);
@@ -80,18 +78,22 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.cardTrabajador:
                 i = new Intent(this,TrabajadorActivity.class);
                 startActivity(i);
+                finish();
                 break;
             case R.id.cardProducto:
                 i = new Intent(this, ProductoActivity.class);
                 startActivity(i);
+                finish();
                 break;
             case R.id.cardCategoria:
                 i = new Intent(this, CategoriaActivity.class);
                 startActivity(i);
+                finish();
                 break;
             case R.id.cardProveedor:
                 i = new Intent(this, ProveedorActivity.class);
                 startActivity(i);
+                finish();
                 break;
             case R.id.cardReporte:
                 i = new Intent(this, ReporteActivity.class);
@@ -106,8 +108,7 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
         if(drawerLayout.isDrawerOpen(GravityCompat.START)){
             drawerLayout.closeDrawer(GravityCompat.START);
         }else {
-
-            super.onBackPressed();
+         finish();
         }
     }
 

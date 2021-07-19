@@ -1,5 +1,6 @@
 package model;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -39,7 +40,7 @@ public class Foto {
     private Intent data;
 
     private StorageReference storageReference,ref;
-
+    public  Boolean color=false;
     private ProgressDialog cargando;
     private Button subir;
     private Uri downloadurl;
@@ -61,7 +62,6 @@ public class Foto {
 
     public Foto() {
     }
-
     public void  generadorDeFoto(){
         obtenerFoto();
         if(requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE)    {
@@ -70,6 +70,10 @@ public class Foto {
                 Uri resultUri = result.getUri();
                 File url = new File(resultUri.getPath());
                 comprimirFoto(url);
+                Toast.makeText(activity, "Imagen seleccionada",Toast.LENGTH_SHORT).show();
+                subir.setEnabled(true);
+                color=true;
+
             }
         }
     }
@@ -82,6 +86,7 @@ public class Foto {
                     .setGuidelines(CropImageView.Guidelines.ON)
                     .setAspectRatio(1,1)
                     .start(activity);
+
         }
     }
 

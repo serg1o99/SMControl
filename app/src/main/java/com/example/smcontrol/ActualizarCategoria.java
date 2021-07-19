@@ -40,7 +40,7 @@ public class ActualizarCategoria extends AppCompatActivity implements Navigation
     View header;
     TextView correoTrabajador,nombreTrabajador;
     //
-    public String codigo,nombre,descripcion;
+    public String codigo,nombre,descripcion,url;
     //
     DrawerLayout drawerLayout;
     NavigationView navigationView;
@@ -91,7 +91,7 @@ public class ActualizarCategoria extends AppCompatActivity implements Navigation
         codigo      = getIntent().getStringExtra("codigo");
         nombre      = getIntent().getStringExtra("nombre");
         descripcion = getIntent().getStringExtra("descripcion");
-
+        url         = getIntent().getStringExtra("url");
         et_codigo.setText(codigo);
         et_nombre.setText(nombre);
         et_descripcion.setText(descripcion);
@@ -132,7 +132,7 @@ public class ActualizarCategoria extends AppCompatActivity implements Navigation
                 obj.setCodigo(et_codigo.getText().toString().trim());
                 obj.setNombre(et_nombre.getText().toString().trim());
                 obj.setDescripcion(et_descripcion.getText().toString().trim());
-
+                obj.setUrl(url);
                 databaseReference.child("Categoria").child(obj.getCodigo()).setValue(obj);
                 Toast.makeText(getApplicationContext(),"Categoria actualizar",Toast.LENGTH_SHORT).show();
                 Intent intent =new Intent(getApplicationContext(),CategoriaActivity.class);
@@ -172,13 +172,13 @@ public class ActualizarCategoria extends AppCompatActivity implements Navigation
 
     public void validarCampos() {
         if(codigo.isEmpty()) {
-            Toast.makeText(this,"Campo codigo obligatorio",Toast.LENGTH_SHORT).show();
+            Toast.makeText(this,"Campo código obligatorio",Toast.LENGTH_SHORT).show();
             et_codigo.requestFocus();
         }else if(nombre.isEmpty()) {
             Toast.makeText(this,"Campo nombre obligatorio",Toast.LENGTH_SHORT).show();
             et_nombre.requestFocus();
         }else if(descripcion.isEmpty())    {
-            Toast.makeText(this,"Campo descripcion obligatorio",Toast.LENGTH_SHORT).show();
+            Toast.makeText(this,"Campo descripción obligatorio",Toast.LENGTH_SHORT).show();
             et_descripcion.requestFocus();
         }
     }

@@ -2,13 +2,12 @@ package model;
 
 public class Proveedor {
     private String codigo;
-    private String nombreEmpresa;
-    private String nombreProveedor;
+    private String empresa;
+    private String nombre;
     private String correo;
     private String direccion;
-    private String fecha;
     private String telefono;
-
+    private String url;
     public Proveedor() {
 
     }
@@ -21,20 +20,21 @@ public class Proveedor {
         this.codigo = codigo;
     }
 
-    public String getNombreEmpresa() {
-        return nombreEmpresa;
+
+    public String getEmpresa() {
+        return empresa;
     }
 
-    public void setNombreEmpresa(String nombreEmpresa) {
-        this.nombreEmpresa = nombreEmpresa;
+    public void setEmpresa(String empresa) {
+        this.empresa = empresa;
     }
 
-    public String getNombreProveedor() {
-        return nombreProveedor;
+    public String getNombre() {
+        return nombre;
     }
 
-    public void setNombreProveedor(String nombreProveedor) {
-        this.nombreProveedor = nombreProveedor;
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
     }
 
     public String getCorreo() {
@@ -53,13 +53,6 @@ public class Proveedor {
         this.direccion = direccion;
     }
 
-    public String getFecha() {
-        return fecha;
-    }
-
-    public void setFecha(String fecha) {
-        this.fecha = fecha;
-    }
 
     public String getTelefono() {
         return telefono;
@@ -67,6 +60,14 @@ public class Proveedor {
 
     public void setTelefono(String telefono) {
         this.telefono = telefono;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
     }
 }
 

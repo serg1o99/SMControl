@@ -103,7 +103,7 @@
 
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/txt_nombre"
+                        android:id="@+id/txt_nombre_prod_entra"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:drawableStart="@drawable/person_outline"
@@ -234,38 +234,55 @@
 
                 </com.google.android.material.textfield.TextInputLayout>
 
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btnactualizar"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
-                    android:layout_marginBottom="1dp"
-                    android:height="55dp"
-                    android:backgroundTint="@android:color/holo_blue_light"
-                    android:fontFamily="@font/reem_kufi"
-                    android:onClick="ActualizarTrabajador"
-                    android:text="Editar Trabajador"
-                    android:textColor="@color/white"
-                    android:textSize="14sp"
-                    app:backgroundTint="@android:color/holo_blue_bright"
-                    app:cornerRadius="8dp" />
+                    >
 
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btneliminar"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginBottom="1dp"
-                    android:height="55dp"
-                    android:backgroundTint="#F44336"
-                    android:fontFamily="@font/reem_kufi"
-                    android:onClick="EliminarTrabajador"
-                    android:text="Eliminar Trabajador"
-                    android:textColor="@color/white"
-                    android:textSize="14sp"
-                    app:backgroundTint="#F44336"
-                    app:cornerRadius="8dp" />
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnactualizar"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="10dp"
+                        android:layout_weight="1"
+                        android:height="55dp"
+                        android:backgroundTint="@android:color/holo_blue_light"
+                        android:fontFamily="@font/reem_kufi"
+                        android:onClick="ActualizarTrabajador"
+                        android:text="Editar"
+                        android:textColor="@color/white"
+                        android:textSize="14sp"
+                        app:backgroundTint="@android:color/holo_blue_bright"
+                        app:cornerRadius="8dp" />
 
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btneliminar"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_weight="1"
+                        android:height="55dp"
+                        android:backgroundTint="#F44336"
+                        android:fontFamily="@font/reem_kufi"
+                        android:onClick="EliminarTrabajador"
+                        android:text="Eliminar"
+                        android:textColor="@color/white"
+                        android:textSize="14sp"
+                        app:backgroundTint="#F44336"
+                        app:cornerRadius="8dp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="20dp">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                    </TextView>
+                </LinearLayout>
 
             </LinearLayout>
 

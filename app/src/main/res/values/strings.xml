@@ -14,8 +14,8 @@
     <string name="salir">Salir</string>
     <string name="Entradas">Entradas</string>
     <string name="Salidas">Salidas</string>
-    <string name="Productos">Product</string>
-
+    <string name="Productos">Productos</string>
+    <string name="historial">Historial</string>
     <string name="navigation_drawer_open">Navigation drawer open</string>
     <string name="navigation_drawer_close">Navigation drawer close</string>
 
@@ -29,5 +29,6 @@
     <string name="gestionar_categoria">Gestionar Categoria</string>
     <string name="gestionar_producto">Gestionar Producto</string>
     <string name="gestionar_salida">Gestionar Salida</string>
+    <string name="gestionar_entrada">Gestionar Entrada</string>
     <string name="lista_trabajadores">Trabajadores</string>
 </resources>

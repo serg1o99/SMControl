@@ -25,6 +25,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
 import model.Producto;
 import model.Salida;
 import model.Static;
@@ -36,7 +39,7 @@ public class GestionarSalidas extends AppCompatActivity implements NavigationVie
     FirebaseDatabase firebaseDatabase;
     DatabaseReference databaseReference;
     //
-    public String nombre_empleado,codigo_salida,codigo_producto,nombre_producto,stock_producto,cantidad,fecha,descripcion,precio_producto,categoria_producto;
+    public String nombre_empleado,codigo_salida,codigo_producto,nombre_producto,stock_producto,cantidad,fecha,descripcion,precio_producto,categoria_producto,url,hora_salida;
     int cant,stock_prod;
     //
     FirebaseAuth mAuth;
@@ -82,6 +85,7 @@ public class GestionarSalidas extends AppCompatActivity implements NavigationVie
         et_descripcion     = (EditText) findViewById(R.id.txt_descripcion_salida);
         inicializarFirebase();
         cargarDatos();
+        muestraFecha(et_fecha);
     }
 
     private void inicializarFirebase(){
@@ -96,6 +100,7 @@ public class GestionarSalidas extends AppCompatActivity implements NavigationVie
         stock_producto     = getIntent().getStringExtra("stock");
         precio_producto    = getIntent().getStringExtra("precio");
         categoria_producto = getIntent().getStringExtra("categoria");
+        url                = getIntent().getStringExtra("url");
 
         et_nombre_empleado.setText(Static.nombre);
         et_codigo_producto.setText(codigo_producto);
@@ -112,7 +117,7 @@ public class GestionarSalidas extends AppCompatActivity implements NavigationVie
         cantidad        = et_cantidad.getText().toString();
         fecha           = et_fecha.getText().toString();
         descripcion     = et_descripcion.getText().toString();
-
+        hora_salida     = generarHora(hora_salida);
         if(codigo_salida.isEmpty() || cantidad.isEmpty() || fecha.isEmpty() || descripcion.isEmpty()){
             validarCampos();
         }else if(Character.isDigit(cantidad.charAt(0))){
@@ -131,19 +136,32 @@ public class GestionarSalidas extends AppCompatActivity implements NavigationVie
         alerta.setMessage("¿Está seguro de que quiere crear una nueva salida ?").setTitle("Gestionar salida").setPositiveButton("Sí", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+
+                Boolean status=false;
+                if(status==false)   {
                 Salida obj = new Salida();
+                obj.setCod_prod(codigo_producto);
                 obj.setDni(Static.dni);
-                obj.setCod_salida(codigo_salida);
+                obj.setCod_salida("S00"+codigo_salida);
                 obj.setNombre_prod(nombre_producto);
                 obj.setFecha_salida(fecha);
                 obj.setDescripcion(descripcion);
                 obj.setCantidad_salida(Integer.parseInt(cantidad));
+                obj.setHora_salida(hora_salida);
                 databaseReference.child("Salidas").child(obj.getCod_salida()).setValue(obj);
-                actualizarProducto();
-                Toast.makeText(getApplicationContext(),"Salida Procesada",Toast.LENGTH_SHORT).show();
-                Intent i =new Intent(getApplicationContext(), SalidasActivity.class);
-                startActivity(i);
-                finish();
+                status=true;
+                }
+
+                if(status==true)    {
+                    actualizarProducto();
+                    Toast.makeText(getApplicationContext(),"Salida Procesada",Toast.LENGTH_SHORT).show();
+                    Intent i =new Intent(getApplicationContext(), SalidasActivity.class);
+                    startActivity(i);
+                    finish();
+                }else   {
+                    Toast.makeText(getApplicationContext(),"Ocurrió un error al procesar",Toast.LENGTH_SHORT).show();
+                }
+
             }
         }).setNegativeButton("No", new DialogInterface.OnClickListener() {
             @Override
@@ -161,6 +179,7 @@ public class GestionarSalidas extends AppCompatActivity implements NavigationVie
         obj.setStock(""+nuevoStock);
         obj.setPrecio(precio_producto);
         obj.setCategoria(categoria_producto);
+        obj.setUrl(url);
         databaseReference.child("Producto").child(""+obj.getCodigo()).setValue(obj);
     }
 
@@ -197,6 +216,27 @@ public class GestionarSalidas extends AppCompatActivity implements NavigationVie
             super.onBackPressed();
         }
     }
+
+    //para la fecha
+
+    public void muestraFecha(EditText fecha){
+        final Calendar calendar=Calendar.getInstance();
+        calendar.get(Calendar.YEAR);
+        calendar.get(Calendar.MONTH);
+        calendar.get(Calendar.DAY_OF_MONTH);
+        SimpleDateFormat simpleDateFormat=new SimpleDateFormat("dd-MM-yyyy");
+        fecha.setText(simpleDateFormat.format(calendar.getTime()));
+    }
+
+    public String generarHora(String hora){
+        final Calendar hour=Calendar.getInstance();
+        hour.get(Calendar.HOUR_OF_DAY);
+        hour.get(Calendar.MINUTE);
+        SimpleDateFormat simpleHourFormat=new SimpleDateFormat("HH:mm");
+        hora=simpleHourFormat.format(hour.getTime());
+        return hora;
+    }
+
 
 
 }

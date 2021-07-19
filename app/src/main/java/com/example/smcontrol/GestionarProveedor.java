@@ -17,6 +17,7 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -30,23 +31,24 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.theartofdev.edmodo.cropper.CropImage;
 
+import model.Foto;
 import model.Proveedor;
 import model.Static;
 import model.Trabajador;
 
 public class GestionarProveedor extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
-    private EditText et_codigo,et_nombre,et_nombreEmpresa,et_correo,et_direccion,et_telefono,et_fecha;
-    private static  final  int GALLERY_INTENT = 1;
-    //
+    private EditText et_codigo,et_nombre,et_nombreEmpresa,et_correo,et_direccion,et_telefono;
+
     private StorageReference storageReference;
     private ProgressDialog progressDialog;
     //
     FirebaseDatabase firebaseDatabase;
     DatabaseReference databaseReference;
     //
-    public String nombre,nombreEmpresa,correo,direccion,telefono,codigo,fecha;
+    public String nombre,nombreEmpresa,correo,direccion,telefono,codigo,url;
     //
     DrawerLayout drawerLayout;
     NavigationView navigationView;
@@ -55,7 +57,10 @@ public class GestionarProveedor extends AppCompatActivity implements NavigationV
     //
     View header;
     TextView correoTrabajador,nombreTrabajador;
-
+    //para la imagen
+    private Button subir;
+    private  Uri downloadurl;
+    Foto objFoto;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,7 +77,9 @@ public class GestionarProveedor extends AppCompatActivity implements NavigationV
         nombreTrabajador.setText(Static.nombre);
         //
         toolbar = findViewById(R.id.toolbarprov_);
-
+        //para subir imagen
+        subir = (Button) findViewById(R.id.btnsubirfoto);
+        //
         setSupportActionBar(toolbar);
         navigationView.bringToFront();
         ActionBarDrawerToggle toogle = new ActionBarDrawerToggle(this,drawerLayout,toolbar,R.string.navigation_drawer_open,R.string.navigation_drawer_close);
@@ -88,25 +95,11 @@ public class GestionarProveedor extends AppCompatActivity implements NavigationV
         et_correo        =  (EditText) findViewById(R.id.txt_correo_prov);
         et_direccion     =  (EditText) findViewById(R.id.txt_direccion);
         et_telefono      =  (EditText) findViewById(R.id.txt_telefono);
-        et_fecha         =  (EditText) findViewById(R.id.txt_fecha);
         et_nombreEmpresa =  (EditText) findViewById(R.id.txt_nom_empresa);
         inicializarFirebase();
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode==GALLERY_INTENT && resultCode == RESULT_OK)  {
-            Uri uri=data.getData();
-            StorageReference filePath=storageReference.child("img_Proveedores").child(uri.getLastPathSegment());
-            filePath.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    Toast.makeText(getApplicationContext(),"Se subio exitosamente la foto.",Toast.LENGTH_SHORT).show();
-                }
-            });
-        }
-    }
+
 
     private void inicializarFirebase(){
         FirebaseApp.initializeApp(this);
@@ -121,11 +114,12 @@ public class GestionarProveedor extends AppCompatActivity implements NavigationV
         correo      = et_correo.getText().toString();
         direccion   = et_direccion.getText().toString();
         telefono    = et_telefono.getText().toString();
-        fecha       = et_fecha.getText().toString();
         nombreEmpresa = et_nombreEmpresa.getText().toString();
 
-        if( this.codigo.equals("") || nombre.equals("") || correo.equals("") || direccion.equals("") || telefono.equals("") || nombreEmpresa.equals("") || fecha.equals("")){
+        if( this.codigo.equals("") || nombre.equals("") || correo.equals("") || direccion.equals("") || telefono.equals("") || nombreEmpresa.equals("")){
             validarCampos();
+        }else if (!subir.isEnabled())   {
+            Toast.makeText(this,"Debe subir una foto",Toast.LENGTH_SHORT).show();
         }else   {
             insertar();
         }
@@ -137,14 +131,14 @@ public class GestionarProveedor extends AppCompatActivity implements NavigationV
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 Proveedor obj = new Proveedor();
-                obj.setCodigo(codigo);
-                obj.setNombreProveedor(nombre);
+                downloadurl=objFoto.getDownloadurl();
+                obj.setCodigo("PV0"+codigo);
+                obj.setNombre(nombre);
                 obj.setCorreo(correo);
                 obj.setDireccion(direccion);
                 obj.setTelefono(telefono);
-                obj.setFecha(fecha);
-                obj.setNombreEmpresa(nombreEmpresa);
-
+                obj.setEmpresa(nombreEmpresa);
+                obj.setUrl(""+downloadurl);
                 databaseReference.child("Proveedor").child(""+obj.getCodigo()).setValue(obj);
                 Toast.makeText(getApplicationContext() ,"Proveedor Agregado",Toast.LENGTH_SHORT).show();
                 limpiarCampos();
@@ -162,7 +156,7 @@ public class GestionarProveedor extends AppCompatActivity implements NavigationV
 
     public void validarCampos() {
         if(codigo.isEmpty()) {
-            Toast.makeText(this,"Campo codigo obligatorio",Toast.LENGTH_SHORT).show();
+            Toast.makeText(this,"Campo código obligatorio",Toast.LENGTH_SHORT).show();
             et_codigo.requestFocus();
         }else if(nombre.isEmpty()) {
             Toast.makeText(this,"Campo nombre obligatorio",Toast.LENGTH_SHORT).show();
@@ -171,14 +165,11 @@ public class GestionarProveedor extends AppCompatActivity implements NavigationV
             Toast.makeText(this,"Campo correo obligatorio",Toast.LENGTH_SHORT).show();
             et_correo.requestFocus();
         }else if(direccion.isEmpty()) {
-            Toast.makeText(this,"Campo direccion obligatorio",Toast.LENGTH_SHORT).show();
+            Toast.makeText(this,"Campo dirección obligatorio",Toast.LENGTH_SHORT).show();
             et_direccion.requestFocus();
         }else if(telefono.isEmpty())  {
-            Toast.makeText(this,"Campo telefono obligatorio",Toast.LENGTH_SHORT).show();
+            Toast.makeText(this,"Campo teléfono obligatorio",Toast.LENGTH_SHORT).show();
             et_telefono.requestFocus();
-        }else if(fecha.isEmpty())     {
-            Toast.makeText(this,"Campo fecha obligatorio",Toast.LENGTH_SHORT).show();
-            et_fecha.requestFocus();
         }else if(nombreEmpresa.isEmpty())     {
             Toast.makeText(this,"Campo nombre empresa obligatorio",Toast.LENGTH_SHORT).show();
             et_nombreEmpresa.requestFocus();
@@ -191,7 +182,6 @@ public class GestionarProveedor extends AppCompatActivity implements NavigationV
         et_correo.setText("");
         et_direccion.setText("");
         et_telefono.setText("");
-        et_fecha.setText("");
         et_nombreEmpresa.setText("");
     }
 
@@ -210,9 +200,20 @@ public class GestionarProveedor extends AppCompatActivity implements NavigationV
         return true;
     }
 
-    public void SubirFoto(View view){
-        Intent intent=new Intent(Intent.ACTION_PICK);
-        intent.setType("image/*");
-        startActivityForResult(intent,GALLERY_INTENT);
+    public void SelecFoto(View view){
+        CropImage.startPickImageActivity(GestionarProveedor.this);
+
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        objFoto = new Foto(this,this,requestCode,resultCode,data,subir,"Img_Proveedor");
+        objFoto.generadorDeFoto();
+        if(objFoto.color==true) {
+            subir.setBackgroundColor(getResources().getColor(R.color.teal_200));
+        }
+        downloadurl = objFoto.getDownloadurl();
+    }
+
 }

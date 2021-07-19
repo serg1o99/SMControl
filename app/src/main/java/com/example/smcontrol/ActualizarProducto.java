@@ -13,6 +13,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -20,17 +22,19 @@ import android.widget.Toast;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.database.ValueEventListener;
 
 import model.Producto;
-import model.Proveedor;
 import model.Static;
 
 public class ActualizarProducto extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
-    private EditText et_codigo,et_nombre,et_stock,et_precio,et_categoria;
+    private EditText et_codigo,et_nombre,et_stock,et_precio;
+    public AutoCompleteTextView atv_categoria;
     //
     FirebaseDatabase firebaseDatabase;
     DatabaseReference databaseReference;
@@ -39,7 +43,7 @@ public class ActualizarProducto extends AppCompatActivity implements NavigationV
     View header;
     TextView correoTrabajador,nombreTrabajador;
     //
-    public String codigo,nombre,stock,precio,categoria;
+    public String codigo,nombre,stock,precio,categoria,url;
     //
     DrawerLayout drawerLayout;
     NavigationView navigationView;
@@ -70,14 +74,35 @@ public class ActualizarProducto extends AppCompatActivity implements NavigationV
         //
         navigationView.setNavigationItemSelectedListener(this);
         //
-        et_codigo     =  (EditText) findViewById(R.id.txt_codigo);
-        et_nombre     =  (EditText) findViewById(R.id.txt_nombre);
-        et_stock      =  (EditText) findViewById(R.id.txt_stock);
+        et_codigo     =  (EditText) findViewById(R.id.txt_code);
+        et_nombre     =  (EditText) findViewById(R.id.txt_nombre_prod_entra);
+        et_stock      =  (EditText) findViewById(R.id.txt_stock_prod_entra);
         et_precio     =  (EditText) findViewById(R.id.txt_precio);
-        et_categoria  =  (EditText) findViewById(R.id.txt_categoria);
+        atv_categoria  = (AutoCompleteTextView) findViewById(R.id.txt_categorias);
         inicializarFirebase();
         //
+        listarCategorias();
+        //
         CargarDatosActualizar();
+        //
+
+    }
+
+    private void listarCategorias() {
+        final ArrayAdapter<String> autoComplete = new ArrayAdapter<>(this, R.layout.lista_items);
+        databaseReference.child("Categoria").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot snapshotCat : snapshot.getChildren()){
+                    String nombreCat = snapshotCat.child("nombre").getValue(String.class);
+                    autoComplete.add(nombreCat);
+                }
+                autoComplete.add("Otros");
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) { }
+        });
+        atv_categoria.setAdapter(autoComplete);
     }
 
     private void inicializarFirebase(){
@@ -92,13 +117,11 @@ public class ActualizarProducto extends AppCompatActivity implements NavigationV
         nombre       = getIntent().getStringExtra("nombre");
         stock        = getIntent().getStringExtra("stock");
         precio       = getIntent().getStringExtra("precio");
-        categoria    = getIntent().getStringExtra("categoria");
-
+        url=getIntent().getStringExtra("url");
         et_codigo.setText(codigo);
         et_nombre.setText(nombre);
         et_stock.setText(stock);
         et_precio.setText(precio);
-        et_categoria.setText(categoria);
     }
 
     public void actualizarProducto(View view) {
@@ -106,7 +129,7 @@ public class ActualizarProducto extends AppCompatActivity implements NavigationV
         nombre       = et_nombre.getText().toString();
         stock        = et_stock.getText().toString();
         precio       = et_precio.getText().toString();
-        categoria    = et_categoria.getText().toString();
+        categoria    = atv_categoria.getText().toString();
 
 
         if( this.codigo.equals("") || nombre.equals("") || stock.equals("") || precio.equals("") || categoria.equals("") ){
@@ -121,7 +144,7 @@ public class ActualizarProducto extends AppCompatActivity implements NavigationV
         nombre       = et_nombre.getText().toString();
         stock        = et_stock.getText().toString();
         precio       = et_precio.getText().toString();
-        categoria    = et_categoria.getText().toString();
+        categoria    = atv_categoria.getText().toString();
 
 
         if( this.codigo.equals("") || nombre.equals("") || stock.equals("") || precio.equals("") || categoria.equals("") ){
@@ -141,8 +164,8 @@ public class ActualizarProducto extends AppCompatActivity implements NavigationV
                 obj.setNombre(et_nombre.getText().toString().trim());
                 obj.setStock(et_stock.getText().toString().trim());
                 obj.setPrecio(et_precio.getText().toString().trim());
-                obj.setCategoria(et_categoria.getText().toString().trim());
-
+                obj.setCategoria(atv_categoria.getText().toString().trim());
+                obj.setUrl(url);
                 databaseReference.child("Producto").child(""+obj.getCodigo()).setValue(obj);
                 Toast.makeText(getApplicationContext(),"Producto actualizado",Toast.LENGTH_SHORT).show();
                 Intent intent =new Intent(getApplicationContext(),ProductoActivity.class);
@@ -181,20 +204,20 @@ public class ActualizarProducto extends AppCompatActivity implements NavigationV
 
     public void validarCampos() {
         if(codigo.isEmpty()) {
-            Toast.makeText(this,"Campo codigo obligatorio",Toast.LENGTH_SHORT).show();
+            Toast.makeText(this,"Campo código obligatorio",Toast.LENGTH_SHORT).show();
             et_codigo.requestFocus();
         }else if(nombre.isEmpty()) {
             Toast.makeText(this,"Campo nombre obligatorio",Toast.LENGTH_SHORT).show();
             et_nombre.requestFocus();
         }else if(stock.isEmpty())    {
-            Toast.makeText(this,"Campo correo obligatorio",Toast.LENGTH_SHORT).show();
+            Toast.makeText(this,"Campo stock obligatorio",Toast.LENGTH_SHORT).show();
             et_stock.requestFocus();
         }else if(precio.isEmpty()) {
-            Toast.makeText(this,"Campo direccion obligatorio",Toast.LENGTH_SHORT).show();
+            Toast.makeText(this,"Campo precio obligatorio",Toast.LENGTH_SHORT).show();
             et_precio.requestFocus();
         }else if(categoria.isEmpty()) {
-            Toast.makeText(this, "Campo telefono obligatorio", Toast.LENGTH_SHORT).show();
-            et_categoria.requestFocus();
+            Toast.makeText(this, "Campo categoría obligatorio", Toast.LENGTH_SHORT).show();
+            atv_categoria.requestFocus();
         }
     }
 
@@ -203,7 +226,7 @@ public class ActualizarProducto extends AppCompatActivity implements NavigationV
         et_nombre.setText("");
         et_stock.setText("");
         et_precio.setText("");
-        et_categoria.setText("");
+        atv_categoria.setText("");
     }
 
     @Override

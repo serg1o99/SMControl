@@ -81,15 +81,14 @@ public class Acceso extends AppCompatActivity {
                                 startActivity( new Intent(getApplicationContext(),MenuActivity.class));
                                 finish();
                             }else{
-                                Intent it=new Intent(getApplicationContext(),negocio.MenuAlmacenero.class);
-                                startActivity(it);
+                                startActivity( new Intent(getApplicationContext(),negocio.MenuAlmacenero.class));
                                 finish();
                             }
                         }
                         @Override
                         public void onCancelled(@NonNull DatabaseError error) { }
                     });
-                    startActivity( new Intent(getApplicationContext(),MenuActivity.class));
+
                 } else {
                     Toast.makeText(getApplicationContext(), "Email y/o Contraseña incorrecto .",Toast.LENGTH_SHORT).show();
                 }

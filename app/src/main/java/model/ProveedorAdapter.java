@@ -4,11 +4,13 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.smcontrol.R;
 
 import java.util.ArrayList;
@@ -35,9 +37,11 @@ public class ProveedorAdapter extends RecyclerView.Adapter<ProveedorAdapter.MyVi
     @Override
     public void onBindViewHolder(@NonNull ProveedorAdapter.MyViewHolder holder, int position) {
         Proveedor p = listaProveedor.get(position);
-        holder.nombreProveedor.setText(p.getNombreProveedor());
-        holder.nombreEmpresa.setText(p.getNombreEmpresa());
-        holder.txt.setText("Empresa: ");
+        holder.nombreProveedor.setText(p.getNombre());
+        holder.nombreEmpresa.setText(p.getEmpresa());
+        holder.txt.setText("Emp: ");
+        String url=p.getUrl();
+        Glide.with(this.context).load(url).placeholder(R.drawable.avatar).error(R.drawable.avatar).into(holder.foto);
     }
 
     @Override
@@ -58,12 +62,13 @@ public class ProveedorAdapter extends RecyclerView.Adapter<ProveedorAdapter.MyVi
 
     public static class MyViewHolder extends RecyclerView.ViewHolder   {
         TextView nombreProveedor,nombreEmpresa,txt;
-
+        ImageView foto;
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             nombreProveedor = itemView.findViewById(R.id.tvnombre);
             nombreEmpresa = itemView.findViewById(R.id.tvrol);
             txt = itemView.findViewById(R.id.txt);
+            foto= itemView.findViewById(R.id.ivtrabajador);
         }
     }
 }

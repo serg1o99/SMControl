@@ -9,9 +9,9 @@
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="80dp"
-        android:background="#DDF44336"
+        android:background="#EEB3281E"
         android:padding="8dp"
-        android:src="@drawable/ic_icoalerta"/>
+        android:src="@drawable/ic_icoalerta" />
 
     <TextView
         android:id="@+id/text_dialog"
@@ -27,35 +27,34 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal">
+
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btncancelar"
         android:layout_width="120dp"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:textAllCaps="false"
-        android:backgroundTint="#DDF44336"
-        android:fontFamily="@font/reem_kufi"
-        android:text="cancelar"
-        android:layout_marginEnd="3dp"
-        android:textColor="@color/white"
-        android:textSize="18sp"
         android:layout_marginStart="5dp"
-         />
+        android:layout_marginEnd="3dp"
+        android:layout_weight="1"
+        android:backgroundTint="#EEB3281E"
+        android:fontFamily="@font/reem_kufi"
+        android:text="Cancelar"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:textSize="18sp" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnaceptar"
         android:layout_width="120dp"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:textAllCaps="false"
-        android:backgroundTint="#DDF44336"
-        android:fontFamily="@font/reem_kufi"
-        android:text="Ir al almacén"
         android:layout_marginStart="3dp"
-        android:textColor="@color/white"
-        android:textSize="18sp"
         android:layout_marginEnd="5dp"
-        />
+        android:layout_weight="1"
+        android:backgroundTint="#EEB3281E"
+        android:fontFamily="@font/reem_kufi"
+        android:text="Atender"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:textSize="18sp" />
 
 </LinearLayout>
 

@@ -54,15 +54,15 @@ public class EntradasActivity extends AppCompatActivity implements NavigationVie
     View header;
     TextView correoTrabajador,nombreTrabajador;
     //variables globales
-    public String codigo,nombre,stock,precio,categoria;
+    public String codigo,nombre,stock,precio,categoria,url;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_entradas);
 
         //
-        drawerLayout = findViewById(R.id.Producto_layout);
-        navigationView = findViewById(R.id.nav_view_prod);
+        drawerLayout = findViewById(R.id.Entrada_layout);
+        navigationView = findViewById(R.id.nav_view_entradas);
         //
         header = navigationView.getHeaderView(0);
         correoTrabajador = (TextView) header.findViewById(R.id.tv_email);
@@ -70,7 +70,7 @@ public class EntradasActivity extends AppCompatActivity implements NavigationVie
         nombreTrabajador = (TextView) header.findViewById(R.id.tv_nombre);
         nombreTrabajador.setText(Static.nombre);
         //
-        toolbar = findViewById(R.id.toolbar_prod);
+        toolbar = findViewById(R.id.toolbar_entradas);
         //floating button
         fab=findViewById(R.id.fab);
         setSupportActionBar(toolbar);
@@ -80,7 +80,7 @@ public class EntradasActivity extends AppCompatActivity implements NavigationVie
         toogle.syncState();
         //
         navigationView.setNavigationItemSelectedListener(this);
-        recyclerView = findViewById(R.id.recyclerView_prod);
+        recyclerView = findViewById(R.id.recyclerView_entradas);
         database = FirebaseDatabase.getInstance().getReference("Producto");
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -90,7 +90,6 @@ public class EntradasActivity extends AppCompatActivity implements NavigationVie
         recyclerView.setAdapter(productoAdapter);
 
         OnClickRecyclerViewListener();
-        OnClickFloatingButtonListener();
         FirebaseEventListener();
     }
 
@@ -110,20 +109,21 @@ public class EntradasActivity extends AppCompatActivity implements NavigationVie
         productoAdapter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), GestionarEntradas.class);
+                Intent intent = new Intent(getApplicationContext(),GestionarEntradas.class);
 
                 codigo = listaProducto.get(recyclerView.getChildAdapterPosition(v)).getCodigo();
                 nombre = listaProducto.get(recyclerView.getChildAdapterPosition(v)).getNombre();
                 stock = listaProducto.get(recyclerView.getChildAdapterPosition(v)).getStock();
                 precio = listaProducto.get(recyclerView.getChildAdapterPosition(v)).getPrecio();
                 categoria = listaProducto.get(recyclerView.getChildAdapterPosition(v)).getCategoria();
-
+                url       = listaProducto.get(recyclerView.getChildAdapterPosition(v)).getUrl();
 
                 intent.putExtra("codigo",codigo);
                 intent.putExtra("nombre",nombre);
                 intent.putExtra("stock",stock);
                 intent.putExtra("precio",precio);
                 intent.putExtra("categoria",categoria);
+                intent.putExtra("url",url);
                 startActivity(intent);
                 finish();
             }
@@ -131,15 +131,6 @@ public class EntradasActivity extends AppCompatActivity implements NavigationVie
         recyclerView.setAdapter(productoAdapter);
     }
 
-    public void OnClickFloatingButtonListener()   {
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent it=new Intent(getApplicationContext(), GestionarProducto.class);
-                startActivity(it);
-            }
-        });
-    }
 
     public void  FirebaseEventListener(){
         database.addValueEventListener(new ValueEventListener() {
@@ -162,4 +153,6 @@ public class EntradasActivity extends AppCompatActivity implements NavigationVie
         Static.OpcionesNavAlmacenero(item,this);
         return true;
     }
+
+
 }

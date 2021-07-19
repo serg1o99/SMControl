@@ -7,6 +7,7 @@ public class Salida {
     private String cod_prod;
     private String nombre_prod;
     private String fecha_salida;
+    private String hora_salida;
     private String descripcion;
     private int cantidad_salida;
 
@@ -64,5 +65,18 @@ public class Salida {
 
     public void setDni(String dni) {
         this.dni = dni;
+    }
+
+    public String getHora_salida() {
+        return hora_salida;
+    }
+
+    public void setHora_salida(String hora_salida) {
+        this.hora_salida = hora_salida;
+    }
+
+    @Override
+    public String toString() {
+        return getCod_salida();
     }
 }

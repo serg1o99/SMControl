@@ -81,12 +81,10 @@ public class Alerta {
 
         if(alerta){
             dialog.show();
-        }else{
-            Toast.makeText(context,"Todo bien",Toast.LENGTH_SHORT).show();
         }
 
         TextView txt=view.findViewById(R.id.text_dialog);
-        txt.setText("Nos estamos quedando sin stock");
+        txt.setText("Algunos productos están por agotarse");
         botones(view,dialog);
     }
 

@@ -73,7 +73,7 @@ public class ActualizarTrabajador extends AppCompatActivity implements Navigatio
         //
         //enlazamos los atributos con los componentes
         et_dni=(EditText) findViewById(R.id.txt_dni);
-        et_nombre=(EditText) findViewById(R.id.txt_nombre);
+        et_nombre=(EditText) findViewById(R.id.txt_nombre_prod_entra);
         et_apellido=(EditText) findViewById(R.id.txt_apellido);
         et_ncorreo=(EditText) findViewById(R.id.txt_ncorreo);
         et_npass=(EditText) findViewById(R.id.txt_npass);

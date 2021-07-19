@@ -53,7 +53,7 @@ public class ProductoActivity extends AppCompatActivity implements NavigationVie
     View header;
     TextView correoTrabajador,nombreTrabajador;
 
-    public String codigo,nombre,stock,precio,categoria;
+    public String codigo,nombre,stock,precio,categoria,url;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -97,7 +97,7 @@ public class ProductoActivity extends AppCompatActivity implements NavigationVie
         if(drawerLayout.isDrawerOpen(GravityCompat.START)){
             drawerLayout.closeDrawer(GravityCompat.START);
         }else {
-            super.onBackPressed();
+            startActivity(new Intent(this,MenuActivity.class));
         }
     }
 
@@ -114,14 +114,13 @@ public class ProductoActivity extends AppCompatActivity implements NavigationVie
                 nombre = listaProducto.get(recyclerView.getChildAdapterPosition(v)).getNombre();
                 stock = listaProducto.get(recyclerView.getChildAdapterPosition(v)).getStock();
                 precio = listaProducto.get(recyclerView.getChildAdapterPosition(v)).getPrecio();
-                categoria = listaProducto.get(recyclerView.getChildAdapterPosition(v)).getCategoria();
-
+                url=listaProducto.get(recyclerView.getChildAdapterPosition(v)).getUrl();
 
                 intent.putExtra("codigo",codigo);
                 intent.putExtra("nombre",nombre);
                 intent.putExtra("stock",stock);
                 intent.putExtra("precio",precio);
-                intent.putExtra("categoria",categoria);
+                intent.putExtra("url",url);
                 startActivity(intent);
             }
         });

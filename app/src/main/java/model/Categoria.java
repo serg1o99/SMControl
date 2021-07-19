@@ -5,7 +5,7 @@ public class Categoria {
     private String codigo;
     private String nombre;
     private String descripcion;
-
+    private String url;
     public Categoria() {
     }
 
@@ -36,5 +36,13 @@ public class Categoria {
     @Override
     public String toString() {
         return nombre;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
     }
 }

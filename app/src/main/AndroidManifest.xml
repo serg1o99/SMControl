@@ -14,7 +14,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.SMControl">
-        <activity android:name="negocio.SalidasActivity"></activity>
+        <activity android:name=".ReporteSalida"   android:screenOrientation="portrait"></activity>
+        <activity android:name=".ReporteEntrada"  android:screenOrientation="portrait"/>
+        <activity android:name="negocio.SalidasActivity" />
         <activity android:name="negocio.EntradasActivity" />
         <activity android:name="negocio.AlmacenActivity" />
         <activity android:name="negocio.ReporteAlmacenActivity" />

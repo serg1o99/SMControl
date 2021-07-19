@@ -18,6 +18,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -34,20 +35,16 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.theartofdev.edmodo.cropper.CropImage;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import model.Categoria;
+import model.Foto;
 import model.Producto;
-import model.Proveedor;
 import model.Static;
 
 public class GestionarProducto extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
     private EditText et_codigo,et_nombre,et_stock,et_precio;
     public AutoCompleteTextView atv_categoria;
-    private static  final  int GALLERY_INTENT = 1;
     //
     private StorageReference storageReference;
     private ProgressDialog progressDialog;
@@ -58,12 +55,16 @@ public class GestionarProducto extends AppCompatActivity implements NavigationVi
     //
     View header;
     TextView correoTrabajador,nombreTrabajador;
-
     public String codigo,nombre,stock,precio,categoria;
     //
     DrawerLayout drawerLayout;
     NavigationView navigationView;
     Toolbar toolbar;
+
+    //para la imagen
+    private Button subir;
+    private  Uri downloadurl;
+    Foto objFoto;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,7 +81,9 @@ public class GestionarProducto extends AppCompatActivity implements NavigationVi
         nombreTrabajador.setText(Static.nombre);
         //
         toolbar = findViewById(R.id.toolbar_prod);
-
+        //para subir imagen
+        subir = (Button) findViewById(R.id.btnsubirfoto);
+        //
         setSupportActionBar(toolbar);
         navigationView.bringToFront();
         ActionBarDrawerToggle toogle = new ActionBarDrawerToggle(this,drawerLayout,toolbar,R.string.navigation_drawer_open,R.string.navigation_drawer_close);
@@ -91,9 +94,9 @@ public class GestionarProducto extends AppCompatActivity implements NavigationVi
         //
         navigationView.setNavigationItemSelectedListener(this);
         //
-        et_codigo      =  (EditText) findViewById(R.id.txt_codigo);
-        et_nombre      =  (EditText) findViewById(R.id.txt_nombre);
-        et_stock       =  (EditText) findViewById(R.id.txt_stock);
+        et_codigo      =  (EditText) findViewById(R.id.txt_code);
+        et_nombre      =  (EditText) findViewById(R.id.txt_nombre_prod_entra);
+        et_stock       =  (EditText) findViewById(R.id.txt_stock_prod_entra);
         et_precio      =  (EditText) findViewById(R.id.txt_precio);
         atv_categoria  = (AutoCompleteTextView) findViewById(R.id.txt_categorias);
         //
@@ -108,29 +111,14 @@ public class GestionarProducto extends AppCompatActivity implements NavigationVi
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot snapshotCat : snapshot.getChildren()){
                     String nombreCat = snapshotCat.child("nombre").getValue(String.class);
-                    System.out.println(nombreCat );
                     autoComplete.add(nombreCat);
                 }
+                autoComplete.add("Otros");
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error) { }
         });
         atv_categoria.setAdapter(autoComplete);
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode==GALLERY_INTENT && resultCode == RESULT_OK)  {
-            Uri uri=data.getData();
-            StorageReference filePath=storageReference.child("img_Productos").child(uri.getLastPathSegment());
-            filePath.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    Toast.makeText(getApplicationContext(),"Se subio exitosamente la foto.",Toast.LENGTH_SHORT).show();
-                }
-            });
-        }
     }
 
     private void inicializarFirebase(){
@@ -149,6 +137,8 @@ public class GestionarProducto extends AppCompatActivity implements NavigationVi
 
         if( this.codigo.equals("") || nombre.equals("") || stock.equals("") || precio.equals("") || categoria.equals("") || categoria.equals("Escoja la categoria")){
             validarCampos();
+        }else if (!subir.isEnabled())   {
+            Toast.makeText(this,"Debe subir una foto",Toast.LENGTH_SHORT).show();
         }else   {
             insertar();
         }
@@ -160,12 +150,13 @@ public class GestionarProducto extends AppCompatActivity implements NavigationVi
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 Producto obj = new Producto();
-                obj.setCodigo(codigo);
+                downloadurl=objFoto.getDownloadurl();
+                obj.setCodigo("PD0"+codigo);
                 obj.setNombre(nombre);
                 obj.setStock(stock);
                 obj.setPrecio(precio);
                 obj.setCategoria(categoria);
-
+                obj.setUrl(""+downloadurl);
                 databaseReference.child("Producto").child(""+obj.getCodigo()).setValue(obj);
                 Toast.makeText(getApplicationContext(),"Producto Agregado",Toast.LENGTH_SHORT).show();
                 limpiarCampos();
@@ -183,19 +174,19 @@ public class GestionarProducto extends AppCompatActivity implements NavigationVi
 
     public void validarCampos() {
         if(codigo.isEmpty()) {
-            Toast.makeText(this,"Campo codigo obligatorio",Toast.LENGTH_SHORT).show();
+            Toast.makeText(this,"Campo código obligatorio",Toast.LENGTH_SHORT).show();
             et_codigo.requestFocus();
         }else if(nombre.isEmpty()) {
             Toast.makeText(this,"Campo nombre obligatorio",Toast.LENGTH_SHORT).show();
             et_nombre.requestFocus();
         }else if(stock.isEmpty())    {
-            Toast.makeText(this,"Campo correo obligatorio",Toast.LENGTH_SHORT).show();
+            Toast.makeText(this,"Campo stock obligatorio",Toast.LENGTH_SHORT).show();
             et_stock.requestFocus();
         }else if(precio.isEmpty()) {
-            Toast.makeText(this,"Campo direccion obligatorio",Toast.LENGTH_SHORT).show();
+            Toast.makeText(this,"Campo precio obligatorio",Toast.LENGTH_SHORT).show();
             et_precio.requestFocus();
         }else if(categoria.isEmpty()) {
-            Toast.makeText(this, "Campo telefono obligatorio", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Campo categoría obligatorio", Toast.LENGTH_SHORT).show();
             atv_categoria.requestFocus();
         }
     }
@@ -222,9 +213,18 @@ public class GestionarProducto extends AppCompatActivity implements NavigationVi
         return true;
     }
 
-    public void SubirFoto(View view){
-        Intent intent=new Intent(Intent.ACTION_PICK);
-        intent.setType("image/*");
-        startActivityForResult(intent,GALLERY_INTENT);
+    public void SelecFoto(View view){
+        CropImage.startPickImageActivity(GestionarProducto.this);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        objFoto = new Foto(this,this,requestCode,resultCode,data,subir,"Img_Productos");
+        objFoto.generadorDeFoto();
+        if(objFoto.color==true) {
+            subir.setBackgroundColor(getResources().getColor(R.color.teal_200));
+        }
+        downloadurl = objFoto.getDownloadurl();
     }
 }

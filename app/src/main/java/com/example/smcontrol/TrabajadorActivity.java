@@ -101,7 +101,7 @@ public class TrabajadorActivity extends AppCompatActivity implements NavigationV
         if(drawerLayout.isDrawerOpen(GravityCompat.START)){
             drawerLayout.closeDrawer(GravityCompat.START);
         }else {
-            super.onBackPressed();
+           startActivity(new Intent(this,MenuActivity.class));
         }
     }
 

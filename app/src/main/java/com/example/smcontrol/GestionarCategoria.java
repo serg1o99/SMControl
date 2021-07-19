@@ -16,6 +16,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -29,15 +30,16 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.theartofdev.edmodo.cropper.CropImage;
 
 import model.Categoria;
+import model.Foto;
 import model.Proveedor;
 import model.Static;
 
 public class GestionarCategoria extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
     private EditText et_codigo,et_nombre,et_descripcion;
-    private static  final  int GALLERY_INTENT = 1;
     //
     private StorageReference storageReference;
     private ProgressDialog progressDialog;
@@ -55,6 +57,11 @@ public class GestionarCategoria extends AppCompatActivity implements NavigationV
     DrawerLayout drawerLayout;
     NavigationView navigationView;
     Toolbar toolbar;
+    //para la imagen
+    private Button subir;
+    private  Uri downloadurl;
+    Foto objFoto;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,7 +78,9 @@ public class GestionarCategoria extends AppCompatActivity implements NavigationV
         nombreTrabajador.setText(Static.nombre);
         //
         toolbar = findViewById(R.id.toolbar_cat);
-
+        //para subir imagen
+        subir = (Button) findViewById(R.id.btnsubirfoto);
+        //
         setSupportActionBar(toolbar);
         navigationView.bringToFront();
         ActionBarDrawerToggle toogle = new ActionBarDrawerToggle(this,drawerLayout,toolbar,R.string.navigation_drawer_open,R.string.navigation_drawer_close);
@@ -88,21 +97,6 @@ public class GestionarCategoria extends AppCompatActivity implements NavigationV
         inicializarFirebase();
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode==GALLERY_INTENT && resultCode == RESULT_OK)  {
-            Uri uri=data.getData();
-            StorageReference filePath=storageReference.child("img_Categorias").child(uri.getLastPathSegment());
-            filePath.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    Toast.makeText(getApplicationContext(),"Se subio exitosamente la foto.",Toast.LENGTH_SHORT).show();
-                }
-            });
-        }
-    }
-
     private void inicializarFirebase(){
         FirebaseApp.initializeApp(this);
         firebaseDatabase=FirebaseDatabase.getInstance().getInstance();
@@ -114,9 +108,10 @@ public class GestionarCategoria extends AppCompatActivity implements NavigationV
         codigo      = et_codigo.getText().toString();
         nombre      = et_nombre.getText().toString();
         descripcion = et_descripcion.getText().toString();
-
         if( this.codigo.equals("") || nombre.equals("") || descripcion.equals("")){
             validarCampos();
+        }else if (!subir.isEnabled())   {
+            Toast.makeText(this,"Debe subir una foto",Toast.LENGTH_SHORT).show();
         }else   {
             insertar();
         }
@@ -128,10 +123,11 @@ public class GestionarCategoria extends AppCompatActivity implements NavigationV
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 Categoria obj = new Categoria();
-                obj.setCodigo(codigo);
+                downloadurl=objFoto.getDownloadurl();
+                obj.setCodigo("CT0"+codigo);
                 obj.setNombre(nombre);
                 obj.setDescripcion(descripcion);
-
+                obj.setUrl(""+downloadurl);
                 databaseReference.child("Categoria").child(""+obj.getCodigo()).setValue(obj);
                 Toast.makeText(getApplicationContext(),"Categoria agregada",Toast.LENGTH_SHORT).show();
                 limpiarCampos();
@@ -149,13 +145,13 @@ public class GestionarCategoria extends AppCompatActivity implements NavigationV
 
     public void validarCampos() {
         if(codigo.isEmpty()) {
-            Toast.makeText(this,"Campo codigo obligatorio",Toast.LENGTH_SHORT).show();
+            Toast.makeText(this,"Campo código obligatorio",Toast.LENGTH_SHORT).show();
             et_codigo.requestFocus();
         }else if(nombre.isEmpty()) {
             Toast.makeText(this,"Campo nombre obligatorio",Toast.LENGTH_SHORT).show();
             et_nombre.requestFocus();
         }else if(descripcion.isEmpty())    {
-            Toast.makeText(this,"Campo descripcion obligatorio",Toast.LENGTH_SHORT).show();
+            Toast.makeText(this,"Campo descripción obligatorio",Toast.LENGTH_SHORT).show();
             et_descripcion.requestFocus();
         }
     }
@@ -175,15 +171,27 @@ public class GestionarCategoria extends AppCompatActivity implements NavigationV
         }
     }
 
-    public void SubirFoto(View view){
-        Intent intent=new Intent(Intent.ACTION_PICK);
-        intent.setType("image/*");
-        startActivityForResult(intent,GALLERY_INTENT);
-    }
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         Static.OpcionesNav(item,this);
         return true;
     }
+
+    public void SelecFoto(View view){
+        CropImage.startPickImageActivity(GestionarCategoria.this);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        objFoto = new Foto(this,this,requestCode,resultCode,data,subir,"Img_Categoría");
+        objFoto.generadorDeFoto();
+        if(objFoto.color==true) {
+            subir.setBackgroundColor(getResources().getColor(R.color.teal_200));
+        }
+        downloadurl = objFoto.getDownloadurl();
+    }
+
+
 }

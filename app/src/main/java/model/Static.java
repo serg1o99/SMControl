@@ -1,8 +1,13 @@
 package model;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.view.MenuItem;
+import android.widget.Toast;
+
+import androidx.appcompat.app.AlertDialog;
 
 import com.example.smcontrol.Acceso;
 import com.example.smcontrol.CategoriaActivity;
@@ -24,6 +29,7 @@ public class Static {
     public static String correo;
     public static String stock;
     public static String alerta;
+
     public static void OpcionesNav(MenuItem item, Context context){
         Intent i;
         switch (item.getItemId()){
@@ -52,13 +58,27 @@ public class Static {
                 context.startActivity(i);
                 break;
             case R.id.nav_salir:
-                FirebaseAuth mAuth = FirebaseAuth.getInstance();
-                mAuth.signOut();
-                i = new Intent(context, Acceso.class);
-                context.startActivity(i);
+                AlertDialog.Builder alerta=new AlertDialog.Builder(context,R.style.AppCompatAlertDialogStyle);
+                alerta.setMessage("¿Está seguro de que quiere cerrar sesión ?").setTitle("Cerrar sesión").setPositiveButton("Sí", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+                        mAuth.signOut();
+                        Intent it=new Intent(context,Acceso.class);
+                        context.startActivity(it);
+
+                    }
+                }).setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                }).show();
                 break;
         }
     }
+
+
 
     public static void OpcionesNavAlmacenero(MenuItem item, Context context){
         Intent i;
@@ -66,6 +86,7 @@ public class Static {
             case R.id.nav_Menu:
                 i = new Intent(context, negocio.MenuAlmacenero.class);
                 context.startActivity(i);
+
                 break;
             case R.id.nav_Entradas:
                 i = new Intent(context, negocio.EntradasActivity.class);
@@ -84,12 +105,26 @@ public class Static {
                 context.startActivity(i);
                 break;
             case R.id.nav_salir:
-                FirebaseAuth mAuth = FirebaseAuth.getInstance();
-                mAuth.signOut();
-                i = new Intent(context, Acceso.class);
-                context.startActivity(i);
+                AlertDialog.Builder alerta=new AlertDialog.Builder(context,R.style.AppCompatAlertDialogStyle);
+                alerta.setMessage("¿Está seguro de que quiere cerrar sesión ?").setTitle("Cerrar sesión").setPositiveButton("Sí", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+                        mAuth.signOut();
+                        Intent it=new Intent(context,Acceso.class);
+                        context.startActivity(it);
+                    }
+                }).setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                }).show();
                 break;
         }
     }
+
+
+
 
 }
