@@ -111,7 +111,7 @@ public class Foto {
             @Override
             public void onClick(View v) {
                 dialogCarga();
-                ref = storageReference.child(autogenerarcodigofoto());
+                ref = storageReference.child(autogenerarCodigo(carpeta,"jpg"));
                 UploadTask upload = ref.putBytes(thumb_byte);
                 cargarAlStorage(upload);
             }
@@ -148,13 +148,13 @@ public class Foto {
         return downloadurl;
     }
 
-    private String autogenerarcodigofoto() {
+    public String autogenerarCodigo(String nombre, String formato) {
         int p = (int) (Math.random() * 25 + 1); int s = (int) (Math.random() * 25 + 1);
         int t = (int) (Math.random() * 25 + 1); int c = (int) (Math.random() * 25 + 1);
         int numero1= (int) (Math.random() * 1012 + 2111);
         int numero2= (int) (Math.random() * 1012 + 2111);
         String[] elementos= {"a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z"};
-        final String aleatorio = elementos[p] + elementos[s] + numero1 + elementos[t] + elementos[c] + numero2 + carpeta +".jpg";
+        final String aleatorio = elementos[p] + elementos[s] + numero1 + elementos[t] + elementos[c] + numero2 + nombre +"."+formato;
         return aleatorio;
     }
 }

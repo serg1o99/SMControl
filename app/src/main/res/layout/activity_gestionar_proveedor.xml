@@ -76,7 +76,7 @@
                         android:id="@+id/txt_cod"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:fontFamily="@font/reem_kufi"
+                        android:fontFamily="@font/reem_kufii"
                         android:inputType="number"
                         android:textColor="@color/black" />
 
@@ -106,7 +106,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:drawableStart="@drawable/person_outline"
-                        android:fontFamily="@font/reem_kufi"
+                        android:fontFamily="@font/reem_kufii"
                         android:inputType="text"
                         android:textColor="@color/black" />
 
@@ -132,7 +132,7 @@
                             android:id="@+id/txt_nom_empresa"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:fontFamily="@font/reem_kufi"
+                            android:fontFamily="@font/reem_kufii"
                             android:inputType="text"
                             android:textColor="@color/black" />
 
@@ -164,7 +164,7 @@
                         android:id="@+id/txt_correo_prov"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:fontFamily="@font/reem_kufi"
+                        android:fontFamily="@font/reem_kufii"
                         android:inputType="textEmailAddress"
                         android:textColor="@color/black" />
 
@@ -193,7 +193,7 @@
                         android:id="@+id/txt_direccion"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:fontFamily="@font/reem_kufi"
+                        android:fontFamily="@font/reem_kufii"
                         android:inputType="text"
                         android:textColor="@color/black" />
 
@@ -222,7 +222,7 @@
                         android:id="@+id/txt_telefono"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:fontFamily="@font/reem_kufi"
+                        android:fontFamily="@font/reem_kufii"
                         android:inputType="phone"
                         android:textColor="@color/black" />
 
@@ -244,7 +244,7 @@
                         android:layout_marginEnd="3dp"
                         android:layout_weight="1"
                         android:backgroundTint="#673AB7"
-                        android:fontFamily="@font/reem_kufi"
+                        android:fontFamily="@font/reem_kufii"
                         android:gravity="center_horizontal|center_vertical"
                         android:onClick="SelecFoto"
                         android:text="Galería"
@@ -265,7 +265,7 @@
                         android:layout_weight="1"
                         android:backgroundTint="#BCBDBD"
                         android:enabled="true"
-                        android:fontFamily="@font/reem_kufi"
+                        android:fontFamily="@font/reem_kufii"
                         android:gravity="center_horizontal|center_vertical"
                         android:text="Subir foto"
                         android:textAllCaps="false"
@@ -286,7 +286,7 @@
                     android:layout_weight="1"
                     android:backgroundTint="#FF9800"
                     android:enabled="true"
-                    android:fontFamily="@font/reem_kufi"
+                    android:fontFamily="@font/reem_kufii"
                     android:onClick="crearProveedor"
                     android:text="Crear Proveedor"
                     android:textAllCaps="false"

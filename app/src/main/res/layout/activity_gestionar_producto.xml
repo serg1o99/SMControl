@@ -77,7 +77,7 @@
                         android:id="@+id/txt_code"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:fontFamily="@font/reem_kufi"
+                        android:fontFamily="@font/reem_kufii"
                         android:inputType="number"
                         android:textColor="@color/black" />
 
@@ -107,7 +107,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:drawableStart="@drawable/person_outline"
-                        android:fontFamily="@font/reem_kufi"
+                        android:fontFamily="@font/reem_kufii"
                         android:inputType="text"
                         android:textColor="@color/black" />
 
@@ -133,7 +133,7 @@
                             android:id="@+id/txt_stock_prod_entra"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:fontFamily="@font/reem_kufi"
+                            android:fontFamily="@font/reem_kufii"
                             android:inputType="number"
                             android:textColor="@color/black" />
 
@@ -165,7 +165,7 @@
                         android:id="@+id/txt_precio"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:fontFamily="@font/reem_kufi"
+                        android:fontFamily="@font/reem_kufii"
                         android:inputType="number|numberDecimal"
                         android:textColor="@color/black" />
 
@@ -194,7 +194,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:fontFamily="@font/reem_kufi"
+                        android:fontFamily="@font/reem_kufii"
                         android:hint="Seleccione una categoría"
                         android:inputType="none"
 
@@ -214,7 +214,7 @@
                         android:layout_marginEnd="3dp"
                         android:layout_weight="1"
                         android:backgroundTint="#673AB7"
-                        android:fontFamily="@font/reem_kufi"
+                        android:fontFamily="@font/reem_kufii"
                         android:gravity="center_horizontal|center_vertical"
                         android:onClick="SelecFoto"
                         android:text="Galería"
@@ -235,7 +235,7 @@
                         android:layout_weight="1"
                         android:backgroundTint="#BCBDBD"
                         android:enabled="true"
-                        android:fontFamily="@font/reem_kufi"
+                        android:fontFamily="@font/reem_kufii"
                         android:gravity="center_horizontal|center_vertical"
                         android:text="Subir foto"
                         android:textAllCaps="false"
@@ -256,7 +256,7 @@
                     android:layout_weight="1"
                     android:backgroundTint="#FF9800"
                     android:enabled="true"
-                    android:fontFamily="@font/reem_kufi"
+                    android:fontFamily="@font/reem_kufii"
                     android:onClick="crearProducto"
                     android:text="Crear Producto"
                     android:textAllCaps="false"

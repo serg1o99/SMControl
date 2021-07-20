@@ -18,7 +18,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="6dp"
-        android:fontFamily="@font/reem_kufi"
+        android:fontFamily="@font/reem_kufii"
         android:text="ALMACENERO : "
         android:textColor="@color/black"
         android:textSize="16sp" />
@@ -27,7 +27,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="6dp"
-        android:fontFamily="@font/reem_kufi"
+        android:fontFamily="@font/reem_kufii"
         android:text="PRODUCTO : "
         android:textColor="@color/black"
         android:textSize="16sp" />
@@ -36,7 +36,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="6dp"
-        android:fontFamily="@font/reem_kufi"
+        android:fontFamily="@font/reem_kufii"
         android:text="CANTIDAD: "
         android:textColor="@color/black"
         android:textSize="16sp" />
@@ -46,7 +46,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="6dp"
-        android:fontFamily="@font/reem_kufi"
+        android:fontFamily="@font/reem_kufii"
         android:text="FECHA : "
         android:textColor="@color/black"
         android:textSize="16sp" />
@@ -56,7 +56,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="6dp"
-        android:fontFamily="@font/reem_kufi"
+        android:fontFamily="@font/reem_kufii"
         android:text="HORA : "
         android:textColor="@color/black"
         android:textSize="16sp" />
@@ -76,7 +76,7 @@
             android:layout_marginEnd="5dp"
             android:layout_weight="1"
             android:backgroundTint="@color/teal_200"
-            android:fontFamily="@font/reem_kufi"
+            android:fontFamily="@font/reem_kufii"
             android:text="Cerrar "
             android:textAllCaps="false"
             android:textColor="@color/white"

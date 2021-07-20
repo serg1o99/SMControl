@@ -21,7 +21,7 @@
         android:textSize="24sp"
         android:textColor="@color/black"
         android:text="TEXT"
-        android:fontFamily="@font/reem_kufi"
+        android:fontFamily="@font/reem_kufii"
         android:layout_height="wrap_content"/>
 <LinearLayout
     android:layout_width="match_parent"
@@ -36,7 +36,7 @@
         android:layout_marginEnd="3dp"
         android:layout_weight="1"
         android:backgroundTint="#EEB3281E"
-        android:fontFamily="@font/reem_kufi"
+        android:fontFamily="@font/reem_kufii"
         android:text="Cancelar"
         android:textAllCaps="false"
         android:textColor="@color/white"
@@ -50,7 +50,7 @@
         android:layout_marginEnd="5dp"
         android:layout_weight="1"
         android:backgroundTint="#EEB3281E"
-        android:fontFamily="@font/reem_kufi"
+        android:fontFamily="@font/reem_kufii"
         android:text="Atender"
         android:textAllCaps="false"
         android:textColor="@color/white"

@@ -9,7 +9,7 @@
     android:textAppearance="?attr/textAppearanceSubtitle1"
     android:textColor="@color/teal_200"
     android:textColorHint="@color/black"
-    android:fontFamily="@font/reem_kufi"
+    android:fontFamily="@font/reem_kufii"
     android:background="@color/white"
     android:textAlignment="center"
     >

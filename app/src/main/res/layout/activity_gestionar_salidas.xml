@@ -74,7 +74,7 @@
                         android:id="@+id/txt_cod_empleado"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:fontFamily="@font/reem_kufi"
+                        android:fontFamily="@font/reem_kufii"
                         android:inputType="text"
                         android:editable="false"
                         android:enabled="false"
@@ -105,7 +105,7 @@
                         android:id="@+id/txt_cod_salida"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:fontFamily="@font/reem_kufi"
+                        android:fontFamily="@font/reem_kufii"
                         android:inputType="number"
                         android:textColor="@color/black" />
 
@@ -142,7 +142,7 @@
                             android:id="@+id/txt_cod_prod"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:fontFamily="@font/reem_kufi"
+                            android:fontFamily="@font/reem_kufii"
                             android:inputType="text"
                             android:editable="false"
                             android:enabled="false"
@@ -174,7 +174,7 @@
                             android:id="@+id/txt_nom_prod"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:fontFamily="@font/reem_kufi"
+                            android:fontFamily="@font/reem_kufii"
                             android:inputType="text"
                             android:editable="false"
                             android:enabled="false"
@@ -215,7 +215,7 @@
                             android:id="@+id/txt_stocks"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:fontFamily="@font/reem_kufi"
+                            android:fontFamily="@font/reem_kufii"
                             android:inputType="text"
                             android:editable="false"
                             android:enabled="false"
@@ -247,7 +247,7 @@
                             android:id="@+id/txt_cantidad_salidas"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:fontFamily="@font/reem_kufi"
+                            android:fontFamily="@font/reem_kufii"
                             android:inputType="number"
                             android:textColor="@color/black" />
 
@@ -279,7 +279,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:drawableStart="@drawable/person_outline"
-                        android:fontFamily="@font/reem_kufi"
+                        android:fontFamily="@font/reem_kufii"
                         android:inputType="text"
                         android:textColor="@color/black" />
 
@@ -305,7 +305,7 @@
                             android:id="@+id/txt_descripcion_salida"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:fontFamily="@font/reem_kufi"
+                            android:fontFamily="@font/reem_kufii"
                             android:inputType="text"
                             android:textColor="@color/black" />
 
@@ -322,7 +322,7 @@
                     android:height="55dp"
                     android:layout_marginTop="20dp"
                     android:backgroundTint="#F44336"
-                    android:fontFamily="@font/reem_kufi"
+                    android:fontFamily="@font/reem_kufii"
                     android:onClick="procesarSalida"
                     android:text="PROCESAR SALIDA"
                     android:textColor="@color/white"

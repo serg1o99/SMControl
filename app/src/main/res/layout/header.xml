@@ -11,7 +11,7 @@
         android:id="@+id/tv_nombre"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/reem_kufi"
+        android:fontFamily="@font/reem_kufii"
         android:text="Fernando Sanchez"
         android:textColor="@color/white"
         android:textSize="40dp" />
@@ -20,7 +20,7 @@
         android:id="@+id/tv_email"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/reem_kufi"
+        android:fontFamily="@font/reem_kufii"
         android:text="fernandosan@gmail.com"
         android:textColor="@color/white"
         android:textSize="20dp" />
